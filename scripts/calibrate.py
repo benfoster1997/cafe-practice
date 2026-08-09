@@ -31,19 +31,28 @@ from backtest.metrics import summarize  # noqa: E402
 from backtest.sessions import NY  # noqa: E402
 from backtest.silver_bullet import SBParams, SilverBullet, build_day_plans  # noqa: E402
 
-GRID = {
-    # min gap size decoupled from the cost multiple: cost coverage is the
-    # 15/8-pip distance floor's job; the size gate only filters noise gaps.
-    # (Correcting our own index-tick translation — documented in PLAN.)
-    "min_fvg_pips": [0.2, 0.5, 1.0],
-    "cost_mult_min_fvg": [0.0],
-    "min_draw_distance_pips": [8.0, 15.0],
-    "min_rr_floor": [1.0, 1.5],
-    "sweep_confirm_bars": [5, 10],
-    # Structural readings, both sides documented in digest §7:
-    "mss_mode": ["close", "wick"],
-    "fvg_window": ["triple", "c3"],
+# Round 4: geometry dimensions from the PHASE2_RESULTS diagnosis. Entry-gate
+# values held at round-3 loosest (min_fvg 0.2, no cost mult, draw>=8, rr 1.0,
+# sweep 5) since round 3 showed insensitivity to them.
+WINDOWS = {
+    "nyam": {"window_start": dtime(10, 0), "window_end": dtime(11, 0),
+             "sweep_from": dtime(9, 30),
+             "flatten": {"early": dtime(11, 30), "late": dtime(16, 0)}},
+    "london": {"window_start": dtime(3, 0), "window_end": dtime(4, 0),
+               "sweep_from": dtime(2, 0),
+               # late = ICT's London-close profit-taking hour [digest §4]
+               "flatten": {"early": dtime(4, 30), "late": dtime(10, 30)}},
 }
+GRID = {
+    "window": ["nyam", "london"],
+    "min_stop_pips": [0.0, 6.0, 10.0],
+    "target_mode": ["draw", "fixed"],
+    "flatten": ["early", "late"],
+    "mss_mode": ["close", "wick"],
+}
+BASE_KW = dict(min_fvg_pips=0.2, cost_mult_min_fvg=0.0,
+               min_draw_distance_pips=8.0, min_rr_floor=1.0,
+               sweep_confirm_bars=5, fvg_window="c3")
 
 _SHARED = {}
 
@@ -53,12 +62,18 @@ def _init(bars, plans, engine_bars, costs):
 
 
 def _run_config(combo: dict) -> dict:
+    w = WINDOWS[combo["window"]]
     params = SBParams(roundtrip_cost_pips=_SHARED["costs"].spread_pips
                       + 2 * _SHARED["costs"].commission_per_lot_side / 10.0,
-                      **combo)
-    strat = SilverBullet(_SHARED["bars"], params, plans=_SHARED["plans"])
+                      window_start=w["window_start"], window_end=w["window_end"],
+                      sweep_from=w["sweep_from"], min_stop_pips=combo["min_stop_pips"],
+                      target_mode=combo["target_mode"], mss_mode=combo["mss_mode"],
+                      **BASE_KW)
+    strat = SilverBullet(_SHARED["bars"], params,
+                         plans=_SHARED["plans"][combo["window"]])
     bt = Backtester(_SHARED["engine_bars"], strat, costs=_SHARED["costs"],
-                    initial_balance=10_000.0, time_exit_ny=dtime(11, 30))
+                    initial_balance=10_000.0,
+                    time_exit_ny=w["flatten"][combo["flatten"]])
     trades = bt.run()
     s = summarize(trades, 10_000.0)
     yearly = {}
@@ -86,11 +101,16 @@ def main() -> None:
     costs = CostModel(spread_pips=spread_cost, commission_per_lot_side=3.5,
                       slippage_pips=0.2)
     ohlc = full[["open", "high", "low", "close"]]
-    plans = build_day_plans(ohlc, SBParams())
-    engine_bars = ohlc[(ny_min >= 540) & (ny_min < 720)]
+    plans = {}
+    for name, w in WINDOWS.items():
+        plans[name] = build_day_plans(ohlc, SBParams(
+            window_start=w["window_start"], window_end=w["window_end"],
+            sweep_from=w["sweep_from"]))
+    engine_bars = ohlc[(ny_min >= 120) & (ny_min < 970)]
+    counts = {n: sum(1 for p in d.values() if p.bias != 0)
+              for n, d in plans.items()}
     print(f"IS years {years} | spread {spread_cost} pips | "
-          f"{sum(1 for p in plans.values() if p.bias != 0)} tradeable days",
-          flush=True)
+          f"tradeable days per window: {counts}", flush=True)
 
     keys = list(GRID)
     combos = [dict(zip(keys, vals)) for vals in itertools.product(*GRID.values())]

@@ -48,6 +48,9 @@ class SBParams:
     # ambiguities in the source material:
     mss_mode: str = "close"              # "close" [COMMUNITY] | "wick" [ICT literal]
     fvg_window: str = "triple"           # "triple" [OURS strict] | "c3" (gap completes in window)
+    # Round-4 geometry options (see docs/PHASE2_RESULTS.md):
+    min_stop_pips: float = 0.0           # widen stop to at least this [OURS; 0 = off]
+    target_mode: str = "draw"            # "draw" | "fixed" (engine's R target; digest §9.8)
 
 
 @dataclass
@@ -83,6 +86,10 @@ def build_day_plans(bars: pd.DataFrame, p: SBParams) -> dict:
     daily = _daily_table(bars)
     plans: dict = {}
     day_list = list(daily.index)
+    # Window geometry in NY minutes; all session masks derive from these so
+    # the same plan builder serves the NY-AM and London windows.
+    wo = p.window_start.hour * 60 + p.window_start.minute
+    sf = p.sweep_from.hour * 60 + p.sweep_from.minute
 
     for i, day in enumerate(day_list):
         plan = DayPlan()
@@ -100,7 +107,7 @@ def build_day_plans(bars: pd.DataFrame, p: SBParams) -> dict:
         equilibrium = (look["high"].max() + look["low"].min()) / 2.0
 
         today = dates == day
-        pre_window = today & (ny_minutes < 600)  # before 10:00
+        pre_window = today & (ny_minutes < wo)
         if not pre_window.any():
             plan.no_trade_reason = "no_pre_window_data"
             continue
@@ -122,10 +129,12 @@ def build_day_plans(bars: pd.DataFrame, p: SBParams) -> dict:
 
         # Pools [OURS list, digest §5.3]. Each records when it becomes an
         # eligible sweep source and when its "untapped" check window starts.
-        london = today & (ny_minutes >= 120) & (ny_minutes < 300)     # 2:00-5:00
+        # London session pool only exists when it completes before the window.
+        london = (today & (ny_minutes >= 120) & (ny_minutes < 300)
+                  if wo >= 300 else pd.Series(False, index=bars.index))
         prev_day_rows = dates == day_list[i - 1]
         asia_prev = prev_day_rows & (ny_minutes >= 1200)              # 20:00+ prev day
-        pre_ny = today & (ny_minutes >= 570) & (ny_minutes < 600)     # 9:30-10:00
+        pre_ny = today & (ny_minutes >= wo - 30) & (ny_minutes < wo)  # last half hour
         prev = hist.iloc[-1]
 
         def seg_extremes(mask):
@@ -141,7 +150,7 @@ def build_day_plans(bars: pd.DataFrame, p: SBParams) -> dict:
         # Most recent 15-minute swing high/low before 9:30 [ICT §2.3 — the
         # pools the day's raid uses; closes the documented v1 gap].
         m15_h = m15_l = None
-        m15 = bars.loc[today & (ny_minutes < 570)]
+        m15 = bars.loc[today & (ny_minutes < wo - 30)]
         if len(m15) >= 45:
             m15 = m15.resample("15min").agg(
                 {"high": "max", "low": "min"}).dropna()
@@ -166,19 +175,19 @@ def build_day_plans(bars: pd.DataFrame, p: SBParams) -> dict:
             seg = bars.loc[check_mask]
             return (seg["high"].max() < level) if is_high else (seg["low"].min() > level)
 
-        after_midnight = today & (ny_minutes < 570)   # 00:00-9:30
-        after_london = today & (ny_minutes >= 300) & (ny_minutes < 570)  # 5:00-9:30
+        after_midnight = today & (ny_minutes < sf)
+        after_london = today & (ny_minutes >= 300) & (ny_minutes < sf)
 
-        highs = [(prev["high"], untapped(prev["high"], True, after_midnight), 570),
-                 (asia_h, untapped(asia_h, True, after_midnight), 570),
-                 (lon_h, untapped(lon_h, True, after_london), 570),
-                 (m15_h, True, 570),  # swing detection already requires untouched neighbors
-                 (pre_h, True, 600)]
-        lows = [(prev["low"], untapped(prev["low"], False, after_midnight), 570),
-                (asia_l, untapped(asia_l, False, after_midnight), 570),
-                (lon_l, untapped(lon_l, False, after_london), 570),
-                (m15_l, True, 570),
-                (pre_l, True, 600)]
+        highs = [(prev["high"], untapped(prev["high"], True, after_midnight), sf),
+                 (asia_h, untapped(asia_h, True, after_midnight), sf),
+                 (lon_h, untapped(lon_h, True, after_london), sf),
+                 (m15_h, True, sf),  # swing detection already requires untouched neighbors
+                 (pre_h, True, wo)]
+        lows = [(prev["low"], untapped(prev["low"], False, after_midnight), sf),
+                (asia_l, untapped(asia_l, False, after_midnight), sf),
+                (lon_l, untapped(lon_l, False, after_london), sf),
+                (m15_l, True, sf),
+                (pre_l, True, wo)]
         highs = [(lv, ok, act) for lv, ok, act in highs if lv is not None]
         lows = [(lv, ok, act) for lv, ok, act in lows if lv is not None]
 
@@ -412,14 +421,20 @@ class SilverBullet:
 
         draw = plan.draw
         stop = self.swept_extreme - p.stop_buffer if b > 0 else self.swept_extreme + p.stop_buffer
+        if p.min_stop_pips > 0:  # widen only — never tighter than the extreme
+            floor = p.min_stop_pips * PIP
+            stop = min(stop, edge - floor) if b > 0 else max(stop, edge + floor)
         stop_pips = abs(edge - stop) / PIP
         draw_pips = abs(draw - edge) / PIP
         if draw_pips < p.min_draw_distance_pips:          # [ICT]
             return None
         if stop_pips <= 0 or draw_pips < p.min_rr_floor * stop_pips:  # [OURS]
             return None
-        cushion = p.target_cushion_pips * PIP
-        target = draw - cushion if b > 0 else draw + cushion
+        if p.target_mode == "fixed":
+            target = None  # engine applies its R-multiple target
+        else:
+            cushion = p.target_cushion_pips * PIP
+            target = draw - cushion if b > 0 else draw + cushion
         return Signal(
             direction=b, stop_price=stop, entry_type="limit", entry_price=edge,
             target_price=target, cancel_if_touch=draw, cancel_if_body_beyond=far,
