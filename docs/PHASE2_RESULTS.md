@@ -74,3 +74,17 @@ B. **One targeted research round attacking the diagnosed geometry** (still
    in-sample turns positive.
 C. **Change instrument** toward ICT's demonstrated markets (index CFDs) —
    needs new data sourcing and fresh cost analysis first.
+
+## FINAL VERDICT (2026-08-09, out-of-sample, run once)
+
+Stability: locked London config held on 2018-2020 (62 trades, +0.168R,
+PF 1.48, all years positive; 2018 — never used in calibration — was best).
+
+**Out-of-sample 2021-2022H1: FAILED.** 35 trades, −0.323R expectancy,
+PF 0.44, win 34%, both years negative, drawdown 11.8%. Demo gate: FAIL on
+4 of 5 criteria. The in-sample edge was selection noise from ~290 examined
+configurations. Conclusion: the mechanical Silver Bullet on EURUSD has no
+demonstrated edge after honest costs in either window. Recommendation:
+Option A — accept the finding. Do not fund a live account for this
+strategy. The OOS years are now burned for this strategy family; any
+future attempt needs fresh data (2023+) as its verdict set.
