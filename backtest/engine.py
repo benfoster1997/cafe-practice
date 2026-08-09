@@ -184,10 +184,16 @@ class Backtester:
             trade.exit_time = ts
             trade.exit_price = fill
             trade.exit_reason = reason
-            days_held = max(0, (ts - trade.entry_time).days)
-            if days_held and self.costs.holding_cost_pips_per_day > 0:
-                hold = (days_held * self.costs.holding_cost_pips_per_day
-                        * self.symbol.pip_value_per_lot * trade.original_size_lots)
+            if self.costs.holding_cost_pips_per_day > 0:
+                # Charge each period at the size actually open during it.
+                split = trade.partial_time or ts
+                d1 = max(0, (split - trade.entry_time).days)
+                d2 = max(0, (ts - split).days)
+                lot_days = (d1 * trade.original_size_lots
+                            + d2 * (trade.size_lots if trade.partial_time
+                                    else trade.original_size_lots))
+                hold = (lot_days * self.costs.holding_cost_pips_per_day
+                        * self.symbol.pip_value_per_lot)
                 trade.pnl_quote -= hold
                 self.balance -= hold
             risk_quote = (self._pips(trade.initial_risk)
@@ -285,7 +291,9 @@ class Backtester:
                 else:
                     t.partial_time = ts  # BE armed, nothing closed
                 buffer = self.mgmt.breakeven_buffer_pips * self.symbol.pip_size
-                t.stop_price = self._round(t.entry_price + d * buffer)
+                new_be = self._round(t.entry_price + d * buffer)
+                if (new_be - t.stop_price) * d > 0:  # tighten-only, always
+                    t.stop_price = new_be
                 t.moved_to_breakeven = True
                 partial_this_bar = True
                 # Same-bar pessimism: if this bar's range also contains the
@@ -401,8 +409,11 @@ class Backtester:
                 if self.pending.ttl_bars is None:
                     self.pending = None  # intraday orders die at the day roll
                 else:
+                    # Decrement at the roll but cancel only when it goes
+                    # negative: ttl_bars=N means N fillable bars after the
+                    # signal bar, not N-1.
                     self.pending.ttl_bars -= 1
-                    if self.pending.ttl_bars <= 0:
+                    if self.pending.ttl_bars < 0:
                         self.pending = None
             self._roll_day(ts)
             self._manage_open(ts, bar)

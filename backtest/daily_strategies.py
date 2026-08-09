@@ -51,7 +51,9 @@ class TurtleSoup:
         # Window ends yesterday: shift(1). Age = days since that extreme printed.
         self.prior_low = lo.rolling(lookback).min().shift(1)
         self.prior_high = hi.rolling(lookback).max().shift(1)
-        rev = np.arange(lookback)[::-1]  # days-ago weights inside the window
+        # Days-ago measured from the SIGNAL day: yesterday (window's last
+        # slot, pre-shift) is age 1, not 0.
+        rev = np.arange(1, lookback + 1)[::-1]
 
         def age_of_min(x):
             return rev[int(np.argmin(x))]
@@ -92,7 +94,10 @@ class TurtleSoup:
         return None
 
     def manage(self, trade, ts):
-        if (ts - trade.entry_time).days >= self.max_hold:
+        # Trading bars held, not calendar days — weekends don't count.
+        i_now = self.pos.get(pd.Timestamp(ts))
+        i_in = self.pos.get(pd.Timestamp(trade.entry_time))
+        if i_now is not None and i_in is not None and i_now - i_in >= self.max_hold:
             return ("exit",)
         return None
 
