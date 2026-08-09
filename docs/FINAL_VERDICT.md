@@ -27,3 +27,20 @@ Honest paths that remain open (each needs new scope agreed first):
 multi-asset trend (where the published evidence actually lives — needs
 index/commodity data and cost models), or accepting the finding and
 closing the project with its infrastructure preserved.
+
+## Multi-asset trend (2026-08-09, final family) — FAILED IN-SAMPLE; SEARCH CLOSED
+
+18 instruments across equities, bonds, commodities, FX (OANDA archive
+2005-2020). Primary Donchian(100,50): −0.079R, PF 0.81, maxDD 34%, six
+negative rolling 3-year windows. Secondary (55,20): −0.124R, PF 0.65,
+maxDD 91%. Only 2008 and 2014 were positive years. Under retail CFD
+costs — above all the ~3%/yr financing on multi-week holds — the
+published multi-asset trend edge does not survive. That edge is real in
+the literature because it is harvested in FUTURES at institutional costs
+with vol-targeted portfolios; a £100 CFD account cannot buy those terms.
+Validation and verdict data (2017-2020) remain untouched.
+
+Per the pre-registration in MULTIASSET_PLAN.md, this failure CLOSES the
+strategy search permanently: four families tested, none fundable, £0
+lost. The infrastructure remains for testing any future idea the owner
+brings — but this project makes no further attempts of its own.
