@@ -182,14 +182,26 @@ def build_day_plans(bars: pd.DataFrame, p: SBParams) -> dict:
         highs = [(lv, ok, act) for lv, ok, act in highs if lv is not None]
         lows = [(lv, ok, act) for lv, ok, act in lows if lv is not None]
 
+        # Role split [digest §2.2 vs §2.3]: the DRAW is the day's objective —
+        # a substantial level (previous day / Asia / London extremes). The
+        # near pools (15m swings, pre-window range) are raid fuel on the
+        # sweep side only, never profit targets.
+        major_h = [(prev["high"], untapped(prev["high"], True, after_midnight)),
+                   (asia_h, untapped(asia_h, True, after_midnight)),
+                   (lon_h, untapped(lon_h, True, after_london))]
+        major_l = [(prev["low"], untapped(prev["low"], False, after_midnight)),
+                   (asia_l, untapped(asia_l, False, after_midnight)),
+                   (lon_l, untapped(lon_l, False, after_london))]
         if plan.bias > 0:
             plan.sweep_pools = [(lv, act) for lv, ok, act in lows if ok]
-            draws = [lv for lv, ok, act in highs if ok and lv > price_at_open]
+            draws = [lv for lv, ok in major_h
+                     if lv is not None and ok and lv > price_at_open]
             plan.guard_pools = sorted(set(draws))
             plan.draw = min(draws) if draws else None            # nearest above
         else:
             plan.sweep_pools = [(lv, act) for lv, ok, act in highs if ok]
-            draws = [lv for lv, ok, act in lows if ok and lv < price_at_open]
+            draws = [lv for lv, ok in major_l
+                     if lv is not None and ok and lv < price_at_open]
             plan.guard_pools = sorted(set(draws), reverse=True)
             plan.draw = max(draws) if draws else None            # nearest below
         if plan.draw is None or not plan.sweep_pools:
