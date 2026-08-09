@@ -175,9 +175,12 @@ def build_day_plans(bars: pd.DataFrame, p: SBParams) -> dict:
 class SilverBullet:
     """Stateful per-day machine: sweep -> MSS -> FVG -> limit signal."""
 
-    def __init__(self, bars: pd.DataFrame, params: SBParams = SBParams()):
+    def __init__(self, bars: pd.DataFrame, params: SBParams = SBParams(),
+                 plans: Optional[dict] = None):
         self.p = params
-        self.plans = build_day_plans(bars, params)
+        # Day plans depend only on bias_lookback_days, not on entry-gate
+        # params, so calibration sweeps can precompute them once.
+        self.plans = plans if plans is not None else build_day_plans(bars, params)
         self._day = None
         self.outcomes: dict = {}  # funnel diagnostics: day -> terminal state
         self._reset_day_state()
