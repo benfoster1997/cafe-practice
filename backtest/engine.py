@@ -44,6 +44,7 @@ class Signal:
     cancel_if_touch: Optional[float] = None  # cancel unfilled if price reaches this
     cancel_if_body_beyond: Optional[float] = None  # cancel if a close crosses this against us
     expire_at_ny: Optional[dtime] = None  # cancel unfilled at this NY time
+    ttl_bars: Optional[int] = None  # bars the order may rest (None: dies at day roll)
 
 
 @dataclass
@@ -183,6 +184,12 @@ class Backtester:
             trade.exit_time = ts
             trade.exit_price = fill
             trade.exit_reason = reason
+            days_held = max(0, (ts - trade.entry_time).days)
+            if days_held and self.costs.holding_cost_pips_per_day > 0:
+                hold = (days_held * self.costs.holding_cost_pips_per_day
+                        * self.symbol.pip_value_per_lot * trade.original_size_lots)
+                trade.pnl_quote -= hold
+                self.balance -= hold
             risk_quote = (self._pips(trade.initial_risk)
                           * self.symbol.pip_value_per_lot * trade.original_size_lots)
             trade.r_multiple = trade.pnl_quote / risk_quote if risk_quote else 0.0
@@ -232,9 +239,33 @@ class Backtester:
             self._book_stop(t, ts, bar)
             return
 
-        # Partial at +partial_at_r, then break-even.
+        # Strategy-driven management (trailing stops / discretionary exits).
+        # The hook may only tighten the stop in the trade's favor; a strategy
+        # cannot widen risk after entry.
+        manage = getattr(self.strategy, "manage", None)
+        if manage is not None:
+            action = manage(t, ts)
+            if action is not None:
+                kind, *rest = action
+                if kind == "exit":
+                    self._book_exit(t, ts, bar["open"], 1.0, "manage_exit",
+                                    market_order=True)
+                    self.open_trade = None
+                    return
+                if kind == "stop":
+                    new_stop = self._round(rest[0])
+                    if (new_stop - t.stop_price) * d > 0:
+                        t.stop_price = new_stop
+                        if self._stop_hit(t, bar):
+                            self._book_stop(t, ts, bar)
+                            return
+
+        # Partial at +partial_at_r, then break-even (disabled when
+        # partial_fraction <= 0 — trend-style trades trail instead).
         partial_this_bar = False
-        if t.partial_time is None:
+        if self.mgmt.partial_fraction <= 0:
+            t.partial_time = t.partial_time or t.entry_time  # unlock R target
+        elif t.partial_time is None:
             partial_target = self._round(
                 t.entry_price + d * self.mgmt.partial_at_r * t.initial_risk)
             partial_hit = (hi >= partial_target if d > 0
@@ -366,8 +397,13 @@ class Backtester:
         for i in range(len(self.bars)):
             ts = idx[i].to_pydatetime()
             bar = self.bars.iloc[i]
-            if ny_date(ts) != self._day:
-                self.pending = None  # orders never survive the day boundary
+            if self.pending is not None and ny_date(ts) != self._day:
+                if self.pending.ttl_bars is None:
+                    self.pending = None  # intraday orders die at the day roll
+                else:
+                    self.pending.ttl_bars -= 1
+                    if self.pending.ttl_bars <= 0:
+                        self.pending = None
             self._roll_day(ts)
             self._manage_open(ts, bar)
             self._process_pending(ts, bar)

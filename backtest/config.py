@@ -30,6 +30,10 @@ class CostModel:
     spread_pips: float = 0.3
     commission_per_lot_side: float = 3.0  # USD per 1.0 lot, each side
     slippage_pips: float = 0.2  # applied to every market-order fill
+    # Swap/rollover charge for positions held overnight, charged per day
+    # held at final exit. Deliberately a flat pessimistic charge — real
+    # swaps vary by pair and direction and are sometimes positive.
+    holding_cost_pips_per_day: float = 0.0
 
 
 @dataclass(frozen=True)
