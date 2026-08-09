@@ -32,11 +32,17 @@ from backtest.sessions import NY  # noqa: E402
 from backtest.silver_bullet import SBParams, SilverBullet, build_day_plans  # noqa: E402
 
 GRID = {
-    "min_fvg_pips": [0.3, 0.6, 1.0],
-    "cost_mult_min_fvg": [1.0, 2.0],
+    # min gap size decoupled from the cost multiple: cost coverage is the
+    # 15/8-pip distance floor's job; the size gate only filters noise gaps.
+    # (Correcting our own index-tick translation — documented in PLAN.)
+    "min_fvg_pips": [0.2, 0.5, 1.0],
+    "cost_mult_min_fvg": [0.0],
     "min_draw_distance_pips": [8.0, 15.0],
     "min_rr_floor": [1.0, 1.5],
     "sweep_confirm_bars": [5, 10],
+    # Structural readings, both sides documented in digest §7:
+    "mss_mode": ["close", "wick"],
+    "fvg_window": ["triple", "c3"],
 }
 
 _SHARED = {}

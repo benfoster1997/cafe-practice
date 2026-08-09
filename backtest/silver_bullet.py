@@ -44,6 +44,10 @@ class SBParams:
     window_start: dtime = dtime(10, 0)   # [ICT] NY AM Silver Bullet
     window_end: dtime = dtime(11, 0)
     sweep_from: dtime = dtime(9, 30)     # [OURS] opening stop-run counts
+    # Structural readings, both documented in digest §7 as genuine
+    # ambiguities in the source material:
+    mss_mode: str = "close"              # "close" [COMMUNITY] | "wick" [ICT literal]
+    fvg_window: str = "triple"           # "triple" [OURS strict] | "c3" (gap completes in window)
 
 
 @dataclass
@@ -134,6 +138,26 @@ def build_day_plans(bars: pd.DataFrame, p: SBParams) -> dict:
         asia_h, asia_l = seg_extremes(asia_prev)
         pre_h, pre_l = seg_extremes(pre_ny)
 
+        # Most recent 15-minute swing high/low before 9:30 [ICT §2.3 — the
+        # pools the day's raid uses; closes the documented v1 gap].
+        m15_h = m15_l = None
+        m15 = bars.loc[today & (ny_minutes < 570)]
+        if len(m15) >= 45:
+            m15 = m15.resample("15min").agg(
+                {"high": "max", "low": "min"}).dropna()
+            hs, ls = m15["high"].values, m15["low"].values
+            suf_h, suf_l = hs[-1], ls[-1]
+            # Most recent swing that no later pre-window bar traded through
+            # (a trampled swing no longer holds stops).
+            for j in range(len(m15) - 2, 0, -1):
+                if m15_h is None and hs[j] > hs[j - 1] and hs[j] > suf_h:
+                    m15_h = float(hs[j])
+                if m15_l is None and ls[j] < ls[j - 1] and ls[j] < suf_l:
+                    m15_l = float(ls[j])
+                if m15_h is not None and m15_l is not None:
+                    break
+                suf_h, suf_l = max(suf_h, hs[j]), min(suf_l, ls[j])
+
         def untapped(level, is_high, check_mask):
             """Pool still holds stops: nothing traded beyond it after it
             formed (checked over pre-window bars only). [OURS]"""
@@ -148,10 +172,12 @@ def build_day_plans(bars: pd.DataFrame, p: SBParams) -> dict:
         highs = [(prev["high"], untapped(prev["high"], True, after_midnight), 570),
                  (asia_h, untapped(asia_h, True, after_midnight), 570),
                  (lon_h, untapped(lon_h, True, after_london), 570),
+                 (m15_h, True, 570),  # swing detection already requires untouched neighbors
                  (pre_h, True, 600)]
         lows = [(prev["low"], untapped(prev["low"], False, after_midnight), 570),
                 (asia_l, untapped(asia_l, False, after_midnight), 570),
                 (lon_l, untapped(lon_l, False, after_london), 570),
+                (m15_l, True, 570),
                 (pre_l, True, 600)]
         highs = [(lv, ok, act) for lv, ok, act in highs if lv is not None]
         lows = [(lv, ok, act) for lv, ok, act in lows if lv is not None]
@@ -255,7 +281,8 @@ class SilverBullet:
                 if self.mss_level is None:
                     self.done = True
                     return None
-            if (b > 0 and c > self.mss_level) or (b < 0 and c < self.mss_level):
+            ref = c if self.p.mss_mode == "close" else (h if b > 0 else l)
+            if (b > 0 and ref > self.mss_level) or (b < 0 and ref < self.mss_level):
                 self.mss_confirmed = True
                 self.leg_extreme = h if b > 0 else l
                 # fall through: the MSS bar itself may complete the entry FVG
@@ -349,8 +376,9 @@ class SilverBullet:
         if len(self.recent) < 3:
             return None
         (t1, _, h1, l1, _), _, (t3, _, h3, l3, _) = self.recent[-3:]
-        if ny_time(t1).time() < p.window_start:
-            return None  # whole triple must sit at/after 10:00 [OURS]
+        anchor = t1 if p.fvg_window == "triple" else t3
+        if ny_time(anchor).time() < p.window_start:
+            return None  # gap must sit/complete at/after 10:00 (per fvg_window)
         if b > 0:
             if not h1 < l3:
                 return None
