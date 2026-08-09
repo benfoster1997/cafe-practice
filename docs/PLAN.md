@@ -66,6 +66,14 @@ Owner selected all three mechanisms:
 gate may take ~3–4 months instead of ~2–3. Quality over frequency is the
 deliberate choice.
 
+**Small-account constraint (found 2026-08-09):** at £100, 1% risk sizes the
+position at exactly the broker minimum (0.01 lots) — a 50% partial of the
+minimum lot cannot be executed. Resolution: below the equity level that
+supports 0.02 lots (~£200), the bot trades a single blended target (~1.5R,
+matching the partial scheme's expectancy); partials + break-even activate
+automatically once size permits. Demo runs at a balance where partials work,
+since demo exists to validate the full scheme.
+
 ## 5. Hard risk rails (non-negotiable, enforced in code)
 
 - Risk per trade: **1%** of account (£1 at £100).
