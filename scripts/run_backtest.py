@@ -1,8 +1,10 @@
 """Run the Silver Bullet backtest over prepared M1 data.
 
-Usage: python3 scripts/run_backtest.py <data_dir> <year> [year...]
+Usage: python3 scripts/run_backtest.py <data_dir> <year> [year...] [--oos-from YYYY]
 
-The LAST year listed is treated as out-of-sample and gets the gate verdict.
+Years from --oos-from onward are out-of-sample and get the gate verdict
+(default: the last year listed). Earlier years still run — they provide
+warmup history and in-sample comparison lines.
 Costs: spread = 75th percentile of measured NY-morning spread (floored at
 0.3 pips) + 0.2 pips slippage + $3.50/lot/side commission — deliberately
 above typical raw-account conditions.
@@ -29,8 +31,16 @@ def load_year(data_dir: Path, year: int) -> pd.DataFrame:
 
 
 def main() -> None:
-    data_dir = Path(sys.argv[1])
-    years = [int(y) for y in sys.argv[2:]]
+    args = sys.argv[1:]
+    oos_from = None
+    if "--oos-from" in args:
+        i = args.index("--oos-from")
+        oos_from = int(args[i + 1])
+        args = args[:i] + args[i + 2:]
+    data_dir = Path(args[0])
+    years = [int(y) for y in args[1:]]
+    if oos_from is None:
+        oos_from = years[-1]
     frames = {y: load_year(data_dir, y) for y in years}
     full = pd.concat([frames[y] for y in years]).sort_index()
     full = full[~full.index.duplicated(keep="first")]
@@ -72,17 +82,17 @@ def main() -> None:
     for y in years:
         yt = [t for t in trades if t.entry_time.year == y]
         s = summarize(yt, 10_000.0)
-        tag = " (OUT-OF-SAMPLE)" if y == years[-1] else ""
+        tag = " (OUT-OF-SAMPLE)" if y >= oos_from else ""
         print(f"\n--- {y}{tag}: {s.n_trades} trades | win {s.win_rate_pct:.0f}% | "
               f"PF {s.profit_factor:.2f} | expectancy {s.expectancy_r:+.2f}R | "
               f"maxDD {s.max_drawdown_pct:.1f}% | worst streak {s.longest_loss_streak}")
         by_reason = Counter(t.exit_reason for t in yt)
         print(f"    exits: {dict(by_reason)}")
 
-    oos = [t for t in trades if t.entry_time.year == years[-1]]
+    oos = [t for t in trades if t.entry_time.year >= oos_from]
     s = summarize(oos, 10_000.0)
     passed, lines = evaluate_gate(s)
-    print(f"\n=== DEMO-GATE CRITERIA vs OUT-OF-SAMPLE {years[-1]}: "
+    print(f"\n=== DEMO-GATE CRITERIA vs OUT-OF-SAMPLE {oos_from}+: "
           f"{'PASS' if passed else 'FAIL'}")
     for line in lines:
         print("   " + line)
