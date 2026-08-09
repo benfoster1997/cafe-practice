@@ -124,8 +124,11 @@ class Backtester:
         return price_distance / self.symbol.pip_size
 
     def _entry_fill(self, direction: int, bid_close: float) -> float:
-        adj = (self.costs.spread_pips + self.costs.slippage_pips) * self.symbol.pip_size
-        return self._round(bid_close + adj if direction > 0 else bid_close - adj)
+        # Longs buy at ask (bid + spread); shorts sell at bid. Both slip.
+        sp = self.costs.spread_pips * self.symbol.pip_size
+        slip = self.costs.slippage_pips * self.symbol.pip_size
+        return self._round(bid_close + sp + slip if direction > 0
+                           else bid_close - slip)
 
     def _exit_fill(self, direction: int, bid_price: float, market_order: bool) -> float:
         # Longs exit at bid; shorts exit at ask (bid + spread).
@@ -188,47 +191,89 @@ class Backtester:
             trade.partial_price = fill
             trade.size_lots -= lots
 
+    def _stop_hit(self, t: Trade, bar) -> bool:
+        # Stop prices are order prices: bid-domain for longs, ask-domain for
+        # shorts (MT5 triggers sell-side stops/targets on the ask).
+        sp = self.costs.spread_pips * self.symbol.pip_size
+        if t.direction > 0:
+            return bar["low"] <= t.stop_price
+        return bar["high"] >= t.stop_price - sp
+
+    def _book_stop(self, t: Trade, ts: datetime, bar) -> None:
+        """Stops are market fills: they pay slippage, and a bar that opens
+        beyond the stop fills at the (worse) open — no fantasy fills at a
+        price the market gapped over."""
+        sp = self.costs.spread_pips * self.symbol.pip_size
+        if t.direction > 0:
+            bid_ref = min(t.stop_price, bar["open"])
+        else:
+            bid_ref = max(t.stop_price - sp, bar["open"])
+        reason = "breakeven" if t.moved_to_breakeven else "stop"
+        self._book_exit(t, ts, bid_ref, 1.0, reason, market_order=True)
+        self.open_trade = None
+
     def _manage_open(self, ts: datetime, bar) -> None:
         t = self.open_trade
         if t is None:
             return
         d = t.direction
+        sp = self.costs.spread_pips * self.symbol.pip_size
         lo, hi = bar["low"], bar["high"]
 
-        # Stop check FIRST (pessimistic resolution — see module docstring).
-        stop_hit = lo <= t.stop_price if d > 0 else hi >= t.stop_price
-        if stop_hit:
-            reason = "breakeven" if t.moved_to_breakeven else "stop"
-            self._book_exit(t, ts, t.stop_price, 1.0, reason, market_order=False)
+        # Time-based flatten runs FIRST, at the bar's open: a live bot exits
+        # at the flatten time and sees none of this bar's later prices.
+        if self.time_exit_ny is not None and ny_time(ts).time() >= self.time_exit_ny:
+            self._book_exit(t, ts, bar["open"], 1.0, "time", market_order=True)
             self.open_trade = None
+            return
+
+        # Stop check next (pessimistic resolution — see module docstring).
+        if self._stop_hit(t, bar):
+            self._book_stop(t, ts, bar)
             return
 
         # Partial at +partial_at_r, then break-even.
+        partial_this_bar = False
         if t.partial_time is None:
             partial_target = self._round(
                 t.entry_price + d * self.mgmt.partial_at_r * t.initial_risk)
-            partial_hit = hi >= partial_target if d > 0 else lo <= partial_target
+            partial_hit = (hi >= partial_target if d > 0
+                           else lo <= partial_target - sp)
             if partial_hit:
-                self._book_exit(t, ts, partial_target, self.mgmt.partial_fraction,
-                                "partial", market_order=False)
+                # Quantize the closed portion to executable lots. If the
+                # position is too small to split, close nothing — but the
+                # break-even move still happens (PLAN §4 small-account rule).
+                close_lots = int(t.size_lots * self.mgmt.partial_fraction
+                                 / self.symbol.lot_step + 1e-9) * self.symbol.lot_step
+                remainder = t.size_lots - close_lots
+                bid_ref = partial_target if d > 0 else partial_target - sp
+                if close_lots >= self.symbol.min_lot and remainder >= self.symbol.min_lot:
+                    self._book_exit(t, ts, bid_ref,
+                                    close_lots / t.size_lots, "partial",
+                                    market_order=False)
+                else:
+                    t.partial_time = ts  # BE armed, nothing closed
                 buffer = self.mgmt.breakeven_buffer_pips * self.symbol.pip_size
                 t.stop_price = self._round(t.entry_price + d * buffer)
                 t.moved_to_breakeven = True
+                partial_this_bar = True
+                # Same-bar pessimism: if this bar's range also contains the
+                # new break-even stop, assume it traded after the partial.
+                if self._stop_hit(t, bar):
+                    self._book_stop(t, ts, bar)
+                    return
 
         # Final target for the runner: explicit price if the signal set one,
-        # otherwise the R-multiple default.
+        # otherwise the R-multiple default. Never granted on the bar that
+        # produced the partial — intrabar order is unknowable, so no
+        # same-bar partial->target double win.
         final_target = (t.target_price if t.target_price is not None
                         else self._round(
                             t.entry_price + d * self.mgmt.final_target_r * t.initial_risk))
-        target_hit = hi >= final_target if d > 0 else lo <= final_target
-        if target_hit and t.partial_time is not None:
-            self._book_exit(t, ts, final_target, 1.0, "target", market_order=False)
-            self.open_trade = None
-            return
-
-        # Optional time-based exit.
-        if self.time_exit_ny is not None and ny_time(ts).time() >= self.time_exit_ny:
-            self._book_exit(t, ts, bar["close"], 1.0, "time", market_order=True)
+        target_hit = hi >= final_target if d > 0 else lo <= final_target - sp
+        if target_hit and t.partial_time is not None and not partial_this_bar:
+            bid_ref = final_target if d > 0 else final_target - sp
+            self._book_exit(t, ts, bid_ref, 1.0, "target", market_order=False)
             self.open_trade = None
 
     def _open_at(self, ts: datetime, entry: float, signal: Signal) -> Optional[Trade]:
@@ -285,7 +330,11 @@ class Backtester:
             self.pending = None
             return
         level = self._round(s.entry_price)
-        touched = bar["low"] <= level if d > 0 else bar["high"] >= level
+        sp = self.costs.spread_pips * self.symbol.pip_size
+        # A live buy limit resting at the chart level fills when the ASK
+        # reaches it, i.e. the bid must trade one spread deeper. Sell limits
+        # fill on the bid directly.
+        touched = bar["low"] <= level - sp if d > 0 else bar["high"] >= level
         draw_touched = (s.cancel_if_touch is not None
                         and (bar["high"] >= s.cancel_if_touch if d > 0
                              else bar["low"] <= s.cancel_if_touch))
@@ -294,18 +343,12 @@ class Backtester:
             return
         if touched:
             self.pending = None
-            spread = self.costs.spread_pips * self.symbol.pip_size
-            entry = self._round(level + spread) if d > 0 else level
-            trade = self._open_at(ts, entry, s)
+            trade = self._open_at(ts, level, s)
             if trade is not None:
                 # Same-bar pessimism: the touch that filled us may have been
                 # the extreme that also takes the stop. No same-bar profits.
-                stop_hit = (bar["low"] <= trade.stop_price if d > 0
-                            else bar["high"] >= trade.stop_price)
-                if stop_hit:
-                    self._book_exit(trade, ts, trade.stop_price, 1.0, "stop",
-                                    market_order=False)
-                    self.open_trade = None
+                if self._stop_hit(trade, bar):
+                    self._book_stop(trade, ts, bar)
             return
         if draw_touched:
             self.pending = None

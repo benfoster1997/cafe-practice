@@ -20,7 +20,7 @@ from backtest.config import CostModel  # noqa: E402
 from backtest.engine import Backtester  # noqa: E402
 from backtest.metrics import evaluate_gate, summarize  # noqa: E402
 from backtest.sessions import NY  # noqa: E402
-from backtest.silver_bullet import SilverBullet  # noqa: E402
+from backtest.silver_bullet import SBParams, SilverBullet  # noqa: E402
 
 
 def load_year(data_dir: Path, year: int) -> pd.DataFrame:
@@ -46,7 +46,11 @@ def main() -> None:
 
     costs = CostModel(spread_pips=spread_cost, commission_per_lot_side=3.5,
                       slippage_pips=0.2)
-    strategy = SilverBullet(full[["open", "high", "low", "close"]])
+    # Round-trip cost in pips (spread + both commission sides) feeds the
+    # FVG minimum-size gate — digest §5.6b, derived not hardcoded.
+    roundtrip = spread_cost + 2 * costs.commission_per_lot_side / 10.0
+    params = SBParams(roundtrip_cost_pips=round(roundtrip, 2))
+    strategy = SilverBullet(full[["open", "high", "low", "close"]], params)
 
     reasons = Counter(p.no_trade_reason or "tradeable" for p in strategy.plans.values())
     print(f"\nDay census ({sum(reasons.values())} days): "
@@ -56,6 +60,12 @@ def main() -> None:
     bt = Backtester(engine_bars, strategy, costs=costs, initial_balance=10_000.0,
                     time_exit_ny=dtime(11, 30))
     trades = bt.run()
+
+    funnel = Counter(strategy.outcomes.values())
+    fills = len(trades)
+    signals = funnel.get("signaled", 0)
+    print(f"\nSetup funnel: {dict(funnel)} | signals {signals} -> fills {fills} "
+          f"(unfilled/cancelled {signals - fills})")
 
     print(f"\n=== ALL YEARS {years[0]}-{years[-1]}: {len(trades)} trades, "
           f"final balance {bt.balance:,.2f}")

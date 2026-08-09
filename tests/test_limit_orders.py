@@ -33,7 +33,7 @@ def run(closes, strategy):
 
 
 def test_limit_fill_partial_then_price_target():
-    bt = run([1.1005, 1.1005, 1.0995, 1.1000, 1.1015],
+    bt = run([1.1005, 1.1005, 1.0995, 1.0997, 1.1001, 1.1015],
              limit_once(T0.replace(minute=1), target_price=1.1015))
     t = bt.trades[0]
     assert t.entry_price == 1.0995  # limit fill at the level, no slippage

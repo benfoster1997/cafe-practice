@@ -33,6 +33,10 @@ def enter_short_at(ts_target, stop):
 
 def run(closes, strategy, **kw):
     bars = synthetic_bars(T0, closes, spread_range=kw.pop("spread_range", 0.0))
+    gap_open = kw.pop("gap_open", None)
+    if gap_open is not None:  # last bar opens at this price (gap scenario)
+        col = bars.columns.get_loc("open")
+        bars.iloc[-1, col] = gap_open
     bt = Backtester(bars, strategy, symbol=SymbolSpec(), mgmt=MGMT,
                     initial_balance=10_000.0, costs=kw.pop("costs", NO_COSTS), **kw)
     bt.run()
@@ -41,7 +45,9 @@ def run(closes, strategy, **kw):
 
 def test_partial_then_target_is_one_and_a_half_r():
     # Entry 1.1000, stop 10 pips. Partial (1R) at 1.1010, runner target 1.1020.
-    bt = run([1.1000, 1.1000, 1.1010, 1.1020],
+    # Bars are shaped so no later bar's range touches the break-even stop:
+    # the partial bar must not also be a BE-stop bar under same-bar pessimism.
+    bt = run([1.0998, 1.1000, 1.1004, 1.1012, 1.1020],
              enter_long_at(T0.replace(minute=1), stop=1.0990))
     t = bt.trades[0]
     assert t.closed and t.exit_reason == "target"
@@ -51,11 +57,32 @@ def test_partial_then_target_is_one_and_a_half_r():
 
 
 def test_short_side_mirror():
-    bt = run([1.1000, 1.1000, 1.0990, 1.0980],
+    bt = run([1.1002, 1.1000, 1.0996, 1.0988, 1.0980],
              enter_short_at(T0.replace(minute=1), stop=1.1010))
     t = bt.trades[0]
     assert t.exit_reason == "target"
     assert abs(t.r_multiple - 1.5) < 1e-9
+
+
+def test_partial_bar_that_also_spans_breakeven_exits_at_breakeven():
+    # The bar that fills the partial has a low back at entry: same-bar
+    # pessimism assumes the BE stop traded after the partial. +0.5R only.
+    bt = run([1.1000, 1.1000, 1.1010, 1.1020],
+             enter_long_at(T0.replace(minute=1), stop=1.0990))
+    t = bt.trades[0]
+    assert t.exit_reason == "breakeven"
+    assert abs(t.r_multiple - 0.5) < 1e-9
+
+
+def test_gap_through_stop_fills_at_the_worse_open():
+    # Bar 2 OPENS below the stop: the fill is the open, not the stop price.
+    bt = run([1.1000, 1.1000, 1.0980],
+             enter_long_at(T0.replace(minute=1), stop=1.0990),
+             gap_open=1.0984)
+    t = bt.trades[0]
+    assert t.exit_reason == "stop"
+    assert t.exit_price <= 1.0984
+    assert t.r_multiple < -1.5  # a 16-pip loss on a 10-pip risk
 
 
 def test_straight_stop_is_minus_one_r():
