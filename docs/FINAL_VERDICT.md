@@ -44,3 +44,19 @@ Per the pre-registration in MULTIASSET_PLAN.md, this failure CLOSES the
 strategy search permanently: four families tested, none fundable, £0
 lost. The infrastructure remains for testing any future idea the owner
 brings — but this project makes no further attempts of its own.
+
+## Cost-attribution addendum (owner question: "would futures work?")
+
+Same locked signals, same IS data, futures-style costs (tick spreads,
+exchange commissions, zero financing): primary flips −0.079R → +0.023R
+(PF 0.81 → 1.07, maxDD 34% → 19%). Attribution: roughly 0.10R/trade of
+the CFD failure was pure cost structure. BUT +0.02R at PF 1.07 with four
+negative rolling windows still fails every pre-registered criterion —
+at institutional costs our simple Donchian is breakeven noise, not an
+edge. The professional layer (vol targeting, ensembles, 40-80 market
+breadth) is what buys the rest, and a diversified futures trend book
+needs ~$50-100k even in micros; funded-account rules (trailing
+drawdowns, overnight limits) structurally exclude trend holding.
+Retail-accessible route to this edge at small capital: managed-futures
+funds/ETFs — buying the professionals' implementation. Search remains
+closed; this addendum spent no validation or verdict data.
