@@ -27,8 +27,8 @@ real money is at risk.
 
 | Phase | Deliverable | Status |
 |---|---|---|
-| 1. Research | ICT strategy digest (2022/2023/2024 mentorships) for owner review | in progress |
-| 2. Backtest | Python backtest harness with honest cost modelling; strategy calibration | pending |
+| 1. Research | ICT strategy digest (2022/2023/2024 mentorships) for owner review | done — awaiting owner review |
+| 2. Backtest | Python backtest harness with honest cost modelling; strategy calibration | harness built; calibration pending |
 | 3. Build | MQL5 Expert Advisor + Telegram alerts | pending |
 | 4. Demo gate | 40+ tracked demo trades meeting the gate criteria (see PLAN) | pending |
 | 5. Live | £100 at Pepperstone UK, deposit-as-it-proves | pending |

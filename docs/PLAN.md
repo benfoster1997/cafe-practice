@@ -33,11 +33,17 @@ nothing that isn't written down here or in the digest.
 - **Scope discipline:** Silver Bullet only until it passes or fails the demo
   gate. The wider 2022/2023/2024 model concepts inform its filters but no
   second setup is added before then.
-- **Source of truth:** `docs/ICT_STRATEGY_DIGEST.md` (Phase 1 deliverable),
-  researched from ICT's 2022, 2023 and 2024 mentorship material and
-  independently published backtests, then reviewed by the owner before any
-  strategy code is written. Where ICT is ambiguous, the digest states OUR
-  mechanical resolution explicitly marked as such.
+- **Source of truth:** `docs/ICT_STRATEGY_DIGEST.md` (Phase 1 deliverable,
+  completed 2026-08-09), researched from ICT's 2022, 2023 and 2024 mentorship
+  material and independently published backtests, then reviewed by the owner
+  before any strategy code is written. Where ICT is ambiguous, the digest
+  states OUR mechanical resolution explicitly marked as such. The digest's
+  Silver Bullet playbook (its section 5) plus its risk rules (section 9)
+  govern strategy details; this PLAN governs project decisions. Where the
+  digest offers an ICT-faithful alternative to an owner-selected mechanism
+  (e.g. liquidity-based partials vs the owner's 1R partial), Phase 2
+  backtests both; the owner's choice stays default unless data clearly
+  favors the alternative.
 
 ## 4. Trade management (locked 2026-08-09)
 

@@ -11,11 +11,15 @@ from zoneinfo import ZoneInfo
 
 NY = ZoneInfo("America/New_York")
 
-# name -> (start, end) in New York local time, end exclusive
+# name -> (start, end) in New York local time, end exclusive.
+# Times confirmed against docs/ICT_STRATEGY_DIGEST.md section 4 (killzones)
+# and section 3 (Silver Bullet windows).
 KILLZONES: dict[str, tuple[time, time]] = {
-    "ny_am_silver_bullet": (time(10, 0), time(11, 0)),  # PROVISIONAL
-    "london_open_silver_bullet": (time(3, 0), time(4, 0)),  # PROVISIONAL
-    "ny_pm_silver_bullet": (time(14, 0), time(15, 0)),  # PROVISIONAL
+    "ny_am_silver_bullet": (time(10, 0), time(11, 0)),
+    "london_open_silver_bullet": (time(3, 0), time(4, 0)),
+    "ny_pm_silver_bullet": (time(14, 0), time(15, 0)),
+    "london": (time(2, 0), time(5, 0)),
+    "ny_forex": (time(7, 0), time(10, 0)),
 }
 
 
