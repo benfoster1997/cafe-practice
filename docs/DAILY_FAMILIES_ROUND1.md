@@ -18,3 +18,12 @@ positive + drawdown cap) with elevated selection-risk acknowledged, then
 run validation 2019-2020 once; 2) frequency reality: ~10 trades/year means
 the 40-trade demo gate takes years, not months — trend following is a
 years-scale strategy and the project timeline must accept that or drop it.
+
+## Extended-universe check (11 pairs, IS 2013-2018) — trend family CLOSED
+Breadth diluted rather than strengthened: +0.062R, PF 1.32, and rolling
+3-year windows 2015-2017 (−4.7R) and 2016-2018 (−14.5R) negative. All IS
+profit is the 2014 dollar trend. No defensible trend-appropriate rule
+passes this in-sample, so no rule was registered and VALIDATION/VERDICT
+data remain untouched. Consistent with published post-2010 decay of
+FX-only trend following; the surviving evidence lives in multi-asset
+portfolios, outside this project's current instrument scope.
