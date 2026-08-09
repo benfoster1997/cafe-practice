@@ -28,10 +28,22 @@ from .sessions import ny_date, ny_time
 
 @dataclass
 class Signal:
-    """A strategy's request to enter a trade at the current bar's close."""
+    """A strategy's request to enter a trade.
+
+    entry_type "market": fills at the current bar's close (plus costs).
+    entry_type "limit": rests at entry_price (a bid-chart level) until touched.
+      Longs fill when the bid low touches the level (paying spread on top);
+      shorts fill when the bid high touches it. Limit fills pay no slippage.
+    """
     direction: int  # +1 long, -1 short
     stop_price: float
     tag: str = ""
+    entry_type: str = "market"
+    entry_price: Optional[float] = None  # required for limit orders
+    target_price: Optional[float] = None  # price target; falls back to R-based
+    cancel_if_touch: Optional[float] = None  # cancel unfilled if price reaches this
+    cancel_if_body_beyond: Optional[float] = None  # cancel if a close crosses this against us
+    expire_at_ny: Optional[dtime] = None  # cancel unfilled at this NY time
 
 
 @dataclass
@@ -49,6 +61,7 @@ class Trade:
     exit_time: Optional[datetime] = None
     exit_price: Optional[float] = None
     exit_reason: str = ""
+    target_price: Optional[float] = None
     moved_to_breakeven: bool = False
     pnl_quote: float = 0.0  # net, in quote currency (USD), costs included
     r_multiple: float = 0.0  # net R after costs
@@ -93,6 +106,7 @@ class Backtester:
         self.balance = initial_balance
         self.trades: list[Trade] = []
         self.open_trade: Optional[Trade] = None
+        self.pending: Optional[Signal] = None
         self._day = None
         self._day_start_balance = initial_balance
         self._trades_today = 0
@@ -201,9 +215,11 @@ class Backtester:
                 t.stop_price = self._round(t.entry_price + d * buffer)
                 t.moved_to_breakeven = True
 
-        # Final target for the runner.
-        final_target = self._round(
-            t.entry_price + d * self.mgmt.final_target_r * t.initial_risk)
+        # Final target for the runner: explicit price if the signal set one,
+        # otherwise the R-multiple default.
+        final_target = (t.target_price if t.target_price is not None
+                        else self._round(
+                            t.entry_price + d * self.mgmt.final_target_r * t.initial_risk))
         target_hit = hi >= final_target if d > 0 else lo <= final_target
         if target_hit and t.partial_time is not None:
             self._book_exit(t, ts, final_target, 1.0, "target", market_order=False)
@@ -215,29 +231,90 @@ class Backtester:
             self._book_exit(t, ts, bar["close"], 1.0, "time", market_order=True)
             self.open_trade = None
 
-    def _try_enter(self, ts: datetime, bar, signal: Signal) -> None:
+    def _open_at(self, ts: datetime, entry: float, signal: Signal) -> Optional[Trade]:
         if self._trades_today >= self.rails.max_trades_per_day:
-            return
+            return None
         if self._daily_loss_hit():
-            return
-        entry = self._entry_fill(signal.direction, bar["close"])
+            return None
         stop = self._round(signal.stop_price)
         risk = (entry - stop) * signal.direction
         if risk <= 0:
-            return  # stop on the wrong side of entry — refuse, don't "fix"
+            return None  # stop on the wrong side of entry — refuse, don't "fix"
         lots = self._size(risk)
         if lots < self.symbol.min_lot:
-            return
+            return None
         trade = Trade(
             entry_time=ts, direction=signal.direction, entry_price=entry,
             stop_price=stop, initial_risk=risk, size_lots=lots,
             original_size_lots=lots, tag=signal.tag,
+            target_price=self._round(signal.target_price)
+            if signal.target_price is not None else None,
         )
         self.balance -= self._commission(lots)  # entry-side commission
         trade.pnl_quote -= self._commission(lots)
         self.trades.append(trade)
         self.open_trade = trade
         self._trades_today += 1
+        return trade
+
+    def _try_enter(self, ts: datetime, bar, signal: Signal) -> None:
+        if signal.entry_type == "limit":
+            if signal.entry_price is None:
+                return  # malformed signal — refuse
+            self.pending = signal
+            return
+        self._open_at(ts, self._entry_fill(signal.direction, bar["close"]), signal)
+
+    def _process_pending(self, ts: datetime, bar) -> None:
+        """Resolve a resting limit order against one completed bar.
+
+        Ordering is deliberately pessimistic where a single bar is ambiguous:
+        expiry is checked first (order was pulled at the window boundary);
+        if both the fill level and the cancel-if-touch level are inside one
+        bar, we assume the cancel level traded first and take no position;
+        a fill grants no same-bar profit but does suffer a same-bar stop.
+        """
+        s = self.pending
+        if s is None:
+            return
+        d = s.direction
+        if s.expire_at_ny is not None and ny_time(ts).time() >= s.expire_at_ny:
+            self.pending = None
+            return
+        if self._daily_loss_hit():
+            self.pending = None
+            return
+        level = self._round(s.entry_price)
+        touched = bar["low"] <= level if d > 0 else bar["high"] >= level
+        draw_touched = (s.cancel_if_touch is not None
+                        and (bar["high"] >= s.cancel_if_touch if d > 0
+                             else bar["low"] <= s.cancel_if_touch))
+        if touched and draw_touched:
+            self.pending = None  # ambiguous bar — assume the draw traded first
+            return
+        if touched:
+            self.pending = None
+            spread = self.costs.spread_pips * self.symbol.pip_size
+            entry = self._round(level + spread) if d > 0 else level
+            trade = self._open_at(ts, entry, s)
+            if trade is not None:
+                # Same-bar pessimism: the touch that filled us may have been
+                # the extreme that also takes the stop. No same-bar profits.
+                stop_hit = (bar["low"] <= trade.stop_price if d > 0
+                            else bar["high"] >= trade.stop_price)
+                if stop_hit:
+                    self._book_exit(trade, ts, trade.stop_price, 1.0, "stop",
+                                    market_order=False)
+                    self.open_trade = None
+            return
+        if draw_touched:
+            self.pending = None
+            return
+        if s.cancel_if_body_beyond is not None:
+            crossed = (bar["close"] < s.cancel_if_body_beyond if d > 0
+                       else bar["close"] > s.cancel_if_body_beyond)
+            if crossed:
+                self.pending = None
 
     # ---------- main loop ----------
 
@@ -246,9 +323,13 @@ class Backtester:
         for i in range(len(self.bars)):
             ts = idx[i].to_pydatetime()
             bar = self.bars.iloc[i]
+            if ny_date(ts) != self._day:
+                self.pending = None  # orders never survive the day boundary
             self._roll_day(ts)
             self._manage_open(ts, bar)
-            if self.open_trade is None and not self._daily_loss_hit():
+            self._process_pending(ts, bar)
+            if (self.open_trade is None and self.pending is None
+                    and not self._daily_loss_hit()):
                 history = self.bars.iloc[max(0, i - self.LOOKBACK + 1): i + 1]
                 signal = self.strategy(history, ts)
                 if signal is not None:
