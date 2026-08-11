@@ -25,17 +25,11 @@ don't have, because scripts are built from judgments, filings and archives
 (free), not Wikipedia. This is also exactly what YouTube's inauthentic-
 content policy rewards.
 
-**Channel name candidates** (check availability on YouTube before
-choosing; pick once, never change):
-1. **Paper Empires** ← recommended: evocative, matches the fraud/collapse
-   pillar, thumbnail-friendly, .com likely gettable
-2. The Collapse Files
-3. Cooked Books
-4. The Ledger Files
-5. Empires of Nothing
-6. The Money Graveyard
-7. Fortune & Fraud
-8. The Balance Sheet Chronicles
+**Channel name (DECIDED 11 Aug 2026): Cooked Books.**
+Chosen after collision checks: "Paper Empires" clashes with existing
+channels and a music label; "Cooked Books" is unique in the finance space,
+instantly signals the fraud/collapse niche, and is short and brandable.
+Runner-up kept in reserve: The Money Graveyard.
 
 **Format (locked):** 9–12 min narrated documentaries; Kokoro "George"
 voice; three-act structure; cold open ≤45s; one video/week, same day/time.
