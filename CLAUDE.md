@@ -1,5 +1,14 @@
 # Project instructions for Claude
 
+## Two projects live in this repo
+
+- **YouTube channel "Cooked Books"** (branch
+  `claude/youtube-ai-monetization-study-4ipk3c`): read `channel/STATUS.md`
+  FIRST — it holds the locked decisions, current state, and next actions.
+  The honest-expectations rule below applies to this project too.
+- **Silver Bullet trading bot** (branch `claude/mt5-xauusd-iphone-bot-ndfkda`):
+  everything below.
+
 ## What this project is
 
 Silver Bullet trading bot for a supervised MT5 setup. Read `docs/PLAN.md`
