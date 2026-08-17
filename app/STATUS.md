@@ -21,35 +21,49 @@ direct, honest, no sugar-coating (see CLAUDE.md).
   `app/research/KILL_LEDGER.md`. Full reports:
   `app/research/reports/round2-*.md` (each ends with a verify-in-browser
   list — vendor sites were egress-blocked, claims rest on search extracts).
-- ⏸️ **Stage 3+ (validation → spec → build)** — **BLOCKED ON OWNER INPUT.**
-  Six concepts validated, six killed. The pre-committed all-KILL rule has
-  fired: the owner has been given the honest position, the next-tier
-  shortlist, and the real-world-access question (see below).
+- ✅ **Stage 2d (fallback shortlist)** — owner confirmed **no real-world
+  industry access** ("i cant walk into any"). DWTS waste-carrier capture
+  tested on four independent dimensions — **all four KILL**; letting-agent
+  repack **KILL**. Total: **8 concepts, 8 kills.** See `KILL_LEDGER.md`.
+- ✅ **Strategy fork analysis** — 5 paths + a completeness critic. Output:
+  **`app/research/STRATEGIC_POSITION.md` — the decision document. Read it
+  before anything else.** Reports: `reports/strategy-*.md`.
+- ⏸️ **Stage 3+ (spec → build)** — **BLOCKED, deliberately.** Not blocked
+  on a better niche; blocked on the owner deciding a path and, per the
+  recommendation, on a customer conversation happening before any code.
 
-## THE OPEN QUESTION TO THE OWNER (blocking)
+## THE POSITION (as at 17 Aug 2026)
 
-Reported to the owner 17 Aug: niche choice should now follow the owner's
-real-world access — what industries can they walk into via work history,
-family, friends, or their local area? Asked once before (declined), now
-decision-critical: access/trust is the one moat the AI-clone swarm cannot
-copy, and round two proved liability-grade document moats invert against
-an unknown solo vendor (buyers get MORE vendor-conservative, not less).
+The category we searched is structurally closed to this founder profile:
+the AI-clone swarm reaches any keyword-discoverable niche, the state
+prices compliance tooling at zero, liability-grade documents make buyers
+*more* vendor-conservative (moat → wall), and **the search method itself
+was the flaw** — "what regulation is coming?" is the query every clone
+builder runs.
 
-**Do not launch further concept-validation workflows until the owner
-answers or explicitly says "pick without me."** The next-tier shortlist if
-they decline again:
+Honest odds (24 months to £2,335/mo): ~2-4% on the current plan; ~15% by
+some route **if selling starts within 30 days**; ~2% and falling if the
+next three months look like the last five.
 
-1. **DWTS waste-carrier capture** timed for the Oct 2027 carrier/broker
-   mandate — EA public register of carriers = the best cold-call list
-   Stage 1 found; public beta spring 2027 is the build window; known
-   hazard: DEFRA's free portal + free CSV upload (wedge must be
-   driver-phone-side speed). See `reports/stage1-pain-mining.md` PAIN 2.
-2. **Agent-first compliance repack** (~£79/mo × letting-agent offices) —
-   weak survival case per Stage 2b (Kamma ~£0.50/property/mo, Goodlord own
-   the space); only with an access edge.
-3. **Productised-service bridge** — sell the outcome as a service first
-   (manual + Claude behind the curtain), software second; converts the
-   distribution constraint into paid customer discovery.
+**Recommendation delivered to owner: stop researching, test whether the
+owner will actually do outbound — 14 days, ~£35, ~200 approaches, one
+question, no pitch.** Gate rules and the first-90-days plan are in
+`STRATEGIC_POSITION.md` §3.
+
+**Do NOT launch a ninth concept-validation workflow.** The last eight
+answered a question that was never the binding one.
+
+### Open items needing the owner (not blocking Claude's next action)
+
+1. Owner's real availability — Claude *assumed* a day job + evenings and
+   fed that to the strategy agents; it is recorded nowhere in the repo and
+   several conclusions lean on it. Correcting it changes the ranking.
+2. Employment contract IP-assignment / moonlighting clauses (would kill
+   the software path, not the service path).
+3. Whether daytime hours can be freed — contracting at ~£390-470/day hits
+   the target with ~6 billed days/month, more reliably than any path here.
+4. Browser-verify: ONS business-population split; whether Start Up Loans
+   fund acquisitions; any kill-ledger vendor price before acting on it.
 
 ## The selection criteria (validated the hard way — do not relax)
 

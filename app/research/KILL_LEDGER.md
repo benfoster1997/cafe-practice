@@ -171,18 +171,103 @@ validated. **All three killed.** Full reports:
    assumptions from earlier research must be re-verified before they seed
    new concepts.
 
-## Where this leaves the mission (recorded for the owner decision)
+# Round three — fallback shortlist verdicts (17 Aug 2026)
 
-Six concepts adversarially validated, six killed, each on evidence not
-vibes. The pre-committed all-KILL rule now applies: report to the owner
-with (a) this ledger, (b) the next-tier shortlist — DWTS waste-carrier
-capture timed for the Oct 2027 carrier mandate (EA public register = best
-cold-call list found; spring 2027 beta is the build window; free-portal
-risk is the known hazard), agent-first compliance repack (~£79/mo × letting
-agents; Kamma/Goodlord anchor pricing), productised-service bridge (sell
-the outcome as a service first, software second — distribution-constrained
-not build-constrained) — and (c) the recommendation that niche choice now
-follow the owner's real-world access: ask the owner again what industries
-they can walk into through work history, family, or friends. Declined
-once; now decision-critical, because access is the one moat the swarm
-cannot clone.
+Owner confirmed they have **no real-world industry access** ("i cant walk
+into any"), so the fallback shortlist was validated instead. DWTS was
+tested across four independent dimensions (swarm, regulation, buyer,
+wedge) — **all four independently returned KILL**, which is a much
+stronger signal than a single agent's verdict. Reports:
+`reports/round3-F1a-dwts-swarm.md`, `round3-F1b-dwts-regulation.md`,
+`round3-F1c-dwts-buyer.md`, `round3-F1d-dwts-wedge.md`,
+`round3-F2-agent-repack.md`.
+
+## ❌ KILLED: DWTS waste-carrier capture (F1 — the lead fallback)
+
+- **The timing premise was false.** We thought the window opened spring
+  2027. The DEFRA service went live April 2026; private beta autumn 2025,
+  public beta spring 2026; receiving sites mandatory 1 Oct 2026; carriers
+  Oct 2027. The window opened over a year ago and vendors are through it.
+- **The swarm arrived 14 months early**: Wasteify (£39/user/mo) is the
+  concept verbatim — driver phone app, offline capture, proof of
+  collection — plus WasteBolt (£24.99/mo unlimited), WasteProof (£19/mo),
+  WTN App (£29/mo), WTNcloud (£1.50/note), WasteMatrix (**free** until
+  Oct 2026), Chemishield Tracker (**free**), AnyWaste, PaperRoute,
+  SkipRoute, Wasters.io — 10+ dedicated entrants plus SEO comparison farms.
+- **Incumbents already at our price**: Skip Tracker and Hire Tracker at
+  £49+VAT/mo for 10 users; SkipM8, Midsoft SkipTrak, Waste Logics, PurGo
+  (in DEFRA's private beta), Access Weighsoft, AMCS all shipping DWT.
+  Podfather/BigChange already do driver ePOD capture.
+- **The free-tool filter fails hardest here**: DEFRA's own portal takes
+  single records, CSV bulk upload AND API, is explicitly designed for
+  "sole traders with a single van", mobile-first, with a 2-working-day
+  submission window (so no real-time roadside need). Cost ~£26/year.
+- **The trust channel is government-allocated**: GOV.UK publishes an
+  official approved-provider list (~25 vendors already passed the
+  production approval tests). For a liable carrier, "on the DEFRA list"
+  is the buying heuristic — a cold-start founder begins behind 25 names
+  on a government page.
+- **The deep-credential slot is taken**: Dsposal has been DEFRA-contracted
+  on waste tracking since 2018; Topolytics built the original system under
+  a £500k GovTech contract.
+- **The service bridge fails separately**: EWC waste classification
+  liability with no domain expertise, buyers disproportionately sole
+  traders (PECR bars cold email), and 24 clients of manual re-keying is a
+  full-time data-entry job, not a product.
+
+## ❌ KILLED: Letting-agent compliance repack (F2)
+
+- **Price inversion, not just undercutting**: Kamma charges the *landlord*
+  for licence applications and pays the *agent* a referral fee — the
+  incumbent's model gives agents revenue in the exact category where we'd
+  ask them for £79/month.
+- **The trust channel is occupied**: Kamma is a Propertymark Industry
+  Supplier; Smart Compliance holds the AML slot. The one association
+  channel a no-access founder needs is taken.
+- **The agent side is as swarmed as the landlord side**: Bilans Compliance
+  Tracker (Reapit-integrated), Docubien (free Form 3A tool, launched Aug
+  2026 with syndicated press-release spam — the AI-swarm signature),
+  Ploxit, Rentalize, plus SEO microsites squatting future wedges.
+- **CRMs are absorbing it**: Alto's Lettings Compliance Agent, Reapit's
+  RRA rollout, Street's certificate tracking.
+- **Every remaining wedge is closed**: PRS Database bulk registration is a
+  free government portal feature (CSV + API); Awaab's Law is claimed by
+  Fixflo and 14+ months from enforcement; Information Sheet and Form 3A
+  are already served (one for free).
+
+# Where this leaves the mission — the structural diagnosis
+
+**Eight concepts, eight kills, every one on evidence.** That is no longer a
+run of bad luck; it is a finding. Four mechanisms recur, and together they
+close the whole category we were searching:
+
+**(a) The swarm.** Cheap AI building means any category discoverable by
+keyword search is cloned within months — often before the regulation bites
+(Martyn's Law clone 8 months early; 10+ DWTS entrants 14 months early). It
+reaches even a ~1,000-person profession.
+
+**(b) The state prices at zero.** In UK compliance, government ships free
+portals (DEFRA DWTS, PRS Database, HMRC, Companies House) and associations
+ship free member tools. Never sell the mandated submission.
+
+**(c) Liability inversion.** Where documents carry statutory or personal
+liability, buyers become *more* vendor-conservative, not less — they buy
+incumbents, consultants, or nothing. Our supposed "liability-grade moat" is
+a moat for the already-trusted and a wall for an unknown solo founder.
+Government-published approved-vendor lists (DWTS) and association supplier
+slots (Propertymark/Kamma) allocate that trust to whoever got there first.
+
+**(d) The search method was itself the problem.** Every concept came from
+"what UK regulation is coming?" — which is precisely the query every
+AI-clone builder also runs. Regulation-triggered categories are public,
+dated, and keyword-shaped: the most-fished pond by construction.
+
+**The binding constraint was never the idea. It is distribution and trust**,
+and the owner has confirmed no industry access, no audience, no network.
+Continuing to generate niche concepts under the same method would be
+repeating a disproven experiment.
+
+Next step recorded separately: `app/research/STRATEGIC_POSITION.md` — the
+adversarial analysis of the strategic paths forward (including the case for
+abandoning the SaaS goal), which is the owner's decision to make, not
+Claude's.
