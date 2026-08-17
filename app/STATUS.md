@@ -1,6 +1,6 @@
 # App project status — read this first in any new session
 
-Last updated: 17 Aug 2026, ~13:30 UTC. Branch: `claude/youtube-ai-monetization-study-4ipk3c`.
+Last updated: 17 Aug 2026, ~14:45 UTC. Branch: `claude/youtube-ai-monetization-study-4ipk3c`.
 The contract is `docs/APP_MISSION_BRIEF.md`. Owner communication style:
 direct, honest, no sugar-coating (see CLAUDE.md).
 
@@ -11,58 +11,64 @@ direct, honest, no sugar-coating (see CLAUDE.md).
   Full reports: `app/research/reports/stage1-*.md`.
 - ✅ **Stage 2 (opportunity selection)** — 16 candidates scored:
   `app/research/OPPORTUNITY_SCORING.md`.
-- ✅ **Stage 2b (competitor deep-dive on 3 finalists)** — **ALL THREE
-  KILLED** with evidence, including the owner's revenue-recovery
-  hypothesis. Verdicts + strategic lesson: `app/research/KILL_LEDGER.md`.
-  Full reports: `app/research/reports/stage2b-*.md`.
-- 🔄 **Stage 2c (round-two validation)** — was IN FLIGHT when the owner
-  cleared context. Three clone-resistant concepts under adversarial
-  validation: (1) party-wall/niche-surveying document workflow with RICS
-  AI-standard compliance, (2) small funeral-director practice software,
-  (3) Martyn's Law enhanced-tier system. See recovery instructions below.
-- ⬜ Stage 3+ (validation → spec → build) — blocked on a concept surviving.
+- ✅ **Stage 2b (competitor deep-dive on 3 finalists)** — all three killed.
+- ✅ **Stage 2c (round-two validation)** — re-run 17 Aug after the earlier
+  workflow died at context-clear. **ALL THREE KILLED**: party-wall/RICS-AI
+  workflow (exact incumbent at £35/mo), funeral-director software (core
+  pricing premise factually false; £11/funeral incumbent), Martyn's Law
+  enhanced tier (procurement wall + exact £29/mo clone + government
+  anti-vendor stance). Verdicts + sharpened lesson:
+  `app/research/KILL_LEDGER.md`. Full reports:
+  `app/research/reports/round2-*.md` (each ends with a verify-in-browser
+  list — vendor sites were egress-blocked, claims rest on search extracts).
+- ⏸️ **Stage 3+ (validation → spec → build)** — **BLOCKED ON OWNER INPUT.**
+  Six concepts validated, six killed. The pre-committed all-KILL rule has
+  fired: the owner has been given the honest position, the next-tier
+  shortlist, and the real-world-access question (see below).
 
-## FIRST ACTION ON RESUME — recover round-two results
+## THE OPEN QUESTION TO THE OWNER (blocking)
 
-The round-two workflow (run `wf_fc3e26d9-32d`, task `wtqfrcdi0`) was
-running at context-clear; 2 of 3 agents mid-research, 0 results journaled.
-Recovery, in order:
+Reported to the owner 17 Aug: niche choice should now follow the owner's
+real-world access — what industries can they walk into via work history,
+family, friends, or their local area? Asked once before (declined), now
+decision-critical: access/trust is the one moat the AI-clone swarm cannot
+copy, and round two proved liability-grade document moats invert against
+an unknown solo vendor (buyers get MORE vendor-conservative, not less).
 
-1. Check the journal for results that landed after the clear:
-   `/root/.claude/projects/-home-user-cafe-practice/606e4021-0eab-5b80-a5b1-c5b909d6f569/subagents/workflows/wf_fc3e26d9-32d/journal.jsonl`
-   — each line `{"type":"result","result":{...}}` holds a full report
-   (field is `result`, NOT `value`). Save any found to
-   `app/research/reports/round2-*.md`.
-2. If incomplete/absent (likely — the container suspends on idle and kills
-   background workflows): **re-run from the saved script**
-   `app/research/workflows/round-two-validation.js` via
-   `Workflow({scriptPath: "<repo path>"})`. Same-session `resumeFromRunId`
-   will NOT work in a fresh session.
-3. **Hold the turn open** with blocking `TaskOutput` calls until the
-   workflow completes — background workflows die if the session idles
-   (twice-learned lesson, 10 Aug and 17 Aug).
+**Do not launch further concept-validation workflows until the owner
+answers or explicitly says "pick without me."** The next-tier shortlist if
+they decline again:
 
-## Then: the decision rule (pre-committed)
-
-- Any round-two concept scoring GO or strong-CAUTION → proceed to the
-  mission brief's Stage 3: write the section-43 strategic report (20
-  items), owner sees it, then spec and build begin.
-- All three KILL → report honestly to the owner with: the full kill
-  ledger, the next-tier shortlist (DWTS waste-carrier capture for 2027,
-  agent-first compliance repack, productised-service bridge per
-  `MARKET_FINDINGS.md` distribution section), and the recommendation that
-  niche choice follow the owner's real-world access (ask again — it was
-  declined once but is now decision-critical).
+1. **DWTS waste-carrier capture** timed for the Oct 2027 carrier/broker
+   mandate — EA public register of carriers = the best cold-call list
+   Stage 1 found; public beta spring 2027 is the build window; known
+   hazard: DEFRA's free portal + free CSV upload (wedge must be
+   driver-phone-side speed). See `reports/stage1-pain-mining.md` PAIN 2.
+2. **Agent-first compliance repack** (~£79/mo × letting-agent offices) —
+   weak survival case per Stage 2b (Kamma ~£0.50/property/mo, Goodlord own
+   the space); only with an access edge.
+3. **Productised-service bridge** — sell the outcome as a service first
+   (manual + Claude behind the curtain), software second; converts the
+   distribution constraint into paid customer discovery.
 
 ## The selection criteria (validated the hard way — do not relax)
 
 Six filters from Stage 1 (buyer without procurement; async; recurring
 duty; enumerable prospects; no free gov/association tool; no
-platform-subsidised incumbent) PLUS the Stage 2b lesson: **the moat must
-be un-clonable by a weekend AI build** — statutory/liability-grade document
-workflows, a maintained dataset, a fulfilment component, or a news-quiet
-niche the SEO swarm ignores. "Track dates and remind" products are dead on
-arrival — 15+ clones appeared in landlord compliance alone within a year.
+platform-subsidised incumbent) PLUS, from six kills:
+
+- The moat must be un-clonable by a weekend AI build — but **round two
+  proved "liability-grade documents" is NOT such a moat for us**: where
+  documents carry statutory/personal liability, buyers become more
+  vendor-conservative and buy incumbents/consultants/nothing. What
+  survives for a no-track-record founder: a maintained dataset, a
+  fulfilment component, or the owner's real-world access.
+- The swarm reaches even ~1,000-person statutory niches (party wall: 5
+  tools) and pre-enforcement regimes (Martyn's Law clone 8 months before
+  commencement). Any statute with a name journalists use is swarmed.
+- Re-verify carry-over premises before seeding new concepts on them (the
+  funeral concept died on a false "quote-only/£400+" premise one search
+  disproved).
 
 ## Key economics (verified, from MARKET_FINDINGS.md)
 
@@ -80,5 +86,7 @@ digits to ~10% — honest expectations, owner has accepted this framing.
   a browser before money commits.
 - WebSearch budget ≈ 200/session shared with subagents — budget agent
   prompts (~14 searches each).
+- Background workflows die if the session idles — hold the turn open with
+  blocking `TaskOutput` calls (thrice-learned: 10 Aug, 17 Aug ×2).
 - Other projects: YouTube parked (`channel/STATUS.md`), trading bot on its
   own branch. Do not touch either without owner instruction.

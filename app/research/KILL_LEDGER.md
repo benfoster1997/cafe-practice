@@ -1,9 +1,12 @@
-# Stage 2b — Competitor deep-dive verdicts (the kill ledger)
+# The kill ledger — six concepts validated, six killed
 
-17 Aug 2026. Five research agents ran adversarial competitor/pricing/timing
+This document records why each concept died, so no future session
+re-litigates them without new evidence.
+
+# Stage 2b — round-one finalist verdicts (17 Aug 2026)
+
+Five research agents ran adversarial competitor/pricing/timing
 checks on the three round-one finalists. **All three were killed as scoped.**
-This document records why, so no future session re-litigates them without
-new evidence.
 
 ## ❌ KILLED: Landlord compliance register (was front-runner, scored 80)
 
@@ -73,17 +76,113 @@ clone cannot copy:
 4. A niche too small, unglamorous, and news-quiet to attract the swarm —
    where distribution is door-knocking, which clones don't do
 
-## Round two (running): survivors under the new criterion
+# Round two — validation verdicts (17 Aug 2026, second workflow)
 
-1. **Party wall / niche surveying document workflow** with RICS 2026
-   AI-standard compliance built in (mandate live now; SurveyorSuite £35/mo
-   proves the adjacent shape; statutory documents = criterion 1)
-2. **Small funeral director practice software** (quote-only incumbents at
-   £400+/mo; no news cycle = no swarm; statutory paperwork; criterion 1+4)
-3. **Martyn's Law enhanced-tier system** (real budget ~£5.2k/yr/premises;
-   decisive unknowns: enhanced-tier population + procurement wall; Spring
-   2027 timing)
+Three clone-resistant concepts under the new criterion were adversarially
+validated. **All three killed.** Full reports:
+`reports/round2-A-party-wall.md`, `round2-B-funeral.md`,
+`round2-C-martyns-law.md`. Each report ends with a verify-in-browser list
+(vendor pricing pages were egress-blocked; claims rest on search extracts).
 
-Decision rule: any GO/strong-CAUTION proceeds to the strategic report and
-customer-discovery plan; three more kills → report the honest position to
-the owner with the next-tier shortlist and the productised-service option.
+## ❌ KILLED: Party wall / niche surveying document workflow (R1)
+
+- **The proposed moat is a shipped incumbent feature.** SurveyorSuite
+  (£35/mo, 14-day trial) AI-drafts reports across 15 templates — party
+  wall awards, schedules of condition, dilapidations, damp & timber — and
+  is explicitly built around the 9 Mar 2026 RICS AI standard: AI
+  disclosure, named sign-off, immutable timestamps, audit trail on every
+  report. It even uses Claude. Concept R1 exists, at half our floor price.
+- Four more party-wall-specific tools compete: SurveyorPro £79/mo, Party
+  Wall PRO from £69/mo, SurvPal, PocketSurvey — for a ~1,000-practitioner
+  profession (FPWS ~900 members). Fifth-or-later vendor into a pond where
+  24-30 customers = 2-5% penetration, every sale a displacement sale.
+- The free-tool filter fails at the template layer: FPWS gives members a
+  draft standard award Word template; RICS's party wall standard ships
+  draft notices/letters/award appendices free.
+- The RICS AI standard is a weak forcing function: it only binds RICS
+  members using AI with "material impact" — comply by not adopting AI.
+  Party wall surveying itself is unregulated.
+- Demand is shrinking: CPA forecasts construction down ~3.3% in 2026,
+  private housing RMI (where party wall lives) weakening through H2. The
+  "party wall boom" narrative traces only to AI SEO content farms.
+
+## ❌ KILLED: Small funeral director practice software (R2)
+
+- **The concept's core premise was factually false.** "Incumbents are
+  quote-only/£400+" — in fact Funeral Manager publishes £11-per-funeral
+  pay-as-you-go (no tie-in), Evolution FMS ~£5/record. A 50-120
+  funeral/year independent pays £500-1,300/yr — at or below our £79-129/mo,
+  and per-funeral pricing matches their cash flow better than flat SaaS.
+- Not unswarmed: Obit, Primotool, memilius, Funeral Basics, Gather,
+  1Director already target funeral-home management; AI-idea sites have
+  indexed the niche.
+- The real 2024+ pain (medical-examiner delays stretching funerals to 3-4
+  weeks) is caused by GPs/MEs/registrars — parties FD software cannot
+  speed up. The reform *removed* FD-side cremation forms. CMA price-list
+  compliance is a one-page template at ~90% compliance already.
+- Worst possible trust moment: post-Hull scandal, Fuller Inquiry demanding
+  statutory regulation "as a matter of urgency", government response due
+  summer 2026 — record-keeping rules about to be rewritten in unknown
+  ways, and conservative buyers being asked to move deceased-care records
+  to an unknown solo vendor.
+
+## ❌ KILLED: Martyn's Law enhanced-tier system (R3)
+
+- **The SOC-2 wall, confirmed by the decisive number.** Home Office IA:
+  ~24,300 enhanced-tier premises — but they are stadia, arenas, shopping
+  centres, universities, hospitals, transport hubs, large hotels: procure-
+  ment organisations (NHS has its own sector guidance; public sector buys
+  via G-Cloud). The reachable independent slice is a thin, price-sensitive,
+  consultant-preferring residue. All places of worship are standard tier.
+- **An exact clone already sells at £29/mo** (martynslawsoftware.co.uk:
+  audit-ready records, drill logs with timestamped photos, training
+  sign-offs, PDF evidence pack — R3's feature list verbatim). Plus SIM
+  Martyn's Law Manager on G-Cloud, Halo (event-safety incumbent), D4H,
+  Noted, Handy AV's MAVAS (Jan 2026).
+- **The government is the anti-vendor**: the Home Office Myth Buster says
+  there is no requirement to buy specialist products, guidance/training
+  are free, and prices enhanced-tier compliance at ~£5,210/yr mostly staff
+  time — our £1.2-1.8k/yr would visibly claim a quarter to a third of the
+  government-anchored envelope.
+- Spec still moving: SIA section-12 enforcement guidance lands autumn
+  2026; "SIA-ready export" would chase a moving spec, and every
+  better-distributed vendor re-converges on the final guidance day one.
+- Standard-tier fallback (£19-29/mo × 154,600) is worse: no documentation
+  duty at all, free ProtectUK/ACT resources, and the £29/mo slot occupied.
+
+## Round-two strategic lesson (sharpens, partly reverses, the Stage 2b one)
+
+1. **The swarm is faster and deeper than assumed.** It reached a
+   ~1,000-person statutory niche (party wall: 5 tools) and a
+   pre-enforcement terror-law niche (exact £29/mo clone 8 months before
+   commencement). "News-quiet niche" barely exists where a statute has a
+   name journalists use.
+2. **Criterion 1 (liability-grade documents) INVERTS for an unknown solo
+   vendor.** Where documents carry statutory/personal liability (awards,
+   deceased-care records, terrorism compliance), buyers become MORE
+   conservative about vendor identity, not less — they buy incumbents,
+   consultants, or nothing. Liability-grade is a moat for whoever already
+   has trust; for us it is a wall. What remains genuinely clone-resistant
+   for a no-track-record founder: a maintained dataset (continuous labour),
+   a fulfilment/service component, or real-world access the swarm can't
+   replicate (relationships, an industry the founder can walk into).
+3. **Check the premise before the concept.** R2 died on a pricing premise
+   ("quote-only/£400+") that one competitor search disproved — carry-over
+   assumptions from earlier research must be re-verified before they seed
+   new concepts.
+
+## Where this leaves the mission (recorded for the owner decision)
+
+Six concepts adversarially validated, six killed, each on evidence not
+vibes. The pre-committed all-KILL rule now applies: report to the owner
+with (a) this ledger, (b) the next-tier shortlist — DWTS waste-carrier
+capture timed for the Oct 2027 carrier mandate (EA public register = best
+cold-call list found; spring 2027 beta is the build window; free-portal
+risk is the known hazard), agent-first compliance repack (~£79/mo × letting
+agents; Kamma/Goodlord anchor pricing), productised-service bridge (sell
+the outcome as a service first, software second — distribution-constrained
+not build-constrained) — and (c) the recommendation that niche choice now
+follow the owner's real-world access: ask the owner again what industries
+they can walk into through work history, family, or friends. Declined
+once; now decision-critical, because access is the one moat the swarm
+cannot clone.
