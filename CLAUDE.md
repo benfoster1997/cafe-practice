@@ -1,11 +1,14 @@
 # Project instructions for Claude
 
-## Two projects live in this repo
+## Three projects live in this repo
 
-- **YouTube channel "Cooked Books"** (branch
-  `claude/youtube-ai-monetization-study-4ipk3c`): read `channel/STATUS.md`
-  FIRST — it holds the locked decisions, current state, and next actions.
-  The honest-expectations rule below applies to this project too.
+- **App business (ACTIVE)** (branch
+  `claude/youtube-ai-monetization-study-4ipk3c`): building a B2B SaaS to
+  £2,000+/month MRR. Read `docs/APP_MISSION_BRIEF.md` (the contract) and
+  `app/research/` FIRST. Honest-expectations rule applies.
+- **YouTube channel "Cooked Books" (PARKED 17 Aug 2026)** (same branch):
+  read `channel/STATUS.md` before touching. Do not resume unless the owner
+  asks.
 - **Silver Bullet trading bot** (branch `claude/mt5-xauusd-iphone-bot-ndfkda`):
   everything below.
 

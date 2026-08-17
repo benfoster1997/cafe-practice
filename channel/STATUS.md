@@ -1,6 +1,11 @@
 # Channel project status — read this first in any new session
 
-Last updated: 11 Aug 2026. Branch: `claude/youtube-ai-monetization-study-4ipk3c` (PR #1).
+**⏸️ PROJECT PARKED — 17 Aug 2026, by owner instruction ("forget the youtube
+project"). No work should happen here unless the owner asks to resume. All
+assets below remain valid; Video 1 was one script-edit away from production.
+The active project is now the app business — see `docs/APP_MISSION_BRIEF.md`.**
+
+Last updated: 17 Aug 2026. Branch: `claude/youtube-ai-monetization-study-4ipk3c` (PR #1).
 
 ## Locked decisions (do not re-litigate without the owner asking)
 
