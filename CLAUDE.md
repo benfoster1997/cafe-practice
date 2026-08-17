@@ -4,8 +4,9 @@
 
 - **App business (ACTIVE)** (branch
   `claude/youtube-ai-monetization-study-4ipk3c`): building a B2B SaaS to
-  £2,000+/month MRR. Read `docs/APP_MISSION_BRIEF.md` (the contract) and
-  `app/research/` FIRST. Honest-expectations rule applies.
+  £2,000+/month MRR. Read `app/STATUS.md` FIRST (current state + resume
+  instructions), then `docs/APP_MISSION_BRIEF.md` (the contract).
+  Honest-expectations rule applies.
 - **YouTube channel "Cooked Books" (PARKED 17 Aug 2026)** (same branch):
   read `channel/STATUS.md` before touching. Do not resume unless the owner
   asks.
