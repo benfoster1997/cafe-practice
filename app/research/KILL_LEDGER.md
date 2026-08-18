@@ -1,4 +1,4 @@
-# The kill ledger — six concepts validated, six killed
+# The kill ledger — eight concepts validated, eight killed
 
 This document records why each concept died, so no future session
 re-litigates them without new evidence.
