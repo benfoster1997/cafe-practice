@@ -1,0 +1,541 @@
+[
+ {
+  "pair": "EURUSD",
+  "days": 1293,
+  "daily_range_pips": {
+   "median": 77.4,
+   "p25": 56.6,
+   "p75": 103.1
+  },
+  "asian_range_1900_0000_pips": {
+   "median": 20,
+   "p75": 27.6,
+   "share_le_20": 49.3,
+   "share_le_30": 79.2,
+   "share_le_40": 90
+  },
+  "high_of_day_formed_in_pct": {
+   "17:00-00:00 Asia": 20,
+   "00:00-02:00": 3.3,
+   "02:00-05:00 London KZ": 18.2,
+   "05:00-07:00": 6.7,
+   "07:00-10:00 NY KZ": 15.8,
+   "10:00-12:00": 14.6,
+   "12:00-17:00": 21.4
+  },
+  "low_of_day_formed_in_pct": {
+   "17:00-00:00 Asia": 21.7,
+   "00:00-02:00": 2.9,
+   "02:00-05:00 London KZ": 13.4,
+   "05:00-07:00": 6.5,
+   "07:00-10:00 NY KZ": 17.6,
+   "10:00-12:00": 15,
+   "12:00-17:00": 23
+  },
+  "days_where_london_kz_made_high_or_low_pct": 31.3,
+  "days_where_ny_kz_made_high_or_low_pct": 32,
+  "asian_range_swept_0000_0500_pct": {
+   "high_only": 35.5,
+   "low_only": 32.9,
+   "both": 27.7,
+   "neither": 3.9
+  },
+  "after_first_sweep": {
+   "n": 1242,
+   "opposite_asian_extreme_reached_same_day_pct": 63.4,
+   "opposite_asian_extreme_reached_before_noon_ny_pct": 59.6,
+   "day_closed_on_opposite_side_of_midnight_open_pct": 43.5,
+   "extension_beyond_swept_extreme_before_noon_pips": {
+    "median": 27.8,
+    "p75": 51,
+    "p90": 76.2
+   },
+   "tight_asia_le_30_pips": {
+    "n": 1010,
+    "opposite_reached_same_day_pct": 67,
+    "closed_opposite_side_of_midnight_pct": 44.6
+   }
+  },
+  "ny_0700_1200_continues_london_0200_0700_direction_pct": 50,
+  "previous_day_logic": {
+   "days": 1296,
+   "base_rate_next_day_higher_high_pct": 47.5,
+   "close_above_prev_high": {
+    "n": 297,
+    "next_day_higher_high_pct": 72.4,
+    "next_day_lower_low_pct": 17.5
+   },
+   "close_below_prev_low": {
+    "n": 348,
+    "next_day_lower_low_pct": 69.8
+   },
+   "swept_prev_high_but_closed_back_below": {
+    "n": 318,
+    "next_day_lower_low_pct": 59.1,
+    "next_day_higher_high_pct": 36.2
+   }
+  }
+ },
+ {
+  "pair": "GBPUSD",
+  "days": 1293,
+  "daily_range_pips": {
+   "median": 102.2,
+   "p25": 77.8,
+   "p75": 138.2
+  },
+  "asian_range_1900_0000_pips": {
+   "median": 23.7,
+   "p75": 31.8,
+   "share_le_20": 35,
+   "share_le_30": 71.4,
+   "share_le_40": 86.8
+  },
+  "high_of_day_formed_in_pct": {
+   "17:00-00:00 Asia": 20.5,
+   "00:00-02:00": 4.3,
+   "02:00-05:00 London KZ": 19.3,
+   "05:00-07:00": 6.8,
+   "07:00-10:00 NY KZ": 14,
+   "10:00-12:00": 13.9,
+   "12:00-17:00": 21.3
+  },
+  "low_of_day_formed_in_pct": {
+   "17:00-00:00 Asia": 19.6,
+   "00:00-02:00": 2.2,
+   "02:00-05:00 London KZ": 18.7,
+   "05:00-07:00": 8.3,
+   "07:00-10:00 NY KZ": 15.5,
+   "10:00-12:00": 14.8,
+   "12:00-17:00": 20.7
+  },
+  "days_where_london_kz_made_high_or_low_pct": 37.3,
+  "days_where_ny_kz_made_high_or_low_pct": 28.9,
+  "asian_range_swept_0000_0500_pct": {
+   "high_only": 28.8,
+   "low_only": 31.2,
+   "both": 37.7,
+   "neither": 2.3
+  },
+  "after_first_sweep": {
+   "n": 1263,
+   "opposite_asian_extreme_reached_same_day_pct": 65.3,
+   "opposite_asian_extreme_reached_before_noon_ny_pct": 62.2,
+   "day_closed_on_opposite_side_of_midnight_open_pct": 43.8,
+   "extension_beyond_swept_extreme_before_noon_pips": {
+    "median": 40.4,
+    "p75": 70.5,
+    "p90": 104.1
+   },
+   "tight_asia_le_30_pips": {
+    "n": 919,
+    "opposite_reached_same_day_pct": 70,
+    "closed_opposite_side_of_midnight_pct": 44.1
+   }
+  },
+  "ny_0700_1200_continues_london_0200_0700_direction_pct": 50.2,
+  "previous_day_logic": {
+   "days": 1296,
+   "base_rate_next_day_higher_high_pct": 47.1,
+   "close_above_prev_high": {
+    "n": 296,
+    "next_day_higher_high_pct": 71.3,
+    "next_day_lower_low_pct": 17.9
+   },
+   "close_below_prev_low": {
+    "n": 347,
+    "next_day_lower_low_pct": 69.5
+   },
+   "swept_prev_high_but_closed_back_below": {
+    "n": 313,
+    "next_day_lower_low_pct": 57.5,
+    "next_day_higher_high_pct": 39
+   }
+  }
+ },
+ {
+  "pair": "USDJPY",
+  "days": 1294,
+  "daily_range_pips": {
+   "median": 77.1,
+   "p25": 55,
+   "p75": 104.1
+  },
+  "asian_range_1900_0000_pips": {
+   "median": 32.2,
+   "p75": 45.4,
+   "share_le_20": 17.6,
+   "share_le_30": 44.7,
+   "share_le_40": 66.5
+  },
+  "high_of_day_formed_in_pct": {
+   "17:00-00:00 Asia": 35.1,
+   "00:00-02:00": 3.7,
+   "02:00-05:00 London KZ": 8.8,
+   "05:00-07:00": 3.9,
+   "07:00-10:00 NY KZ": 13.3,
+   "10:00-12:00": 11.1,
+   "12:00-17:00": 24.1
+  },
+  "low_of_day_formed_in_pct": {
+   "17:00-00:00 Asia": 36.5,
+   "00:00-02:00": 2.9,
+   "02:00-05:00 London KZ": 10.1,
+   "05:00-07:00": 3.8,
+   "07:00-10:00 NY KZ": 13,
+   "10:00-12:00": 11.8,
+   "12:00-17:00": 21.9
+  },
+  "days_where_london_kz_made_high_or_low_pct": 18.7,
+  "days_where_ny_kz_made_high_or_low_pct": 25.5,
+  "asian_range_swept_0000_0500_pct": {
+   "high_only": 37.9,
+   "low_only": 35,
+   "both": 4.9,
+   "neither": 22.1
+  },
+  "after_first_sweep": {
+   "n": 1008,
+   "opposite_asian_extreme_reached_same_day_pct": 38.9,
+   "opposite_asian_extreme_reached_before_noon_ny_pct": 32.6,
+   "day_closed_on_opposite_side_of_midnight_open_pct": 38.7,
+   "extension_beyond_swept_extreme_before_noon_pips": {
+    "median": 25.2,
+    "p75": 46,
+    "p90": 70.1
+   },
+   "tight_asia_le_30_pips": {
+    "n": 479,
+    "opposite_reached_same_day_pct": 47.8,
+    "closed_opposite_side_of_midnight_pct": 41.8
+   }
+  },
+  "ny_0700_1200_continues_london_0200_0700_direction_pct": 49.5,
+  "previous_day_logic": {
+   "days": 1296,
+   "base_rate_next_day_higher_high_pct": 48.9,
+   "close_above_prev_high": {
+    "n": 313,
+    "next_day_higher_high_pct": 72.2,
+    "next_day_lower_low_pct": 19.8
+   },
+   "close_below_prev_low": {
+    "n": 291,
+    "next_day_lower_low_pct": 66.7
+   },
+   "swept_prev_high_but_closed_back_below": {
+    "n": 321,
+    "next_day_lower_low_pct": 57.9,
+    "next_day_higher_high_pct": 38.9
+   }
+  }
+ },
+ {
+  "pair": "AUDUSD",
+  "days": 1293,
+  "daily_range_pips": {
+   "median": 62.5,
+   "p25": 45.7,
+   "p75": 84.3
+  },
+  "asian_range_1900_0000_pips": {
+   "median": 28.9,
+   "p75": 40.2,
+   "share_le_20": 21.8,
+   "share_le_30": 52.4,
+   "share_le_40": 74.6
+  },
+  "high_of_day_formed_in_pct": {
+   "17:00-00:00 Asia": 33.8,
+   "00:00-02:00": 4.4,
+   "02:00-05:00 London KZ": 11.5,
+   "05:00-07:00": 4.6,
+   "07:00-10:00 NY KZ": 12.9,
+   "10:00-12:00": 12.8,
+   "12:00-17:00": 20
+  },
+  "low_of_day_formed_in_pct": {
+   "17:00-00:00 Asia": 39.1,
+   "00:00-02:00": 2.9,
+   "02:00-05:00 London KZ": 9.5,
+   "05:00-07:00": 4,
+   "07:00-10:00 NY KZ": 10.2,
+   "10:00-12:00": 12.8,
+   "12:00-17:00": 21.3
+  },
+  "days_where_london_kz_made_high_or_low_pct": 20.8,
+  "days_where_ny_kz_made_high_or_low_pct": 22.8,
+  "asian_range_swept_0000_0500_pct": {
+   "high_only": 39.1,
+   "low_only": 34.5,
+   "both": 6.7,
+   "neither": 19.8
+  },
+  "after_first_sweep": {
+   "n": 1037,
+   "opposite_asian_extreme_reached_same_day_pct": 35.4,
+   "opposite_asian_extreme_reached_before_noon_ny_pct": 29.7,
+   "day_closed_on_opposite_side_of_midnight_open_pct": 37,
+   "extension_beyond_swept_extreme_before_noon_pips": {
+    "median": 20.9,
+    "p75": 35.8,
+    "p90": 54.5
+   },
+   "tight_asia_le_30_pips": {
+    "n": 593,
+    "opposite_reached_same_day_pct": 41.1,
+    "closed_opposite_side_of_midnight_pct": 35.2
+   }
+  },
+  "ny_0700_1200_continues_london_0200_0700_direction_pct": 50.8,
+  "previous_day_logic": {
+   "days": 1296,
+   "base_rate_next_day_higher_high_pct": 46.9,
+   "close_above_prev_high": {
+    "n": 292,
+    "next_day_higher_high_pct": 69.2,
+    "next_day_lower_low_pct": 20.2
+   },
+   "close_below_prev_low": {
+    "n": 340,
+    "next_day_lower_low_pct": 74.7
+   },
+   "swept_prev_high_but_closed_back_below": {
+    "n": 315,
+    "next_day_lower_low_pct": 61.3,
+    "next_day_higher_high_pct": 38.1
+   }
+  }
+ },
+ {
+  "pair": "USDCAD",
+  "days": 1293,
+  "daily_range_pips": {
+   "median": 87.8,
+   "p25": 64.2,
+   "p75": 118.8
+  },
+  "asian_range_1900_0000_pips": {
+   "median": 22.9,
+   "p75": 31.3,
+   "share_le_20": 39,
+   "share_le_30": 71.6,
+   "share_le_40": 89.2
+  },
+  "high_of_day_formed_in_pct": {
+   "17:00-00:00 Asia": 18.9,
+   "00:00-02:00": 1.8,
+   "02:00-05:00 London KZ": 9.3,
+   "05:00-07:00": 5.1,
+   "07:00-10:00 NY KZ": 20.4,
+   "10:00-12:00": 16.2,
+   "12:00-17:00": 28.3
+  },
+  "low_of_day_formed_in_pct": {
+   "17:00-00:00 Asia": 22.7,
+   "00:00-02:00": 2.9,
+   "02:00-05:00 London KZ": 10.1,
+   "05:00-07:00": 6.7,
+   "07:00-10:00 NY KZ": 17.8,
+   "10:00-12:00": 14.8,
+   "12:00-17:00": 24.9
+  },
+  "days_where_london_kz_made_high_or_low_pct": 19.4,
+  "days_where_ny_kz_made_high_or_low_pct": 37,
+  "asian_range_swept_0000_0500_pct": {
+   "high_only": 38.9,
+   "low_only": 36.3,
+   "both": 16.9,
+   "neither": 7.8
+  },
+  "after_first_sweep": {
+   "n": 1192,
+   "opposite_asian_extreme_reached_same_day_pct": 65.4,
+   "opposite_asian_extreme_reached_before_noon_ny_pct": 59.7,
+   "day_closed_on_opposite_side_of_midnight_open_pct": 45.2,
+   "extension_beyond_swept_extreme_before_noon_pips": {
+    "median": 30.6,
+    "p75": 57.1,
+    "p90": 84.7
+   },
+   "tight_asia_le_30_pips": {
+    "n": 881,
+    "opposite_reached_same_day_pct": 70.1,
+    "closed_opposite_side_of_midnight_pct": 46.8
+   }
+  },
+  "ny_0700_1200_continues_london_0200_0700_direction_pct": 50,
+  "previous_day_logic": {
+   "days": 1296,
+   "base_rate_next_day_higher_high_pct": 49.9,
+   "close_above_prev_high": {
+    "n": 317,
+    "next_day_higher_high_pct": 70.3,
+    "next_day_lower_low_pct": 19.9
+   },
+   "close_below_prev_low": {
+    "n": 331,
+    "next_day_lower_low_pct": 70.7
+   },
+   "swept_prev_high_but_closed_back_below": {
+    "n": 331,
+    "next_day_lower_low_pct": 55.9,
+    "next_day_higher_high_pct": 39.9
+   }
+  }
+ },
+ {
+  "pair": "USDCHF",
+  "days": 1293,
+  "daily_range_pips": {
+   "median": 64.9,
+   "p25": 48.5,
+   "p75": 89.8
+  },
+  "asian_range_1900_0000_pips": {
+   "median": 16.5,
+   "p75": 23.4,
+   "share_le_20": 65.4,
+   "share_le_30": 86.7,
+   "share_le_40": 94.8
+  },
+  "high_of_day_formed_in_pct": {
+   "17:00-00:00 Asia": 17.9,
+   "00:00-02:00": 2.2,
+   "02:00-05:00 London KZ": 15.9,
+   "05:00-07:00": 6.7,
+   "07:00-10:00 NY KZ": 17.9,
+   "10:00-12:00": 13.7,
+   "12:00-17:00": 25.7
+  },
+  "low_of_day_formed_in_pct": {
+   "17:00-00:00 Asia": 25.5,
+   "00:00-02:00": 2.5,
+   "02:00-05:00 London KZ": 15.4,
+   "05:00-07:00": 6,
+   "07:00-10:00 NY KZ": 13.8,
+   "10:00-12:00": 15,
+   "12:00-17:00": 21.9
+  },
+  "days_where_london_kz_made_high_or_low_pct": 30.8,
+  "days_where_ny_kz_made_high_or_low_pct": 30.6,
+  "asian_range_swept_0000_0500_pct": {
+   "high_only": 36,
+   "low_only": 30.5,
+   "both": 28.5,
+   "neither": 4.9
+  },
+  "after_first_sweep": {
+   "n": 1229,
+   "opposite_asian_extreme_reached_same_day_pct": 64.3,
+   "opposite_asian_extreme_reached_before_noon_ny_pct": 60.3,
+   "day_closed_on_opposite_side_of_midnight_open_pct": 43.2,
+   "extension_beyond_swept_extreme_before_noon_pips": {
+    "median": 23.9,
+    "p75": 44.2,
+    "p90": 66
+   },
+   "tight_asia_le_30_pips": {
+    "n": 1091,
+    "opposite_reached_same_day_pct": 66.8,
+    "closed_opposite_side_of_midnight_pct": 43.6
+   }
+  },
+  "ny_0700_1200_continues_london_0200_0700_direction_pct": 49,
+  "previous_day_logic": {
+   "days": 1296,
+   "base_rate_next_day_higher_high_pct": 50.5,
+   "close_above_prev_high": {
+    "n": 301,
+    "next_day_higher_high_pct": 72.4,
+    "next_day_lower_low_pct": 15.9
+   },
+   "close_below_prev_low": {
+    "n": 306,
+    "next_day_lower_low_pct": 66.3
+   },
+   "swept_prev_high_but_closed_back_below": {
+    "n": 354,
+    "next_day_lower_low_pct": 60.5,
+    "next_day_higher_high_pct": 41.5
+   }
+  }
+ },
+ {
+  "pair": "NZDUSD",
+  "days": 1293,
+  "daily_range_pips": {
+   "median": 63.1,
+   "p25": 46.8,
+   "p75": 84.9
+  },
+  "asian_range_1900_0000_pips": {
+   "median": 26.9,
+   "p75": 36.6,
+   "share_le_20": 27,
+   "share_le_30": 59.9,
+   "share_le_40": 80
+  },
+  "high_of_day_formed_in_pct": {
+   "17:00-00:00 Asia": 36.3,
+   "00:00-02:00": 4,
+   "02:00-05:00 London KZ": 10.8,
+   "05:00-07:00": 4.1,
+   "07:00-10:00 NY KZ": 12.3,
+   "10:00-12:00": 11.4,
+   "12:00-17:00": 21.1
+  },
+  "low_of_day_formed_in_pct": {
+   "17:00-00:00 Asia": 39.8,
+   "00:00-02:00": 2.6,
+   "02:00-05:00 London KZ": 7.7,
+   "05:00-07:00": 3.9,
+   "07:00-10:00 NY KZ": 11.3,
+   "10:00-12:00": 10.8,
+   "12:00-17:00": 23.7
+  },
+  "days_where_london_kz_made_high_or_low_pct": 18.5,
+  "days_where_ny_kz_made_high_or_low_pct": 23.1,
+  "asian_range_swept_0000_0500_pct": {
+   "high_only": 38.7,
+   "low_only": 35,
+   "both": 7,
+   "neither": 19.2
+  },
+  "after_first_sweep": {
+   "n": 1045,
+   "opposite_asian_extreme_reached_same_day_pct": 35,
+   "opposite_asian_extreme_reached_before_noon_ny_pct": 29.4,
+   "day_closed_on_opposite_side_of_midnight_open_pct": 35.5,
+   "extension_beyond_swept_extreme_before_noon_pips": {
+    "median": 22,
+    "p75": 38,
+    "p90": 56.1
+   },
+   "tight_asia_le_30_pips": {
+    "n": 666,
+    "opposite_reached_same_day_pct": 39.9,
+    "closed_opposite_side_of_midnight_pct": 36.2
+   }
+  },
+  "ny_0700_1200_continues_london_0200_0700_direction_pct": 50.1,
+  "previous_day_logic": {
+   "days": 1296,
+   "base_rate_next_day_higher_high_pct": 48.5,
+   "close_above_prev_high": {
+    "n": 285,
+    "next_day_higher_high_pct": 71.9,
+    "next_day_lower_low_pct": 15.8
+   },
+   "close_below_prev_low": {
+    "n": 346,
+    "next_day_lower_low_pct": 75.4
+   },
+   "swept_prev_high_but_closed_back_below": {
+    "n": 341,
+    "next_day_lower_low_pct": 57.8,
+    "next_day_higher_high_pct": 38.7
+   }
+  }
+ }
+]
