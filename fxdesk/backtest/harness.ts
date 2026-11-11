@@ -7,44 +7,12 @@
  * what is tested here is what trades.
  */
 import { loadM1 } from "../core/load.ts";
-import { type Bars, toClock, toNyAnchored, makeBars } from "../core/bars.ts";
-import { clockIndex } from "../core/ict.ts";
+import { type Bars, makeBars } from "../core/bars.ts";
+import { type ModelDef, type Universe, frames } from "../core/model.ts";
+export { type ModelDef, type Universe, type PairData, frames } from "../core/model.ts";
 import { pipSize, type CostModel } from "../core/pairs.ts";
 import { simulate, DEFAULT_RAILS, type Order, type Rails, type SimResult } from "../core/sim.ts";
 import { summarize, byYear, byPair, byExit, rollingWindows, type Stats } from "../core/metrics.ts";
-
-export interface PairData {
-  pair: string;
-  /** one-minute bars: used ONLY by the simulator for fills, never by a model */
-  m1: Bars;
-  m15: Bars; h1: Bars; h4: Bars; d1: Bars;
-  /** New York minute-of-day, trading day and weekday for every M15 bar */
-  ci: { mod: Int16Array; day: Int32Array; dow: Int8Array };
-}
-
-export type Universe = Record<string, PairData>;
-
-export interface ModelDef<C> {
-  id: string;
-  name: string;
-  /** pairs the model trades */
-  pairs: string[];
-  /** every pre-registered configuration, by name */
-  configs: Record<string, C>;
-  /** trading days of history a signal can depend on (the live scanner keeps at least this much) */
-  lookbackDays: number;
-  /**
-   * Propose orders for one pair from candles that have closed, for signal
-   * times in [fromSec, toSec). `all` gives read access to other pairs'
-   * closed candles (for correlation rules); the same no-lookahead duty applies.
-   */
-  generate(pd: PairData, cfg: C, fromSec: number, toSec: number, all: Universe): Order[];
-}
-
-export function frames(pair: string, m1: Bars, m15?: Bars): PairData {
-  const f15 = m15 ?? toClock(m1, 15);
-  return { pair, m1, m15: f15, h1: toClock(f15, 60), h4: toNyAnchored(f15, 4), d1: toNyAnchored(f15, 24), ci: clockIndex(f15) };
-}
 
 export function loadUniverse(pairs: string[]): Universe {
   const u: Universe = {};

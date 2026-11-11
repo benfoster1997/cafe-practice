@@ -68,6 +68,9 @@ export interface Order {
   /** optional time exit for an open position (UTC seconds) */
   flatAt?: number;
   tag: string;
+  /** which model and why - shown on the ticket; ignored by the simulator */
+  model?: string;
+  info?: Record<string, string | number>;
 }
 
 export interface Rails {
