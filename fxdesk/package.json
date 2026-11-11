@@ -1,0 +1,14 @@
+{
+  "name": "fxdesk",
+  "private": true,
+  "type": "module",
+  "description": "ICT forex signal desk: shared rules core, backtest, and the phone app",
+  "scripts": {
+    "test": "node --test 'core/test/*.test.ts'",
+    "selftest": "node backtest/run.ts selftest"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^10.0.0",
+    "@netlify/functions": "^5.0.0"
+  }
+}

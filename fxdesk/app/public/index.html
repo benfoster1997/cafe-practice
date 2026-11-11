@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FX Desk">
+<meta name="theme-color" content="#0b0d10">
+<title>FX Desk</title>
+<style>
+:root{--bg:#0b0d10;--card:#151920;--card2:#1d222b;--line:#2a313c;--text:#f2f4f7;--mute:#9aa4b1;--dim:#6b7582;--buy:#2fd39f;--sell:#ff7d5c;--warn:#ffcf4d;--acc:#4da3ff;--bad:#ff5d5d;
+ --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+body{padding:env(safe-area-inset-top) 0 calc(72px + env(safe-area-inset-bottom));overscroll-behavior-y:none}
+header{position:sticky;top:0;z-index:5;background:rgba(11,13,16,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:12px 16px 10px;border-bottom:1px solid var(--line)}
+.h1{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-.01em}
+.pill{font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:6px;background:rgba(255,207,77,.15);color:var(--warn)}
+.sub{margin-top:4px;font-size:12.5px;color:var(--mute);display:flex;gap:7px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--dim);flex:none}.dot.ok{background:var(--buy)}.dot.bad{background:var(--bad)}
+main{padding:14px 16px;display:grid;gap:14px;max-width:560px;margin:0 auto}
+.card{background:var(--card);border-radius:16px;padding:16px}
+.warnbar{background:rgba(255,207,77,.1);border:1px solid rgba(255,207,77,.35);border-radius:14px;padding:12px 14px;font-size:13.5px;color:#ffe08a}
+.warnbar b{color:var(--warn)}
+h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:0 0 10px;font-weight:700}
+h3{margin:0 0 6px;font-size:17px}
+p{margin:0 0 10px}p:last-child{margin-bottom:0}
+.mute{color:var(--mute)}.small{font-size:13px}
+.side{display:inline-block;font-weight:800;font-size:13px;letter-spacing:.07em;padding:5px 11px;border-radius:8px}
+.side.buy{background:rgba(47,211,159,.15);color:var(--buy)}.side.sell{background:rgba(255,125,92,.15);color:var(--sell)}
+.thead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.pair{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.chip{font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:6px;background:var(--card2);color:var(--mute)}
+.chip.g{background:rgba(47,211,159,.15);color:var(--buy)}.chip.r{background:rgba(255,93,93,.15);color:var(--bad)}.chip.y{background:rgba(255,207,77,.15);color:var(--warn)}.chip.b{background:rgba(77,163,255,.15);color:var(--acc)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line);cursor:pointer;min-height:58px}
+.row .lab{font-size:13px;color:var(--mute)}.row .lab small{display:block;color:var(--dim);font-size:11.5px}
+.row .val{font-family:var(--mono);font-size:25px;font-weight:700;letter-spacing:-.02em}
+.row .cp{font-size:12px;font-weight:700;color:var(--acc);background:rgba(77,163,255,.12);padding:7px 11px;border-radius:8px;min-width:64px;text-align:center}
+.row.done .cp{color:var(--buy);background:rgba(47,211,159,.14)}
+.meta{font-size:13px;color:var(--mute);padding-top:12px;border-top:1px solid var(--line)}
+details{border-top:1px solid var(--line);margin-top:12px;padding-top:4px}
+summary{list-style:none;cursor:pointer;padding:10px 0;font-size:14.5px;font-weight:600;color:var(--acc)}summary::-webkit-details-marker{display:none}
+ol,ul{margin:0 0 6px;padding-left:20px;color:var(--mute);font-size:14px}li{margin:6px 0}li b{color:var(--text)}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+button,.btn{appearance:none;border:0;border-radius:12px;min-height:48px;padding:0 14px;font:600 15.5px/1 inherit;font-family:inherit;color:#fff;background:var(--acc);cursor:pointer;width:100%}
+button.ghost{background:var(--card2);color:var(--text)}button.on{outline:2px solid var(--buy);background:rgba(47,211,159,.14);color:var(--buy)}
+button:disabled{opacity:.5}
+input{width:100%;min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--card2);color:var(--text);font:16px inherit;font-family:inherit;padding:0 12px;margin:6px 0 10px}
+label{font-size:13px;color:var(--mute)}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--line);font-size:14px}.kv:first-of-type{border-top:0}
+.kv span:last-child{font-family:var(--mono);text-align:right}
+.up{color:var(--buy)}.down{color:var(--sell)}.flat{color:var(--mute)}
+.bar{height:8px;border-radius:4px;background:var(--card2);overflow:hidden;margin:6px 0 12px}.bar i{display:block;height:100%;background:var(--acc)}
+.item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px 0;border-top:1px solid var(--line);font-size:14px;cursor:pointer}.item:first-of-type{border-top:0}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:6;display:grid;grid-template-columns:repeat(4,1fr);background:rgba(11,13,16,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav button{background:none;color:var(--dim);min-height:58px;border-radius:0;font-size:12px;font-weight:600}nav button.sel{color:var(--acc)}
+.toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#fff;color:#000;font-weight:600;font-size:14px;padding:10px 16px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
+.toast.show{opacity:1}
+.err{color:var(--bad);font-size:14px;margin:6px 0}.okmsg{color:var(--buy);font-size:14px;margin:6px 0}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <div class="h1">FX Desk <span class="pill">DEMO</span></div>
+  <div class="sub"><span class="dot" id="dot"></span><span id="statusline">Starting…</span></div>
+</header>
+<main id="app"></main>
+<nav id="nav" hidden>
+  <button data-tab="now" class="sel">Now</button><button data-tab="watch">Watch</button><button data-tab="record">Record</button><button data-tab="setup">Setup</button>
+</nav>
+<div class="toast" id="toast"></div>
+<script>
+const $ = (s, el = document) => el.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const LS = { get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch {} }, del: (k) => { try { localStorage.removeItem(k); } catch {} } };
+let pass = LS.get("fx-pass") || "", data = null, tab = "now", busy = false;
+const px = (pair, v) => Number(v).toFixed(pair.endsWith("JPY") ? 3 : 5);
+const ukTime = (t, withDay) => new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", hour: "2-digit", minute: "2-digit", hour12: false, ...(withDay ? { weekday: "short", day: "numeric", month: "short" } : {}) }).format(new Date(t * 1000));
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove("show"), 1500); }
+async function api(route, body) {
+  const r = await fetch("/api/" + route, { method: body ? "POST" : "GET", headers: { "content-type": "application/json", "x-pass": pass }, body: body ? JSON.stringify(body) : undefined });
+  const j = await r.json().catch(() => ({ error: "The server sent something unreadable." }));
+  if (r.status === 401) { pass = ""; LS.del("fx-pass"); boot(); throw new Error(j.error || "Wrong passcode."); }
+  if (!r.ok) throw new Error(j.error || "Something went wrong.");
+  return j;
+}
+async function copy(text, row) {
+  try { await navigator.clipboard.writeText(text); }
+  catch { const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch {} ta.remove(); }
+  toast("Copied " + text);
+  if (row) { row.classList.add("done"); $(".cp", row).textContent = "Copied"; }
+}
+
+/* ------------------------------------------------------------ first run */
+async function boot() {
+  $("#nav").hidden = true;
+  let st;
+  try { st = await (await fetch("/api/status")).json(); } catch { $("#app").innerHTML = `<div class="card"><h3>Cannot reach the app</h3><p class="mute">Check your connection and reload.</p></div>`; return; }
+  if (!st.claimed) {
+    const code = (location.hash.match(/setup=([A-Za-z0-9]+)/) || [])[1] || "";
+    $("#statusline").textContent = "First-time setup";
+    $("#app").innerHTML = `<div class="card"><h3>Set your passcode</h3><p class="mute small">This keeps your settings private. You only do this once on each device.</p>
+      <label>Setup code (from Claude)</label><input id="code" autocapitalize="characters" autocomplete="off" value="${esc(code)}">
+      <label>Choose a passcode (6 or more characters)</label><input id="np" type="password" autocomplete="new-password">
+      <div class="err" id="e"></div><button id="go">Save passcode</button></div>`;
+    $("#go").onclick = async () => {
+      try { const r = await fetch("/api/claim", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code: $("#code").value, pass: $("#np").value }) }); const j = await r.json(); if (!r.ok) throw new Error(j.error); pass = $("#np").value; LS.set("fx-pass", pass); history.replaceState(null, "", location.pathname); tab = "setup"; start(); }
+      catch (e) { $("#e").textContent = e.message; }
+    };
+    return;
+  }
+  if (!pass) {
+    $("#statusline").textContent = "Locked";
+    $("#app").innerHTML = `<div class="card"><h3>Enter your passcode</h3><input id="p" type="password" autocomplete="current-password"><div class="err" id="e"></div><button id="go">Unlock</button></div>`;
+    $("#go").onclick = async () => { pass = $("#p").value; try { await api("state"); LS.set("fx-pass", pass); start(); } catch (e) { $("#e").textContent = e.message; } };
+    return;
+  }
+  start();
+}
+function start() { $("#nav").hidden = false; refresh(); clearInterval(start.h); start.h = setInterval(() => { if (!document.hidden && !document.activeElement?.matches("input")) refresh(true); }, 60000); }
+async function refresh(quiet) {
+  try { data = await api("state"); render(); }
+  catch (e) { if (!quiet) toast(e.message); }
+}
+document.addEventListener("visibilitychange", () => { if (!document.hidden && pass && data) refresh(true); });
+$("#nav").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; tab = b.dataset.tab; render(); window.scrollTo(0, 0); };
+
+/* -------------------------------------------------------------- render */
+const STATUS = { pending: ["Waiting to fill", "b"], open: ["Filled, running", "y"], won: ["Target hit", "g"], lost: ["Stopped out", "r"], flat: ["Closed at cut-off", ""], expired: ["Expired unfilled", ""], withdrawn: ["Withdrawn", ""], blocked: ["Blocked by rules", ""] };
+function render() {
+  if (!data) return;
+  for (const b of document.querySelectorAll("nav button")) b.classList.toggle("sel", b.dataset.tab === tab);
+  const m = data.meta || {}, age = m.time ? Math.round((data.now - m.time) / 60) : null;
+  const stale = m.time && age > 20 && m.session !== "Market closed";
+  $("#dot").className = "dot " + (!m.time ? "" : m.ok && !stale ? "ok" : "bad");
+  $("#statusline").textContent = !m.time ? "Not scanning yet: finish Setup" : !m.ok ? m.note : `${m.session} · scanned ${ukTime(m.time)} UK${stale ? " (late)" : ""}`;
+  $("#app").innerHTML = ({ now: viewNow, watch: viewWatch, record: viewRecord, setup: viewSetup })[tab]();
+  bind();
+}
+const WARN = `<div class="warnbar"><b>Demo only.</b> These ICT rules did not pass their test on 2015 to 2020 prices. Treat every ticket as practice, not a prediction. <a href="#" data-go="record" style="color:var(--acc)">See the record</a></div>`;
+
+function ticket(s, open) {
+  const buy = s.dir > 0, [label, cls] = STATUS[s.status] || [s.status, ""], live = s.status === "pending" || s.status === "open";
+  const rows = [["Volume", "lots", s.lots ? s.lots.toFixed(2) : "skip"], ["Price", "your entry", px(s.pair, s.entry)], ["Stop Loss", s.riskPips + " pips", px(s.pair, s.stop)], ["Take Profit", s.rewardPips + " pips", px(s.pair, s.tp)]];
+  return `<div class="card" id="t-${esc(s.id)}">
+    <div class="thead"><span class="side ${buy ? "buy" : "sell"}">${buy ? "BUY LIMIT" : "SELL LIMIT"}</span><span class="pair">${s.pair}</span><span class="chip ${cls}">${label}</span><span class="chip">Grade ${s.grade}</span>${s.backfilled ? `<span class="chip">history</span>` : ""}</div>
+    ${rows.map(([a, b, v]) => `<div class="row" data-copy="${v}"><div class="lab">${a}<small>${b}</small></div><div class="val">${v}</div><div class="cp">Copy</div></div>`).join("")}
+    <div class="meta">${esc(s.statusNote || "")}${s.r !== undefined ? ` Result by the rules: <b class="${s.r > 0 ? "up" : s.r < 0 ? "down" : ""}">${s.r > 0 ? "+" : ""}${s.r}R</b>.` : ""}<br>
+      Signal ${ukTime(s.signalTime, true)} UK. ${live ? `Order expires <b>${ukTime(s.expireAt)}</b> UK. Close anything still open at <b>${ukTime(s.flatAt)}</b> UK. ` : ""}Risk about £${(s.riskMoney || 0).toFixed(2)}.</div>
+    ${!s.lots ? `<p class="err">The stop is too wide to size at 1% on your balance. Skip this one.</p>` : ""}
+    <details ${open ? "open" : ""}><summary>Why this trade</summary><ul>${s.reasons.map((r) => `<li>${esc(r)}</li>`).join("")}</ul></details>
+    ${live ? `<details><summary>How to place it in MT5</summary><ol>
+      <li>Open <b>MetaTrader 5</b> and check the account says <b>Demo</b>.</li>
+      <li>Go to <b>Quotes</b>, tap <b>${s.pair}</b>, then <b>Trade</b> (or use the + on the Trade tab).</li>
+      <li>Change the order type from Market Execution to <b>${buy ? "Buy Limit" : "Sell Limit"}</b>.</li>
+      <li>Type or paste the <b>Volume</b>, <b>Price</b>, <b>Stop Loss</b> and <b>Take Profit</b> from this ticket. Tap a number here to copy it.</li>
+      <li>Set <b>Expiration</b> to ${ukTime(s.expireAt)} UK if MT5 offers it, then tap <b>Place</b>.</li>
+      <li>If price has already gone through the entry price, <b>do not chase it</b>. Skip.</li>
+      <li>If the trade is still open at ${ukTime(s.flatAt)} UK, close it by hand.</li></ol>
+      <p class="mute small">Your broker's prices can differ from these by a pip or two. That is normal.</p></details>` : ""}
+    ${s.backfilled ? "" : `<div class="btns"><button class="ghost ${s.mine?.took === true ? "on" : ""}" data-mine="1" data-id="${esc(s.id)}">I placed it</button><button class="ghost ${s.mine?.took === false ? "on" : ""}" data-mine="0" data-id="${esc(s.id)}">I skipped it</button></div>`}
+  </div>`;
+}
+function viewNow() {
+  const live = data.signals.filter((s) => (s.status === "pending" || s.status === "open") && !s.backfilled);
+  const want = decodeURIComponent((location.hash.match(/t=([^&]+)/) || [])[1] || "");
+  const linked = want && !live.some((s) => s.id === want) ? data.signals.find((s) => s.id === want) : null;
+  const rest = data.signals.filter((s) => !live.includes(s) && s !== linked).slice(0, 12);
+  const w = data.windows || [];
+  let h = WARN;
+  if (!data.settings.hasKey) h += `<div class="card"><h3>Not set up yet</h3><p class="mute">Add your free price-feed key in Setup and the app will start scanning.</p><button data-go="setup">Open Setup</button></div>`;
+  h += live.map((s) => ticket(s, true)).join("");
+  if (linked) h += ticket(linked, true);
+  if (!live.length) h += `<div class="card"><h3>No trade right now</h3><p class="mute">That is the normal state. These rules fire a couple of times a month across four pairs, and only inside the killzones.</p>
+    ${w.map((x) => `<div class="kv"><span>${x.name}</span><span>${x.from === x.to ? x.from : x.from + " to " + x.to} UK</span></div>`).join("")}</div>`;
+  if (rest.length) h += `<div class="card"><h2>Earlier tickets</h2>${rest.map((s) => { const [l, c] = STATUS[s.status] || [s.status, ""]; return `<div class="item" data-open="${esc(s.id)}"><span><b>${s.pair}</b> ${s.dir > 0 ? "buy" : "sell"} <span class="mute">${ukTime(s.signalTime, true)}</span>${s.backfilled ? ` <span class="mute">(history)</span>` : ""}</span><span class="chip ${c}">${l}${s.r !== undefined ? ` ${s.r > 0 ? "+" : ""}${s.r}R` : ""}</span></div>`; }).join("")}</div>`;
+  return h;
+}
+function viewWatch() {
+  if (!data.watch.length) return `<div class="card"><h3>Nothing to show yet</h3><p class="mute">The first scan fills this in.</p></div>`;
+  return `<div class="card small mute">What the rules see on each pair right now. Direction comes from yesterday's daily candle; a trade needs a sweep, then a shift, inside a killzone.</div>` + data.watch.map((r) => `<div class="card">
+    <div class="thead"><span class="pair">${r.pair}</span><span class="chip ${r.bias > 0 ? "g" : r.bias < 0 ? "r" : ""}">${r.bias > 0 ? "Looking to BUY" : r.bias < 0 ? "Looking to SELL" : "No trade today"}</span></div>
+    <div class="kv"><span>Price (${ukTime(r.time)} UK)</span><span>${px(r.pair, r.price)}</span></div>
+    ${r.levels.map((l) => `<div class="kv"><span>${l.name}${l.taken ? ` <span class="chip y">taken today</span>` : ""}</span><span>${px(r.pair, l.price)} <span class="mute">${l.pips > 0 ? "+" : ""}${l.pips}p</span></span></div>`).join("")}
+    <p class="small mute" style="margin-top:10px">${esc(r.biasWhy)} ${esc(r.note)}</p></div>`).join("");
+}
+function stats(list) {
+  const rs = list.map((s) => s.r), n = rs.length, w = rs.filter((r) => r > 0), l = rs.filter((r) => r < 0);
+  const gw = w.reduce((a, b) => a + b, 0), gl = -l.reduce((a, b) => a + b, 0);
+  let cum = 0, peak = 0, dd = 0; for (const r of [...rs].reverse()) { cum += r; peak = Math.max(peak, cum); dd = Math.max(dd, peak - cum); }
+  return { n, wins: w.length, total: cum, pf: gl > 0 ? gw / gl : (gw > 0 ? Infinity : 0), dd };
+}
+function viewRecord() {
+  const done = data.signals.filter((s) => !s.backfilled && s.r !== undefined), st = stats(done);
+  const mine = data.signals.filter((s) => s.mine), took = mine.filter((s) => s.mine.took).length;
+  const gate = [["40 tracked trades", st.n >= 40, `${st.n} of 40`], ["Net profitable after costs", st.total > 0, `${st.total >= 0 ? "+" : ""}${st.total.toFixed(1)}R`], ["Profit factor 1.5 or better", st.pf >= 1.5, st.n ? (st.pf === Infinity ? "no losses yet" : st.pf.toFixed(2)) : "n/a"], ["Worst fall 10% or less", st.dd <= 10, `${st.dd.toFixed(1)}%`]];
+  return `<div class="card"><h2>Tested on history</h2><h3>Did not pass</h3>
+    <p class="mute small">Before the app was built, the rules were written down, then run on 2015 to 2020 prices with realistic costs and slow, by-hand fills. The pass marks were fixed in advance.</p>
+    <div class="kv"><span>These tickets (plan A2)</span><span>129 trades in 6 years</span></div>
+    <div class="kv"><span>Average per trade</span><span>-0.01R to +0.05R</span></div>
+    <div class="kv"><span>Profit factor</span><span>0.98 to 1.09</span></div>
+    <div class="kv"><span>Needed to pass</span><span>150 trades, 1.15</span></div>
+    <div class="kv"><span>Grade A tickets only</span><span>43 trades, too few to judge</span></div>
+    <p class="mute small" style="margin-top:10px">In plain terms: about break-even, on too few trades to tell skill from luck. ICT's other hand-placed plan (the 62% retracement order) lost about a tenth of the risk per trade over roughly 1,000 trades, so the app does not offer it. Prices from 2021 onward were never tested, because nothing earned the right to open them.</p></div>
+  <div class="card"><h2>Demo scoreboard, by the rules</h2>
+    <p class="mute small">Every ticket since you started, tracked automatically on 15-minute candles as if placed exactly as written.</p>
+    <div class="kv"><span>Finished trades</span><span>${st.n}</span></div><div class="kv"><span>Winners</span><span>${st.wins}</span></div>
+    <div class="kv"><span>Total</span><span class="${st.total > 0 ? "up" : st.total < 0 ? "down" : ""}">${st.total >= 0 ? "+" : ""}${st.total.toFixed(2)}R</span></div>
+    <div class="kv"><span>You marked as placed / skipped</span><span>${took} / ${mine.length - took}</span></div></div>
+  <div class="card"><h2>Before real money</h2><h3>${gate.every((g) => g[1]) ? "Gate met: talk to Claude before funding anything" : "Live trading is locked"}</h3>
+    <div class="bar"><i style="width:${Math.min(100, st.n / 40 * 100)}%"></i></div>
+    ${gate.map(([a, ok, v]) => `<div class="kv"><span>${ok ? "✓" : "○"} ${a}</span><span>${v}</span></div>`).join("")}
+    <p class="mute small" style="margin-top:10px">This is the gate you agreed last August. At a couple of tickets a month it will take well over a year to reach 40. That is the honest pace of this method.</p></div>`;
+}
+function viewSetup() {
+  const s = data.settings, m = data.meta || {};
+  const tick = (ok) => ok ? `<span class="chip g">Done</span>` : `<span class="chip y">To do</span>`;
+  return `<div class="card"><div class="thead"><h3 style="margin:0">1. Live prices</h3>${tick(s.hasKey)}</div>
+    <ol><li>On twelvedata.com tap <b>Get your free API key</b> and sign up (free plan, no card).</li><li>Copy the key from your dashboard and paste it below.</li></ol>
+    <input id="tdKey" placeholder="${s.hasKey ? "Key saved. Paste a new one to replace it" : "Paste your Twelve Data API key"}" autocomplete="off" autocapitalize="off"><button data-save="tdKey">Save key</button><div id="m-tdKey"></div></div>
+  <div class="card"><div class="thead"><h3 style="margin:0">2. Telegram alerts</h3>${tick(s.hasBot && s.hasChat)}</div>
+    <ol><li>In Telegram search for <b>@BotFather</b> (blue tick) and send <b>/newbot</b>.</li><li>Give it any name, then a username ending in <b>bot</b>.</li><li>BotFather replies with a long token. Copy it and paste it below, then Save.</li><li>Open your new bot in Telegram and press <b>Start</b>.</li><li>Come back here and tap <b>Connect</b>. A test message should arrive.</li></ol>
+    <input id="tgToken" placeholder="${s.hasBot ? "Token saved. Paste a new one to replace it" : "Paste the bot token"}" autocomplete="off" autocapitalize="off"><div class="btns" style="margin-top:0"><button data-save="tgToken">Save token</button><button class="ghost" id="connect">Connect</button></div><div id="m-tgToken"></div></div>
+  <div class="card"><h3>3. Account</h3><label>Balance the tickets are sized for (£). Use what you plan to trade live, not the demo's balance.</label><input id="balance" inputmode="numeric" value="${s.balance}"><button data-save="balance">Save balance</button><div id="m-balance"></div>
+    <div class="kv" style="margin-top:12px"><span>Risk per trade</span><span>1% (£${(s.balance / 100).toFixed(2)})</span></div><div class="kv"><span>Most trades a day</span><span>2</span></div><div class="kv"><span>Stop for the day at</span><span>-2%</span></div>
+    <div class="btns"><button class="ghost ${s.alerts ? "on" : ""}" id="alerts">${s.alerts ? "Alerts on" : "Alerts off"}</button><button class="ghost" id="scan">Scan now</button></div><div id="m-scan"></div></div>
+  <div class="card"><h3>4. Put it on your Home Screen</h3><ol><li>In Safari tap the <b>Share</b> button.</li><li>Choose <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol></div>
+  <div class="card small mute"><b style="color:var(--text)">Last scan:</b> ${m.time ? `${ukTime(m.time, true)} UK. ${esc(m.note || "")}` : "none yet."}<br>The scanner runs every 15 minutes from Sunday night to Friday night and uses about 384 of the free plan's 800 daily requests.
+    <div style="margin-top:12px"><button class="ghost" id="logout">Lock this device</button></div></div>`;
+}
+function bind() {
+  for (const r of document.querySelectorAll("[data-copy]")) r.onclick = () => r.dataset.copy !== "skip" && copy(r.dataset.copy, r);
+  for (const a of document.querySelectorAll("[data-go]")) a.onclick = (e) => { e.preventDefault(); tab = a.dataset.go; render(); window.scrollTo(0, 0); };
+  for (const i of document.querySelectorAll("[data-open]")) i.onclick = () => { location.hash = "t=" + encodeURIComponent(i.dataset.open); tab = "now"; render(); window.scrollTo(0, 0); };
+  for (const b of document.querySelectorAll("[data-mine]")) b.onclick = async () => { try { await api("mine", { id: b.dataset.id, took: b.dataset.mine === "1" }); toast("Noted"); refresh(true); } catch (e) { toast(e.message); } };
+  const msg = (id, text, ok) => { const el = $("#m-" + id); if (el) el.innerHTML = `<div class="${ok ? "okmsg" : "err"}">${esc(text)}</div>`; };
+  for (const b of document.querySelectorAll("[data-save]")) b.onclick = async () => {
+    const k = b.dataset.save, v = $("#" + k).value.trim(); if (!v) return msg(k, "Nothing to save.");
+    b.disabled = true;
+    try { await api("settings", { [k]: k === "balance" ? Number(v) : v }); if (k === "tdKey") { msg(k, "Saved. Running the first scan…", true); const r = await api("scan", { force: true }); msg(k, r.ok ? "Saved, and the first scan worked." : r.note, r.ok); } else msg(k, "Saved.", true); await refresh(true); }
+    catch (e) { msg(k, e.message); } b.disabled = false;
+  };
+  const on = (id, fn) => { const el = $("#" + id); if (el) el.onclick = fn; };
+  on("connect", async () => { try { const r = await api("telegram", {}); msg("tgToken", `Connected to @${r.bot}. Check Telegram for the test message.`, true); refresh(true); } catch (e) { msg("tgToken", e.message); } });
+  on("alerts", async () => { await api("settings", { alerts: !data.settings.alerts }); refresh(); });
+  on("scan", async () => { const el = $("#scan"); el.disabled = true; try { const r = await api("scan", { force: true }); msg("scan", r.ok ? "Scan finished." : r.note, r.ok); await refresh(true); } catch (e) { msg("scan", e.message); } el.disabled = false; });
+  on("logout", () => { pass = ""; LS.del("fx-pass"); boot(); });
+  const want = (location.hash.match(/t=([^&]+)/) || [])[1];
+  if (want && tab === "now") { const el = document.getElementById("t-" + decodeURIComponent(want)); if (el && !bind.jumped) { bind.jumped = true; el.scrollIntoView({ block: "start" }); } }
+}
+boot();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# FX Desk - one Netlify site: the phone page, the API and the scheduled scanner.
+# The deploy root is fxdesk/ so the functions can import the shared rules in core/.
+[build]
+  publish = "app/public"
+  command = "echo 'static page, nothing to build'"
+
+[functions]
+  directory = "app/netlify/functions"
+  node_bundler = "esbuild"
