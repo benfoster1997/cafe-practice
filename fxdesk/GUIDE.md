@@ -9,14 +9,18 @@ full setup appears. You copy the ticket into MetaTrader 5 by hand, on your
 ## The honest part first
 
 - These rules **did not pass** their test on 2015 to 2020 prices. They came
-  out at about break-even, on too few trades to tell skill from luck
-  (`research/RESULTS.md`). ICT's other hand-placed plan lost money clearly,
-  so the app leaves it out.
+  out at about zero, on too few trades to tell skill from luck, and the
+  answer moved with the price feed (`research/RESULTS.md`). Our mechanical
+  version of ICT's 62% retracement plan lost money clearly, so the app
+  leaves it out.
 - So treat every ticket as **practice**. The app keeps score for you. Real
   money stays locked until the demo record earns it.
-- Expect it to be **quiet**: roughly two tickets a month. Most days the
-  answer is "no trade". That is how this method behaves when nothing is
+- Expect it to be **quiet**: about one or two tickets a month. Most days
+  the answer is "no trade". That is how this method behaves when nothing is
   fudged.
+- You will **miss some**. The test assumed every alert is acted on within
+  three minutes. Alerts for the London session arrive 07:00 to 10:00 UK
+  time and New York ones 12:00 to 15:00.
 
 ## One-time setup (about 10 minutes, all on your iPhone)
 
@@ -44,11 +48,18 @@ full setup appears. You copy the ticket into MetaTrader 5 by hand, on your
    type to **Buy Limit** or **Sell Limit** as the ticket says.
 3. Tap each number on the ticket to copy it, and paste it into MT5:
    **Volume**, **Price**, **Stop Loss**, **Take Profit**.
-4. Tap **Place**. Then tap **I placed it** on the ticket (or **I skipped
+4. Set **Expiration** to **Specified** and enter the time the ticket gives
+   "on the MT5 clock" (MT5 runs on your broker's clock, usually two or
+   three hours ahead of UK time). If your MT5 will not take an expiry, set
+   a phone alarm and **delete the order yourself** at the UK expiry time.
+   This matters: in testing, orders left resting after their expiry lost
+   money.
+5. Tap **Place**. Then tap **I placed it** on the ticket (or **I skipped
    it**), so your own record builds up.
-5. If price has already gone through the entry, **do not chase**. Skip it.
-6. The app tells you when the entry trades, and when the trade ends. If a
-   trade is still open at the "close by" time (about 9pm UK), close it.
+6. If price has already gone through the entry, **do not chase**. Skip it.
+7. The app tells you when the entry trades, and when the trade ends. If it
+   says an order expired or was withdrawn, delete it in MT5. If a trade is
+   still open at the "close by" time (about 9pm UK), close it.
 
 ## What the screens mean
 
@@ -58,7 +69,8 @@ full setup appears. You copy the ticket into MetaTrader 5 by hand, on your
   levels they are watching.
 - **Record**: the historical test result, your demo scoreboard, and the
   four conditions for unlocking real money.
-- **Setup**: your keys, balance, alerts on or off, and "Scan now".
+- **Setup**: your keys, balance, the MT5 clock, alerts on or off, and
+  "Scan now".
 
 ## The rules the app will not break
 

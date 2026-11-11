@@ -5,7 +5,7 @@
 import { getStore } from "@netlify/blobs";
 import { type Bars } from "../../core/bars.ts";
 import { marketOpen } from "../../core/time.ts";
-import { PAIRS, fetchM15, buildUniverse, scan, sessionLabel, type SignalRec, type WatchRow } from "./engine.ts";
+import { PAIRS, fetchM15, buildUniverse, scan, sessionLabel, type SignalRec, type WatchRow, type ServerClock } from "./engine.ts";
 
 /** SHA-256 of the one-time setup code given to the owner. The code itself is not stored anywhere in the project. */
 const SETUP_HASH = "926b073fd653e65408799fc5e892dba2f50db339df720d9c03167b22ed38e9f5";
@@ -14,8 +14,8 @@ const store = () => getStore({ name: "fxdesk", consistency: "strong" });
 export async function load<T>(key: string, fallback: T): Promise<T> { const v = await store().get(key, { type: "json" }); return (v ?? fallback) as T; }
 export const save = (key: string, value: unknown) => store().setJSON(key, value);
 
-export interface Settings { tdKey: string; tgToken: string; tgChat: string; balance: number; alerts: boolean }
-export const DEFAULTS: Settings = { tdKey: "", tgToken: "", tgChat: "", balance: 500, alerts: true };
+export interface Settings { tdKey: string; tgToken: string; tgChat: string; balance: number; alerts: boolean; clock: ServerClock }
+export const DEFAULTS: Settings = { tdKey: "", tgToken: "", tgChat: "", balance: 500, alerts: true, clock: "ny7" };
 export const getSettings = async (): Promise<Settings> => ({ ...DEFAULTS, ...(await load<Partial<Settings>>("settings", {})) });
 
 export interface Meta { time: number; ok: boolean; note: string; lastBar: number; session: string; credits: number }
@@ -69,7 +69,7 @@ export async function runScan(siteUrl: string, settleMs = 0, force = false): Pro
   } catch (e) { return fail(`Price feed problem: ${(e as Error).message}`, credits); }
   now = Math.floor(Date.now() / 1000);
   const saved = await load<SignalRec[]>("signals", []);
-  const out = scan(buildUniverse(bars), saved, now, s.balance);
+  const out = scan(buildUniverse(bars), saved, now, s.balance, "GBP", s.clock);
   await save("signals", out.signals);
   await save("watch", out.watch);
   let note = "OK";

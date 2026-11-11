@@ -38,6 +38,8 @@ export interface DayInfo {
 }
 
 export interface Prep {
+  /** one pip, in price units */
+  pip: number;
   roll: Uint8Array;
   days: DayInfo[];
   /** index into `days` for every M15 bar */
@@ -68,7 +70,7 @@ export function prep(pd: PairData): Prep {
   for (let i = 0; i < n; i++) if (!roll[i]) keep.push(i);
   const pick = (a: Float64Array) => keep.map((i) => a[i]);
   const h4 = toNyAnchored(makeBars(15, pick(b.t), pick(b.o), pick(b.h), pick(b.l), pick(b.c)), 4);
-  const out: Prep = { roll, days, dayOf, h4, h4State: h4Structure(h4, P.closeMarginPips * pipSize(pd.pair)) };
+  const out: Prep = { pip: pipSize(pd.pair), roll, days, dayOf, h4, h4State: h4Structure(h4, P.closeMarginPips * pipSize(pd.pair)) };
   cache.set(pd, out);
   return out;
 }
@@ -103,26 +105,33 @@ export function prevDay(p: Prep, di: number): number {
 }
 
 export type BiasKind = "candle" | "h4";
+export type CandleWhy = "closed-above" | "closed-below" | "failed-high" | "failed-low" | "none" | "no-data";
+
+/** Comparisons allow a billionth of a price unit of floating-point residue, so "at least 2 pips" means it. */
+export const EPS = 1e-9;
 
 /**
  * Bias B1 (SPEC 4.1): yesterday's daily candle against the day before.
- *   closed above the prior high            -> bullish (the draw is higher)
- *   closed below the prior low             -> bearish
- *   took the prior high, closed back under -> bearish (failed break)
- *   took the prior low, closed back over   -> bullish
- *   anything else (inside or outside day)  -> none, no trade
+ *   closed at least 1 pip above the prior high        -> bullish (the draw is higher)
+ *   closed at least 1 pip below the prior low         -> bearish
+ *   took the prior high (by 2 pips), not the low      -> bearish (failed break)
+ *   took the prior low (by 2 pips), not the high      -> bullish
+ *   anything else (inside or outside day)             -> none, no trade
+ * The margins are the common ones in SPEC 3, so a sub-pip difference
+ * between two price feeds cannot flip the day's direction.
  */
-export function candleBias(p: Prep, di: number): number {
-  const y = prevDay(p, di); if (y < 0) return 0;
-  const q = prevDay(p, y); if (q < 0) return 0;
-  const Y = p.days[y], Q = p.days[q];
-  if (Y.close > Q.hi) return 1;
-  if (Y.close < Q.lo) return -1;
-  const tookHi = Y.hi > Q.hi, tookLo = Y.lo < Q.lo;
-  if (tookHi && !tookLo) return -1;
-  if (tookLo && !tookHi) return 1;
-  return 0;
+export function candleBiasDetail(p: Prep, di: number): { bias: number; why: CandleWhy } {
+  const y = prevDay(p, di); if (y < 0) return { bias: 0, why: "no-data" };
+  const q = prevDay(p, y); if (q < 0) return { bias: 0, why: "no-data" };
+  const Y = p.days[y], Q = p.days[q], cm = P.closeMarginPips * p.pip, sm = P.sweepMarginPips * p.pip;
+  if (Y.close >= Q.hi + cm - EPS) return { bias: 1, why: "closed-above" };
+  if (Y.close <= Q.lo - cm + EPS) return { bias: -1, why: "closed-below" };
+  const tookHi = Y.hi >= Q.hi + sm - EPS, tookLo = Y.lo <= Q.lo - sm + EPS;
+  if (tookHi && !tookLo) return { bias: -1, why: "failed-high" };
+  if (tookLo && !tookHi) return { bias: 1, why: "failed-low" };
+  return { bias: 0, why: "none" };
 }
+export const candleBias = (p: Prep, di: number): number => candleBiasDetail(p, di).bias;
 
 /** Bias at a signal instant under the chosen procedure. */
 export function biasAt(p: Prep, di: number, kind: BiasKind, signalTime: number): number {

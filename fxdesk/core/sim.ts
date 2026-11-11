@@ -328,7 +328,7 @@ export function simulate(orders: Order[], m1: Record<string, Bars>, cost: CostMo
   };
 
   // ---- main loop: one-minute steps, only over minutes where something is alive
-  let t = queue.length ? Math.floor(queue[0].signalTime / 60) * 60 : 0;
+  let t = queue.length ? Math.ceil(queue[0].signalTime / 60) * 60 : 0;
   const lastT = Math.max(...Object.values(m1).map((b) => (b.n ? b.t[b.n - 1] : 0)));
   while ((qi < queue.length || live.length) && t <= lastT) {
     while (qi < queue.length && queue[qi].signalTime <= t) {
@@ -337,7 +337,7 @@ export function simulate(orders: Order[], m1: Record<string, Bars>, cost: CostMo
       live.push({ o, state: "waiting", liveFrom: o.signalTime + rails.manualDelaySec, stop: o.stop, remaining: 1, tp1Done: false, beLiveAt: Infinity, lastNight: 0 });
     }
     if (!live.length) { // jump straight to the next signal
-      if (qi < queue.length) { t = Math.floor(queue[qi].signalTime / 60) * 60; continue; }
+      if (qi < queue.length) { t = Math.ceil(queue[qi].signalTime / 60) * 60; continue; }
       break;
     }
     rollDay(t);

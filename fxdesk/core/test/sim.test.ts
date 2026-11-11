@@ -194,3 +194,10 @@ test("a position held across the New York close pays a night's financing", () =>
   assert.equal(r.nightsHeld, 1);
   assert.ok(Math.abs(r.pnlPips - (40 - 0.5 - 0.5)) < 1e-9);
 });
+
+test("an order whose signal time is not on a whole minute is admitted on the next minute, and the loop ends", () => {
+  const eur = bars([5, [1.1005, 1.1005, 1.0998, 1.1001], [1.1001, 1.10411, 1.1001, 1.1040], 5], T0, 1.1005);
+  const r = run([buyLimit({ signalTime: T0 + 30, expireAt: T0 + 3600 })], eur);
+  assert.equal(r.trades.length, 1);
+  assert.equal(r.trades[0].exits[0].reason, "tp");
+});

@@ -1,6 +1,7 @@
 import type { Config, Context } from "@netlify/functions";
 import { nyTimeOnDay } from "../../../core/models/common.ts";
 import { tradingDay, ukHM } from "../../../core/time.ts";
+import { mt5HM } from "../../lib/engine.ts";
 import { load, save, getSettings, isClaimed, claim, checkPass, telegram, runScan, type Meta, type SignalRec, type WatchRow } from "../../lib/store.ts";
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
@@ -21,8 +22,8 @@ export default async (req: Request, context: Context) => {
     return json({
       now, meta, watch,
       windows: [{ name: "London killzone", from: uk(120), to: uk(300) }, { name: "New York killzone", from: uk(420), to: uk(600) }, { name: "Close any open trade", from: uk(960), to: uk(960) }],
-      signals: signals.slice(0, 120).map(({ order, ...rest }) => ({ ...rest, mine: journal[rest.id] })),
-      settings: { hasKey: !!s.tdKey, hasBot: !!s.tgToken, hasChat: !!s.tgChat, balance: s.balance, alerts: s.alerts },
+      signals: signals.slice(0, 120).map(({ order, ...rest }) => ({ ...rest, mine: journal[rest.id], expireMt5: mt5HM(rest.expireAt, s.clock), flatMt5: mt5HM(rest.flatAt, s.clock) })),
+      settings: { hasKey: !!s.tdKey, hasBot: !!s.tgToken, hasChat: !!s.tgChat, balance: s.balance, alerts: s.alerts, clock: s.clock, mt5Now: mt5HM(now, s.clock) },
     });
   }
   if (req.method !== "POST") return json({ error: "Not found." }, 404);
@@ -33,6 +34,7 @@ export default async (req: Request, context: Context) => {
     if (typeof body.tgToken === "string" && body.tgToken.trim()) { s.tgToken = body.tgToken.trim(); s.tgChat = ""; }
     if (Number.isFinite(+body.balance) && +body.balance >= 50) s.balance = Math.round(+body.balance);
     if (typeof body.alerts === "boolean") s.alerts = body.alerts;
+    if (["ny7", "utc", "uk"].includes(body.clock)) s.clock = body.clock;
     await save("settings", s);
     return json({ ok: true });
   }

@@ -46,7 +46,7 @@ ol,ul{margin:0 0 6px;padding-left:20px;color:var(--mute);font-size:14px}li{margi
 button,.btn{appearance:none;border:0;border-radius:12px;min-height:48px;padding:0 14px;font:600 15.5px/1 inherit;font-family:inherit;color:#fff;background:var(--acc);cursor:pointer;width:100%}
 button.ghost{background:var(--card2);color:var(--text)}button.on{outline:2px solid var(--buy);background:rgba(47,211,159,.14);color:var(--buy)}
 button:disabled{opacity:.5}
-input{width:100%;min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--card2);color:var(--text);font:16px inherit;font-family:inherit;padding:0 12px;margin:6px 0 10px}
+input,select{width:100%;min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--card2);color:var(--text);font:16px inherit;font-family:inherit;padding:0 12px;margin:6px 0 10px}
 label{font-size:13px;color:var(--mute)}
 .kv{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--line);font-size:14px}.kv:first-of-type{border-top:0}
 .kv span:last-child{font-family:var(--mono);text-align:right}
@@ -145,10 +145,10 @@ function ticket(s, open) {
   const buy = s.dir > 0, [label, cls] = STATUS[s.status] || [s.status, ""], live = s.status === "pending" || s.status === "open";
   const rows = [["Volume", "lots", s.lots ? s.lots.toFixed(2) : "skip"], ["Price", "your entry", px(s.pair, s.entry)], ["Stop Loss", s.riskPips + " pips", px(s.pair, s.stop)], ["Take Profit", s.rewardPips + " pips", px(s.pair, s.tp)]];
   return `<div class="card" id="t-${esc(s.id)}">
-    <div class="thead"><span class="side ${buy ? "buy" : "sell"}">${buy ? "BUY LIMIT" : "SELL LIMIT"}</span><span class="pair">${s.pair}</span><span class="chip ${cls}">${label}</span><span class="chip">Grade ${s.grade}</span>${s.backfilled ? `<span class="chip">history</span>` : ""}</div>
+    <div class="thead"><span class="side ${buy ? "buy" : "sell"}">${buy ? "BUY LIMIT" : "SELL LIMIT"}</span><span class="pair">${s.pair}</span><span class="chip ${cls}">${label}</span>${s.backfilled ? `<span class="chip">history</span>` : ""}</div>
     ${rows.map(([a, b, v]) => `<div class="row" data-copy="${v}"><div class="lab">${a}<small>${b}</small></div><div class="val">${v}</div><div class="cp">Copy</div></div>`).join("")}
     <div class="meta">${esc(s.statusNote || "")}${s.r !== undefined ? ` Result by the rules: <b class="${s.r > 0 ? "up" : s.r < 0 ? "down" : ""}">${s.r > 0 ? "+" : ""}${s.r}R</b>.` : ""}<br>
-      Signal ${ukTime(s.signalTime, true)} UK. ${live ? `Order expires <b>${ukTime(s.expireAt)}</b> UK. Close anything still open at <b>${ukTime(s.flatAt)}</b> UK. ` : ""}Risk about £${(s.riskMoney || 0).toFixed(2)}.</div>
+      Signal ${ukTime(s.signalTime, true)} UK. ${live ? `Order expires <b>${ukTime(s.expireAt)}</b> UK (<b>${s.expireMt5}</b> on the MT5 clock). Close anything still open at <b>${ukTime(s.flatAt)}</b> UK. ` : ""}Risk about £${(s.riskMoney || 0).toFixed(2)}.</div>
     ${!s.lots ? `<p class="err">The stop is too wide to size at 1% on your balance. Skip this one.</p>` : ""}
     <details ${open ? "open" : ""}><summary>Why this trade</summary><ul>${s.reasons.map((r) => `<li>${esc(r)}</li>`).join("")}</ul></details>
     ${live ? `<details><summary>How to place it in MT5</summary><ol>
@@ -156,7 +156,8 @@ function ticket(s, open) {
       <li>Go to <b>Quotes</b>, tap <b>${s.pair}</b>, then <b>Trade</b> (or use the + on the Trade tab).</li>
       <li>Change the order type from Market Execution to <b>${buy ? "Buy Limit" : "Sell Limit"}</b>.</li>
       <li>Type or paste the <b>Volume</b>, <b>Price</b>, <b>Stop Loss</b> and <b>Take Profit</b> from this ticket. Tap a number here to copy it.</li>
-      <li>Set <b>Expiration</b> to ${ukTime(s.expireAt)} UK if MT5 offers it, then tap <b>Place</b>.</li>
+      <li>Set <b>Expiration</b> to <b>Specified</b> and enter <b>${s.expireMt5}</b> today. That is MT5's own clock; it is ${ukTime(s.expireAt)} UK. Then tap <b>Place</b>.</li>
+      <li>If MT5 will not take an expiry, set an alarm and <b>delete the order yourself at ${ukTime(s.expireAt)} UK</b>. In testing, orders left resting after their expiry lost money.</li>
       <li>If price has already gone through the entry price, <b>do not chase it</b>. Skip.</li>
       <li>If the trade is still open at ${ukTime(s.flatAt)} UK, close it by hand.</li></ol>
       <p class="mute small">Your broker's prices can differ from these by a pip or two. That is normal.</p></details>` : ""}
@@ -173,7 +174,7 @@ function viewNow() {
   if (!data.settings.hasKey) h += `<div class="card"><h3>Not set up yet</h3><p class="mute">Add your free price-feed key in Setup and the app will start scanning.</p><button data-go="setup">Open Setup</button></div>`;
   h += live.map((s) => ticket(s, true)).join("");
   if (linked) h += ticket(linked, true);
-  if (!live.length) h += `<div class="card"><h3>No trade right now</h3><p class="mute">That is the normal state. These rules fire a couple of times a month across four pairs, and only inside the killzones.</p>
+  if (!live.length) h += `<div class="card"><h3>No trade right now</h3><p class="mute">That is the normal state. These rules fire about once or twice a month across four pairs, and only inside the killzones.</p>
     ${w.map((x) => `<div class="kv"><span>${x.name}</span><span>${x.from === x.to ? x.from : x.from + " to " + x.to} UK</span></div>`).join("")}</div>`;
   if (rest.length) h += `<div class="card"><h2>Earlier tickets</h2>${rest.map((s) => { const [l, c] = STATUS[s.status] || [s.status, ""]; return `<div class="item" data-open="${esc(s.id)}"><span><b>${s.pair}</b> ${s.dir > 0 ? "buy" : "sell"} <span class="mute">${ukTime(s.signalTime, true)}</span>${s.backfilled ? ` <span class="mute">(history)</span>` : ""}</span><span class="chip ${c}">${l}${s.r !== undefined ? ` ${s.r > 0 ? "+" : ""}${s.r}R` : ""}</span></div>`; }).join("")}</div>`;
   return h;
@@ -197,22 +198,23 @@ function viewRecord() {
   const mine = data.signals.filter((s) => s.mine), took = mine.filter((s) => s.mine.took).length;
   const gate = [["40 tracked trades", st.n >= 40, `${st.n} of 40`], ["Net profitable after costs", st.total > 0, `${st.total >= 0 ? "+" : ""}${st.total.toFixed(1)}R`], ["Profit factor 1.5 or better", st.pf >= 1.5, st.n ? (st.pf === Infinity ? "no losses yet" : st.pf.toFixed(2)) : "n/a"], ["Worst fall 10% or less", st.dd <= 10, `${st.dd.toFixed(1)}%`]];
   return `<div class="card"><h2>Tested on history</h2><h3>Did not pass</h3>
-    <p class="mute small">Before the app was built, the rules were written down, then run on 2015 to 2020 prices with realistic costs and slow, by-hand fills. The pass marks were fixed in advance.</p>
-    <div class="kv"><span>These tickets (plan A2)</span><span>129 trades in 6 years</span></div>
-    <div class="kv"><span>Average per trade</span><span>-0.01R to +0.05R</span></div>
-    <div class="kv"><span>Profit factor</span><span>0.98 to 1.09</span></div>
+    <p class="mute small">Before the app was built, the rules were written down, then run on 2015 to 2020 prices with realistic costs and slow, by-hand fills. The pass marks were fixed in advance, and three independent reviewers then checked the code.</p>
+    <div class="kv"><span>These tickets</span><span>89 trades in 6 years</span></div>
+    <div class="kv"><span>Average per trade</span><span>-0.07R to +0.04R</span></div>
+    <div class="kv"><span>Profit factor</span><span>0.89 to 1.06</span></div>
     <div class="kv"><span>Needed to pass</span><span>150 trades, 1.15</span></div>
-    <div class="kv"><span>Grade A tickets only</span><span>43 trades, too few to judge</span></div>
-    <p class="mute small" style="margin-top:10px">In plain terms: about break-even, on too few trades to tell skill from luck. ICT's other hand-placed plan (the 62% retracement order) lost about a tenth of the risk per trade over roughly 1,000 trades, so the app does not offer it. Prices from 2021 onward were never tested, because nothing earned the right to open them.</p></div>
+    <div class="kv"><span>Read through a second price feed, ten times</span><span>-0.20R to +0.28R</span></div>
+    <p class="mute small" style="margin-top:10px">In plain terms: about zero, on too few trades to tell skill from luck, and the answer moves with the price feed. The app reads a different feed from the test, and your broker's is a third. Our mechanical stand-in for ICT's 62% retracement plan (his order ticket, on a swing rule of our own) lost about a tenth of the risk per trade over roughly 1,000 trades, so the app does not offer it. Prices from 2021 onward were never tested, because nothing earned the right to open them.</p></div>
   <div class="card"><h2>Demo scoreboard, by the rules</h2>
-    <p class="mute small">Every ticket since you started, tracked automatically on 15-minute candles as if placed exactly as written.</p>
+    <p class="mute small">Every ticket since you started, tracked automatically on 15-minute candles as if placed and cancelled exactly as written.</p>
     <div class="kv"><span>Finished trades</span><span>${st.n}</span></div><div class="kv"><span>Winners</span><span>${st.wins}</span></div>
     <div class="kv"><span>Total</span><span class="${st.total > 0 ? "up" : st.total < 0 ? "down" : ""}">${st.total >= 0 ? "+" : ""}${st.total.toFixed(2)}R</span></div>
     <div class="kv"><span>You marked as placed / skipped</span><span>${took} / ${mine.length - took}</span></div></div>
-  <div class="card"><h2>Before real money</h2><h3>${gate.every((g) => g[1]) ? "Gate met: talk to Claude before funding anything" : "Live trading is locked"}</h3>
+  <div class="card"><h2>Before real money</h2><h3>Live trading is locked</h3>
+    <p class="mute small">These rules failed their historical test, so a good demo run would not be enough on its own: rules with no edge at all meet this 40-trade gate about one time in five by luck. Treat the list below as a minimum, not a green light.</p>
     <div class="bar"><i style="width:${Math.min(100, st.n / 40 * 100)}%"></i></div>
     ${gate.map(([a, ok, v]) => `<div class="kv"><span>${ok ? "✓" : "○"} ${a}</span><span>${v}</span></div>`).join("")}
-    <p class="mute small" style="margin-top:10px">This is the gate you agreed last August. At a couple of tickets a month it will take well over a year to reach 40. That is the honest pace of this method.</p></div>`;
+    <p class="mute small" style="margin-top:10px">At about one trade a month it would take around three years to reach 40. That is the honest pace of this method.</p></div>`;
 }
 function viewSetup() {
   const s = data.settings, m = data.meta || {};
@@ -224,6 +226,8 @@ function viewSetup() {
     <ol><li>In Telegram search for <b>@BotFather</b> (blue tick) and send <b>/newbot</b>.</li><li>Give it any name, then a username ending in <b>bot</b>.</li><li>BotFather replies with a long token. Copy it and paste it below, then Save.</li><li>Open your new bot in Telegram and press <b>Start</b>.</li><li>Come back here and tap <b>Connect</b>. A test message should arrive.</li></ol>
     <input id="tgToken" placeholder="${s.hasBot ? "Token saved. Paste a new one to replace it" : "Paste the bot token"}" autocomplete="off" autocapitalize="off"><div class="btns" style="margin-top:0"><button data-save="tgToken">Save token</button><button class="ghost" id="connect">Connect</button></div><div id="m-tgToken"></div></div>
   <div class="card"><h3>3. Account</h3><label>Balance the tickets are sized for (£). Use what you plan to trade live, not the demo's balance.</label><input id="balance" inputmode="numeric" value="${s.balance}"><button data-save="balance">Save balance</button><div id="m-balance"></div>
+    <label style="display:block;margin-top:12px">MT5 clock (used for the order's Expiration time). Now showing <b style="color:var(--text)">${s.mt5Now}</b>. Open any MT5 chart: if its newest candle shows a different hour, change this.</label>
+    <select id="clock"><option value="ny7" ${s.clock === "ny7" ? "selected" : ""}>Most brokers (2 to 3 hours ahead of UK)</option><option value="utc" ${s.clock === "utc" ? "selected" : ""}>UTC / GMT</option><option value="uk" ${s.clock === "uk" ? "selected" : ""}>Same as UK time</option></select>
     <div class="kv" style="margin-top:12px"><span>Risk per trade</span><span>1% (£${(s.balance / 100).toFixed(2)})</span></div><div class="kv"><span>Most trades a day</span><span>2</span></div><div class="kv"><span>Stop for the day at</span><span>-2%</span></div>
     <div class="btns"><button class="ghost ${s.alerts ? "on" : ""}" id="alerts">${s.alerts ? "Alerts on" : "Alerts off"}</button><button class="ghost" id="scan">Scan now</button></div><div id="m-scan"></div></div>
   <div class="card"><h3>4. Put it on your Home Screen</h3><ol><li>In Safari tap the <b>Share</b> button.</li><li>Choose <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol></div>
@@ -244,6 +248,7 @@ function bind() {
   };
   const on = (id, fn) => { const el = $("#" + id); if (el) el.onclick = fn; };
   on("connect", async () => { try { const r = await api("telegram", {}); msg("tgToken", `Connected to @${r.bot}. Check Telegram for the test message.`, true); refresh(true); } catch (e) { msg("tgToken", e.message); } });
+  const clk = $("#clock"); if (clk) clk.onchange = async () => { try { await api("settings", { clock: clk.value }); toast("Saved"); refresh(true); } catch (e) { toast(e.message); } };
   on("alerts", async () => { await api("settings", { alerts: !data.settings.alerts }); refresh(); });
   on("scan", async () => { const el = $("#scan"); el.disabled = true; try { const r = await api("scan", { force: true }); msg("scan", r.ok ? "Scan finished." : r.note, r.ok); await refresh(true); } catch (e) { msg("scan", e.message); } el.disabled = false; });
   on("logout", () => { pass = ""; LS.del("fx-pass"); boot(); });

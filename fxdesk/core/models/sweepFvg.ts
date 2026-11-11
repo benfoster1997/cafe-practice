@@ -23,12 +23,12 @@ import { type Order } from "../sim.ts";
 import { type ModelDef, type PairData } from "../model.ts";
 import { pipSize, roundPrice } from "../pairs.ts";
 import { daysFromCivil, dowFromDays } from "../time.ts";
-import { P, prep, prevDay, biasAt, WINDOWS, isBlackout, idxAt, sessionHL, nyTimeOnDay, ceilPip, floorPip, type BiasKind, type Prep, type DayInfo, type Win } from "./common.ts";
+import { P, EPS, prep, prevDay, biasAt, WINDOWS, isBlackout, idxAt, sessionHL, nyTimeOnDay, ceilPip, floorPip, type BiasKind, type Prep, type DayInfo, type Win } from "./common.ts";
 import { isFomcDay, isNfpDay } from "./calendar.ts";
 
 export interface SweepCfg { bias: BiasKind; gap: "any" | "discount"; target: "2R" | "liquidity" }
 
-/** Model A parameters (tags in SPEC 6.9). */
+/** Model A parameters (tags in the table at the end of SPEC section 6). */
 export const A = {
   /** how far back the pre-sweep swing high may be (M15 candles) - OURS */
   swingLookback: 20,
@@ -63,7 +63,7 @@ function scan(pd: PairData, p: Prep, di: number, win: Win, dir: 1 | -1, cfg: Swe
 
   // --- liquidity pools on the side we expect to be raided (SPEC 6.2)
   const pools: Array<{ name: string; level: number }> = [];
-  const untouched = (level: number, from: number, to: number) => { for (let k = from; k < to; k++) if (!p.roll[k] && L(k) < level - margin) return false; return true; };
+  const untouched = (level: number, from: number, to: number) => { for (let k = from; k < to; k++) if (!p.roll[k] && L(k) <= level - margin + EPS) return false; return true; };
   if (untouched(lowOf(Y), day.first, i0)) pools.push({ name: "previous day", level: lowOf(Y) });
   if (asia.n >= 8 && (win.id === "LON" || untouched(lowOf(asia), iMid, i0))) pools.push({ name: "Asian range", level: lowOf(asia) });
   if (lon && lon.n >= 12) pools.push({ name: "London session", level: lowOf(lon) });
@@ -76,7 +76,7 @@ function scan(pd: PairData, p: Prep, di: number, win: Win, dir: 1 | -1, cfg: Swe
       if (p.roll[i]) continue;
       const lo = L(i), cl = C(i);
       // --- the sweep: price trades beyond the pool by the margin (SPEC 6.3)
-      if (sStart < 0) { if (lo < level - margin) { sStart = i; E = lo; eIdx = i; } continue; }
+      if (sStart < 0) { if (lo <= level - margin + EPS) { sStart = i; E = lo; eIdx = i; } continue; }
       // a lower low moves the sweep extreme and restarts the hunt for a shift
       if (lo < E) { E = lo; eIdx = i; m = -1; continue; }
       // --- structure shift: close above the last swing high that stood before the sweep low (SPEC 6.4)
@@ -86,7 +86,7 @@ function scan(pd: PairData, p: Prep, di: number, win: Win, dir: 1 | -1, cfg: Swe
           if (p.roll[j - 1] || p.roll[j] || p.roll[j + 1]) continue;
           if (H(j) > H(j - 1) && H(j) > H(j + 1)) { r = j; break; }
         }
-        if (r >= 0 && cl > H(r) + closeMargin) m = i;
+        if (r >= 0 && cl >= H(r) + closeMargin - EPS) m = i;
       }
       if (m < 0) continue;
       if (i > m + 1) break;
@@ -108,7 +108,8 @@ function scan(pd: PairData, p: Prep, di: number, win: Win, dir: 1 | -1, cfg: Swe
       if (Number.isNaN(top) || cl <= entryT + closeMargin) { if (i === m + 1) break; continue; }
       // --- time gate (SPEC 5): the completed sequence must land inside the killzone, outside the news blackout
       const mod = pd.ci.mod[i];
-      if (mod < win.sigFrom || isBlackout(mod)) break;
+      // a sequence that completes on a candle that may not signal can still signal on the next one (SPEC 6.5)
+      if (mod < win.sigFrom || isBlackout(mod)) { if (i === m + 1) break; continue; }
       // --- order (SPEC 6.6-6.8)
       let stopT = floorPip(E - (P.stopBufferPips + (dir < 0 ? P.askAllowancePips : 0)) * pip, pip);
       if (entryT - stopT < A.minStopPips * pip - 1e-9) stopT = entryT - A.minStopPips * pip;
@@ -117,14 +118,17 @@ function scan(pd: PairData, p: Prep, di: number, win: Win, dir: 1 | -1, cfg: Swe
       let tpT = NaN, tpWhy = `${A.fixedR}R`;
       if (cfg.target === "2R") tpT = floorPip(entryT + A.fixedR * risk, pip);
       else {
-        let hiSoFar = -Infinity;
-        for (let k = day.first; k < sStart; k++) if (!p.roll[k]) hiSoFar = Math.max(hiSoFar, H(k));
+        // SPEC 6.8(b): the NEAREST pool above that is still standing; used only if it is 1.5R to 4R away.
+        let hiSoFar = -Infinity, dayHigh = -Infinity;
+        for (let k = day.first; k <= i; k++) if (!p.roll[k]) { if (k < sStart) hiSoFar = Math.max(hiSoFar, H(k)); dayHigh = Math.max(dayHigh, H(k)); }
         const cands: Array<[number, string]> = [[highOf(Y), "previous day"], [asia.n >= 8 ? highOf(asia) : NaN, "Asian range"], [lon && lon.n >= 12 ? highOf(lon) : NaN, "London session"], [hiSoFar, "today so far"]];
+        let nearest = NaN;
         for (const [lv, why] of cands) {
-          const t = floorPip(lv - P.targetCushionPips * pip, pip);
-          if (!(t >= entryT + A.minLiqR * risk - 1e-9) || t > entryT + A.maxLiqR * risk + 1e-9) continue;
-          if (Number.isNaN(tpT) || t < tpT) { tpT = t; tpWhy = why; }
+          if (!Number.isFinite(lv) || dayHigh >= lv + margin - EPS) continue; // already taken today: no longer a draw
+          if (Number.isNaN(nearest) || lv < nearest) { nearest = lv; tpWhy = why; }
         }
+        const t = floorPip(nearest - P.targetCushionPips * pip, pip);
+        if (!Number.isNaN(nearest) && t >= entryT + A.minLiqR * risk - EPS && t <= entryT + A.maxLiqR * risk + EPS) tpT = t;
         if (Number.isNaN(tpT)) break; // no nameable draw at a sensible distance: no trade
       }
       const px = (t: number) => roundPrice(pd.pair, dir * t);

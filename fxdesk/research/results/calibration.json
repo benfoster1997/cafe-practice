@@ -1,3318 +1,5106 @@
-[
- {
-  "model": "A",
-  "config": "A1",
-  "cost": "raw",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 511,
-  "stats": {
-   "n": 260,
-   "wins": 95,
-   "winRatePct": 36.5,
-   "expectancyR": -0.142,
-   "totalR": -36.87,
-   "profitFactor": 0.78,
-   "avgWinR": 1.34,
-   "avgLossR": -0.995,
-   "maxDrawdownR": 45.78,
-   "maxDrawdownPct": 32.3,
-   "longestLosingStreak": 11,
-   "tStat": -1.87,
-   "ci95": [
-    -0.285,
-    0.011
-   ],
-   "tradesPerMonth": 3.6,
-   "avgHoldHours": 4.5
+{
+ "phase": "calibration",
+ "from": "2015-01-05",
+ "to": "2021-01-01",
+ "rows": [
+  {
+   "model": "A",
+   "config": "A1",
+   "cost": "raw",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 518,
+   "stats": {
+    "n": 271,
+    "wins": 102,
+    "winRatePct": 37.6,
+    "expectancyR": -0.115,
+    "totalR": -31.06,
+    "profitFactor": 0.81,
+    "avgWinR": 1.34,
+    "avgLossR": -0.992,
+    "maxDrawdownR": 41.89,
+    "maxDrawdownPct": 29.9,
+    "longestLosingStreak": 10,
+    "tStat": -1.53,
+    "ci95": [
+     -0.258,
+     0.026
+    ],
+    "tradesPerMonth": 3.8,
+    "avgHoldHours": 4.5
+   },
+   "byYear": {
+    "2015": {
+     "n": 54,
+     "totalR": 3.54,
+     "expectancyR": 0.065,
+     "winRatePct": 46.3,
+     "profitFactor": 1.12
+    },
+    "2016": {
+     "n": 41,
+     "totalR": -6.25,
+     "expectancyR": -0.153,
+     "winRatePct": 34.1,
+     "profitFactor": 0.78
+    },
+    "2017": {
+     "n": 42,
+     "totalR": -21.34,
+     "expectancyR": -0.508,
+     "winRatePct": 23.8,
+     "profitFactor": 0.36
+    },
+    "2018": {
+     "n": 46,
+     "totalR": -8.64,
+     "expectancyR": -0.188,
+     "winRatePct": 37,
+     "profitFactor": 0.7
+    },
+    "2019": {
+     "n": 43,
+     "totalR": 5.27,
+     "expectancyR": 0.123,
+     "winRatePct": 48.8,
+     "profitFactor": 1.3
+    },
+    "2020": {
+     "n": 45,
+     "totalR": -3.63,
+     "expectancyR": -0.081,
+     "winRatePct": 33.3,
+     "profitFactor": 0.88
+    }
+   },
+   "byPair": {
+    "USDJPY": {
+     "n": 49,
+     "totalR": -6.22,
+     "expectancyR": -0.127,
+     "winRatePct": 36.7,
+     "profitFactor": 0.8
+    },
+    "EURUSD": {
+     "n": 80,
+     "totalR": -22.38,
+     "expectancyR": -0.28,
+     "winRatePct": 30,
+     "profitFactor": 0.6
+    },
+    "AUDUSD": {
+     "n": 48,
+     "totalR": -3.94,
+     "expectancyR": -0.082,
+     "winRatePct": 43.8,
+     "profitFactor": 0.85
+    },
+    "GBPUSD": {
+     "n": 94,
+     "totalR": 1.48,
+     "expectancyR": 0.016,
+     "winRatePct": 41.5,
+     "profitFactor": 1.03
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 151,
+     "totalR": -161.02,
+     "expectancyR": -1.066,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 54,
+     "totalR": 105.85,
+     "expectancyR": 1.96,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "time": {
+     "n": 66,
+     "totalR": 24.11,
+     "expectancyR": 0.365,
+     "winRatePct": 72.7,
+     "profitFactor": 4.6
+    }
+   },
+   "rolling": {
+    "negative": 15,
+    "total": 21
+   },
+   "skipped": {
+    "cancelled_level": 67,
+    "expired": 129,
+    "missed_before_live": 38,
+    "currency_exposure": 13
+   },
+   "endBalance": 378.2
   },
-  "byYear": {
-   "2015": {
-    "n": 51,
-    "totalR": -2.17,
-    "expectancyR": -0.043,
-    "winRatePct": 43.1,
-    "profitFactor": 0.93
-   },
-   "2016": {
-    "n": 41,
-    "totalR": -3.23,
-    "expectancyR": -0.079,
-    "winRatePct": 36.6,
-    "profitFactor": 0.88
-   },
-   "2017": {
-    "n": 42,
-    "totalR": -24.36,
-    "expectancyR": -0.58,
-    "winRatePct": 21.4,
-    "profitFactor": 0.29
-   },
-   "2018": {
-    "n": 42,
-    "totalR": -11.49,
-    "expectancyR": -0.274,
-    "winRatePct": 33.3,
-    "profitFactor": 0.59
-   },
-   "2019": {
-    "n": 42,
-    "totalR": 1.89,
-    "expectancyR": 0.045,
-    "winRatePct": 45.2,
-    "profitFactor": 1.1
-   },
-   "2020": {
-    "n": 42,
-    "totalR": 2.5,
-    "expectancyR": 0.059,
+  {
+   "model": "A",
+   "config": "A1",
+   "cost": "standard",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 518,
+   "stats": {
+    "n": 268,
+    "wins": 102,
     "winRatePct": 38.1,
-    "profitFactor": 1.1
-   }
-  },
-  "byPair": {
-   "USDJPY": {
-    "n": 46,
-    "totalR": -8.11,
-    "expectancyR": -0.176,
-    "winRatePct": 34.8,
-    "profitFactor": 0.73
-   },
-   "EURUSD": {
-    "n": 81,
-    "totalR": -21.1,
-    "expectancyR": -0.26,
-    "winRatePct": 30.9,
-    "profitFactor": 0.63
-   },
-   "AUDUSD": {
-    "n": 47,
-    "totalR": -1.01,
-    "expectancyR": -0.021,
-    "winRatePct": 44.7,
-    "profitFactor": 0.96
-   },
-   "GBPUSD": {
-    "n": 86,
-    "totalR": -6.66,
-    "expectancyR": -0.077,
-    "winRatePct": 38.4,
-    "profitFactor": 0.87
-   }
-  },
-  "byExit": {
-   "stop": {
-    "n": 148,
-    "totalR": -157.84,
-    "expectancyR": -1.067,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "tp": {
-    "n": 51,
-    "totalR": 99.93,
-    "expectancyR": 1.959,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "time": {
-    "n": 61,
-    "totalR": 21.04,
-    "expectancyR": 0.345,
-    "winRatePct": 72.1,
-    "profitFactor": 4.31
-   }
-  },
-  "rolling": {
-   "negative": 16,
-   "total": 21
-  },
-  "skipped": {
-   "cancelled_level": 65,
-   "expired": 132,
-   "missed_before_live": 38,
-   "currency_exposure": 16
-  },
-  "endBalance": 362.17
- },
- {
-  "model": "A",
-  "config": "A1",
-  "cost": "standard",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 511,
-  "stats": {
-   "n": 257,
-   "wins": 95,
-   "winRatePct": 37,
-   "expectancyR": -0.105,
-   "totalR": -27.02,
-   "profitFactor": 0.83,
-   "avgWinR": 1.36,
-   "avgLossR": -0.964,
-   "maxDrawdownR": 38.55,
-   "maxDrawdownPct": 27.8,
-   "longestLosingStreak": 11,
-   "tStat": -1.37,
-   "ci95": [
-    -0.252,
-    0.04
-   ],
-   "tradesPerMonth": 3.6,
-   "avgHoldHours": 4.3
-  },
-  "byYear": {
-   "2015": {
-    "n": 51,
-    "totalR": -0.91,
-    "expectancyR": -0.018,
-    "winRatePct": 43.1,
-    "profitFactor": 0.97
-   },
-   "2016": {
-    "n": 41,
-    "totalR": 0.99,
-    "expectancyR": 0.024,
-    "winRatePct": 39,
-    "profitFactor": 1.04
-   },
-   "2017": {
-    "n": 41,
-    "totalR": -23.03,
-    "expectancyR": -0.562,
-    "winRatePct": 19.5,
-    "profitFactor": 0.3
-   },
-   "2018": {
-    "n": 43,
-    "totalR": -8.96,
-    "expectancyR": -0.208,
-    "winRatePct": 34.9,
-    "profitFactor": 0.67
-   },
-   "2019": {
-    "n": 41,
-    "totalR": 1.83,
-    "expectancyR": 0.045,
-    "winRatePct": 46.3,
-    "profitFactor": 1.1
-   },
-   "2020": {
-    "n": 40,
-    "totalR": 3.05,
-    "expectancyR": 0.076,
-    "winRatePct": 37.5,
-    "profitFactor": 1.13
-   }
-  },
-  "byPair": {
-   "USDJPY": {
-    "n": 47,
-    "totalR": -6.46,
-    "expectancyR": -0.138,
-    "winRatePct": 34,
-    "profitFactor": 0.78
-   },
-   "EURUSD": {
-    "n": 78,
-    "totalR": -21.52,
-    "expectancyR": -0.276,
-    "winRatePct": 29.5,
-    "profitFactor": 0.6
-   },
-   "AUDUSD": {
-    "n": 46,
-    "totalR": 2.39,
-    "expectancyR": 0.052,
-    "winRatePct": 47.8,
-    "profitFactor": 1.1
-   },
-   "GBPUSD": {
-    "n": 86,
-    "totalR": -1.43,
-    "expectancyR": -0.017,
-    "winRatePct": 39.5,
-    "profitFactor": 0.97
-   }
-  },
-  "byExit": {
-   "stop": {
-    "n": 147,
-    "totalR": -150.92,
-    "expectancyR": -1.027,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "tp": {
-    "n": 51,
-    "totalR": 102,
-    "expectancyR": 2,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "time": {
-    "n": 59,
-    "totalR": 21.9,
-    "expectancyR": 0.371,
-    "winRatePct": 74.6,
-    "profitFactor": 5.12
-   }
-  },
-  "rolling": {
-   "negative": 13,
-   "total": 21
-  },
-  "skipped": {
-   "cancelled_level": 65,
-   "expired": 141,
-   "missed_before_live": 34,
-   "currency_exposure": 14
-  },
-  "endBalance": 385.25
- },
- {
-  "model": "A",
-  "config": "A2",
-  "cost": "raw",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 249,
-  "stats": {
-   "n": 129,
-   "wins": 51,
-   "winRatePct": 39.5,
-   "expectancyR": -0.01,
-   "totalR": -1.28,
-   "profitFactor": 0.98,
-   "avgWinR": 1.523,
-   "avgLossR": -1.012,
-   "maxDrawdownR": 13.32,
-   "maxDrawdownPct": 11.2,
-   "longestLosingStreak": 7,
-   "tStat": -0.08,
-   "ci95": [
-    -0.251,
-    0.22
-   ],
-   "tradesPerMonth": 1.8,
-   "avgHoldHours": 3.7
-  },
-  "byYear": {
-   "2015": {
-    "n": 31,
-    "totalR": -2.89,
-    "expectancyR": -0.093,
-    "winRatePct": 41.9,
-    "profitFactor": 0.85
-   },
-   "2016": {
-    "n": 22,
-    "totalR": 4.13,
-    "expectancyR": 0.188,
-    "winRatePct": 40.9,
-    "profitFactor": 1.27
-   },
-   "2017": {
-    "n": 19,
-    "totalR": -5.31,
-    "expectancyR": -0.279,
-    "winRatePct": 36.8,
-    "profitFactor": 0.58
-   },
-   "2018": {
-    "n": 19,
-    "totalR": -4.13,
-    "expectancyR": -0.218,
-    "winRatePct": 31.6,
-    "profitFactor": 0.69
-   },
-   "2019": {
-    "n": 16,
-    "totalR": 3.2,
-    "expectancyR": 0.2,
-    "winRatePct": 43.8,
-    "profitFactor": 1.52
-   },
-   "2020": {
-    "n": 22,
-    "totalR": 3.72,
-    "expectancyR": 0.169,
-    "winRatePct": 40.9,
-    "profitFactor": 1.29
-   }
-  },
-  "byPair": {
-   "USDJPY": {
-    "n": 33,
-    "totalR": -3.75,
-    "expectancyR": -0.114,
-    "winRatePct": 33.3,
-    "profitFactor": 0.82
-   },
-   "EURUSD": {
-    "n": 30,
-    "totalR": -7.17,
-    "expectancyR": -0.239,
-    "winRatePct": 30,
-    "profitFactor": 0.69
-   },
-   "AUDUSD": {
-    "n": 26,
-    "totalR": 14.3,
-    "expectancyR": 0.55,
-    "winRatePct": 61.5,
-    "profitFactor": 2.48
-   },
-   "GBPUSD": {
-    "n": 40,
-    "totalR": -4.66,
-    "expectancyR": -0.117,
-    "winRatePct": 37.5,
-    "profitFactor": 0.82
-   }
-  },
-  "byExit": {
-   "stop": {
-    "n": 71,
-    "totalR": -76.64,
-    "expectancyR": -1.079,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "tp": {
-    "n": 31,
-    "totalR": 64.65,
-    "expectancyR": 2.086,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "time": {
-    "n": 27,
-    "totalR": 10.71,
-    "expectancyR": 0.397,
-    "winRatePct": 74.1,
-    "profitFactor": 5.6
-   }
-  },
-  "rolling": {
-   "negative": 12,
-   "total": 21
-  },
-  "skipped": {
-   "expired": 65,
-   "missed_before_live": 16,
-   "cancelled_level": 35,
-   "currency_exposure": 4
-  },
-  "endBalance": 494.69
- },
- {
-  "model": "A",
-  "config": "A2",
-  "cost": "standard",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 249,
-  "stats": {
-   "n": 129,
-   "wins": 53,
-   "winRatePct": 41.1,
-   "expectancyR": 0.052,
-   "totalR": 6.7,
-   "profitFactor": 1.09,
-   "avgWinR": 1.541,
-   "avgLossR": -0.987,
-   "maxDrawdownR": 8.08,
-   "maxDrawdownPct": 6.2,
-   "longestLosingStreak": 6,
-   "tStat": 0.42,
-   "ci95": [
-    -0.186,
-    0.284
-   ],
-   "tradesPerMonth": 1.8,
-   "avgHoldHours": 3.6
-  },
-  "byYear": {
-   "2015": {
-    "n": 30,
-    "totalR": -3.78,
-    "expectancyR": -0.126,
-    "winRatePct": 40,
-    "profitFactor": 0.79
-   },
-   "2016": {
-    "n": 22,
-    "totalR": 8.15,
-    "expectancyR": 0.37,
-    "winRatePct": 45.5,
-    "profitFactor": 1.6
-   },
-   "2017": {
-    "n": 19,
-    "totalR": -4.5,
-    "expectancyR": -0.237,
-    "winRatePct": 36.8,
-    "profitFactor": 0.63
-   },
-   "2018": {
-    "n": 20,
-    "totalR": 0.73,
-    "expectancyR": 0.036,
-    "winRatePct": 40,
-    "profitFactor": 1.06
-   },
-   "2019": {
-    "n": 16,
-    "totalR": 1.46,
-    "expectancyR": 0.091,
-    "winRatePct": 43.8,
-    "profitFactor": 1.22
-   },
-   "2020": {
-    "n": 22,
-    "totalR": 4.64,
-    "expectancyR": 0.211,
-    "winRatePct": 40.9,
-    "profitFactor": 1.37
-   }
-  },
-  "byPair": {
-   "USDJPY": {
-    "n": 34,
-    "totalR": -1.39,
-    "expectancyR": -0.041,
-    "winRatePct": 35.3,
-    "profitFactor": 0.93
-   },
-   "EURUSD": {
-    "n": 29,
-    "totalR": -5.02,
-    "expectancyR": -0.173,
-    "winRatePct": 31,
-    "profitFactor": 0.76
-   },
-   "AUDUSD": {
-    "n": 25,
-    "totalR": 14.61,
-    "expectancyR": 0.584,
-    "winRatePct": 64,
-    "profitFactor": 2.59
-   },
-   "GBPUSD": {
-    "n": 41,
-    "totalR": -1.5,
-    "expectancyR": -0.037,
-    "winRatePct": 39,
-    "profitFactor": 0.94
-   }
-  },
-  "byExit": {
-   "stop": {
-    "n": 71,
-    "totalR": -73.63,
-    "expectancyR": -1.037,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "tp": {
-    "n": 32,
-    "totalR": 68.63,
-    "expectancyR": 2.145,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "time": {
-    "n": 26,
-    "totalR": 11.7,
-    "expectancyR": 0.45,
-    "winRatePct": 80.8,
-    "profitFactor": 9.71
-   }
-  },
-  "rolling": {
-   "negative": 8,
-   "total": 21
-  },
-  "skipped": {
-   "expired": 67,
-   "missed_before_live": 13,
-   "cancelled_level": 36,
-   "currency_exposure": 4
-  },
-  "endBalance": 528.82
- },
- {
-  "model": "A",
-  "config": "A3",
-  "cost": "raw",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 196,
-  "stats": {
-   "n": 74,
-   "wins": 32,
-   "winRatePct": 43.2,
-   "expectancyR": 0.048,
-   "totalR": 3.59,
-   "profitFactor": 1.08,
-   "avgWinR": 1.505,
-   "avgLossR": -1.062,
-   "maxDrawdownR": 14.91,
-   "maxDrawdownPct": 12.1,
-   "longestLosingStreak": 7,
-   "tStat": 0.31,
-   "ci95": [
-    -0.247,
-    0.356
-   ],
-   "tradesPerMonth": 1.1,
-   "avgHoldHours": 3.6
-  },
-  "byYear": {
-   "2015": {
-    "n": 18,
-    "totalR": -0.23,
-    "expectancyR": -0.013,
-    "winRatePct": 44.4,
-    "profitFactor": 0.98
-   },
-   "2016": {
-    "n": 9,
-    "totalR": 8.46,
-    "expectancyR": 0.94,
-    "winRatePct": 77.8,
-    "profitFactor": 3.36
-   },
-   "2017": {
-    "n": 13,
-    "totalR": -5.97,
-    "expectancyR": -0.459,
-    "winRatePct": 23.1,
-    "profitFactor": 0.42
-   },
-   "2018": {
-    "n": 11,
-    "totalR": -5.7,
-    "expectancyR": -0.518,
-    "winRatePct": 18.2,
-    "profitFactor": 0.41
-   },
-   "2019": {
-    "n": 12,
-    "totalR": 4.68,
-    "expectancyR": 0.39,
-    "winRatePct": 58.3,
-    "profitFactor": 2.02
-   },
-   "2020": {
-    "n": 11,
-    "totalR": 2.35,
-    "expectancyR": 0.214,
-    "winRatePct": 45.5,
-    "profitFactor": 1.4
-   }
-  },
-  "byPair": {
-   "AUDUSD": {
-    "n": 14,
-    "totalR": 4.87,
-    "expectancyR": 0.348,
-    "winRatePct": 57.1,
-    "profitFactor": 1.8
-   },
-   "GBPUSD": {
-    "n": 31,
-    "totalR": 5.33,
-    "expectancyR": 0.172,
-    "winRatePct": 45.2,
-    "profitFactor": 1.3
-   },
-   "EURUSD": {
-    "n": 20,
-    "totalR": -8.61,
-    "expectancyR": -0.43,
-    "winRatePct": 30,
-    "profitFactor": 0.46
-   },
-   "USDJPY": {
-    "n": 9,
-    "totalR": 1.99,
-    "expectancyR": 0.221,
-    "winRatePct": 44.4,
-    "profitFactor": 1.43
-   }
-  },
-  "byExit": {
-   "tp": {
-    "n": 21,
-    "totalR": 41.01,
-    "expectancyR": 1.953,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "stop": {
-    "n": 39,
-    "totalR": -42.87,
-    "expectancyR": -1.099,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 14,
-    "totalR": 5.45,
-    "expectancyR": 0.389,
-    "winRatePct": 78.6,
-    "profitFactor": 4.18
-   }
-  },
-  "rolling": {
-   "negative": 10,
-   "total": 21
-  },
-  "skipped": {
-   "cancelled_level": 55,
-   "expired": 58,
-   "missed_before_live": 5,
-   "currency_exposure": 4
-  },
-  "endBalance": 515.93
- },
- {
-  "model": "A",
-  "config": "A3",
-  "cost": "standard",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 196,
-  "stats": {
-   "n": 74,
-   "wins": 32,
-   "winRatePct": 43.2,
-   "expectancyR": 0.086,
-   "totalR": 6.38,
-   "profitFactor": 1.15,
-   "avgWinR": 1.538,
-   "avgLossR": -1.02,
-   "maxDrawdownR": 11.63,
-   "maxDrawdownPct": 9.5,
-   "longestLosingStreak": 6,
-   "tStat": 0.54,
-   "ci95": [
-    -0.233,
-    0.392
-   ],
-   "tradesPerMonth": 1.1,
-   "avgHoldHours": 3.6
-  },
-  "byYear": {
-   "2015": {
-    "n": 18,
-    "totalR": 0.32,
-    "expectancyR": 0.018,
-    "winRatePct": 44.4,
-    "profitFactor": 1.03
-   },
-   "2016": {
-    "n": 9,
-    "totalR": 8.78,
-    "expectancyR": 0.975,
-    "winRatePct": 77.8,
-    "profitFactor": 3.51
-   },
-   "2017": {
-    "n": 13,
-    "totalR": -5.39,
-    "expectancyR": -0.414,
-    "winRatePct": 23.1,
-    "profitFactor": 0.46
-   },
-   "2018": {
-    "n": 12,
-    "totalR": -3.17,
-    "expectancyR": -0.264,
-    "winRatePct": 25,
-    "profitFactor": 0.65
-   },
-   "2019": {
-    "n": 12,
-    "totalR": 5.14,
-    "expectancyR": 0.428,
-    "winRatePct": 58.3,
-    "profitFactor": 2.19
-   },
-   "2020": {
-    "n": 10,
-    "totalR": 0.7,
-    "expectancyR": 0.07,
-    "winRatePct": 40,
-    "profitFactor": 1.12
-   }
-  },
-  "byPair": {
-   "AUDUSD": {
-    "n": 14,
-    "totalR": 5.36,
-    "expectancyR": 0.383,
-    "winRatePct": 57.1,
-    "profitFactor": 1.92
-   },
-   "GBPUSD": {
-    "n": 32,
-    "totalR": 8.41,
-    "expectancyR": 0.263,
-    "winRatePct": 46.9,
-    "profitFactor": 1.49
-   },
-   "EURUSD": {
-    "n": 19,
-    "totalR": -9.91,
-    "expectancyR": -0.521,
-    "winRatePct": 26.3,
-    "profitFactor": 0.36
-   },
-   "USDJPY": {
-    "n": 9,
-    "totalR": 2.52,
-    "expectancyR": 0.28,
-    "winRatePct": 44.4,
-    "profitFactor": 1.58
-   }
-  },
-  "byExit": {
-   "tp": {
-    "n": 21,
-    "totalR": 42,
-    "expectancyR": 2,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "stop": {
-    "n": 39,
-    "totalR": -41.16,
-    "expectancyR": -1.055,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 14,
-    "totalR": 5.54,
-    "expectancyR": 0.396,
-    "winRatePct": 78.6,
-    "profitFactor": 4.34
-   }
-  },
-  "rolling": {
-   "negative": 9,
-   "total": 21
-  },
-  "skipped": {
-   "cancelled_level": 55,
-   "expired": 60,
-   "missed_before_live": 4,
-   "currency_exposure": 3
-  },
-  "endBalance": 523.51
- },
- {
-  "model": "A",
-  "config": "A4",
-  "cost": "raw",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 110,
-  "stats": {
-   "n": 42,
-   "wins": 17,
-   "winRatePct": 40.5,
-   "expectancyR": 0.135,
-   "totalR": 5.69,
-   "profitFactor": 1.21,
-   "avgWinR": 1.937,
-   "avgLossR": -1.089,
-   "maxDrawdownR": 8.75,
-   "maxDrawdownPct": 7.2,
-   "longestLosingStreak": 7,
-   "tStat": 0.54,
-   "ci95": [
-    -0.326,
-    0.609
-   ],
-   "tradesPerMonth": 0.6,
-   "avgHoldHours": 3.3
-  },
-  "byYear": {
-   "2015": {
-    "n": 11,
-    "totalR": -1.75,
-    "expectancyR": -0.159,
-    "winRatePct": 36.4,
-    "profitFactor": 0.76
-   },
-   "2016": {
-    "n": 8,
-    "totalR": 8.83,
-    "expectancyR": 1.104,
-    "winRatePct": 75,
-    "profitFactor": 3.46
-   },
-   "2017": {
-    "n": 5,
-    "totalR": -1.09,
-    "expectancyR": -0.218,
-    "winRatePct": 40,
-    "profitFactor": 0.66
-   },
-   "2018": {
-    "n": 8,
-    "totalR": -4.47,
-    "expectancyR": -0.559,
-    "winRatePct": 12.5,
-    "profitFactor": 0.4
-   },
-   "2019": {
-    "n": 4,
-    "totalR": 3.44,
-    "expectancyR": 0.859,
-    "winRatePct": 50,
-    "profitFactor": 3.53
-   },
-   "2020": {
-    "n": 6,
-    "totalR": 0.73,
-    "expectancyR": 0.122,
-    "winRatePct": 33.3,
-    "profitFactor": 1.17
-   }
-  },
-  "byPair": {
-   "GBPUSD": {
-    "n": 16,
-    "totalR": 1.02,
-    "expectancyR": 0.064,
-    "winRatePct": 37.5,
-    "profitFactor": 1.1
-   },
-   "EURUSD": {
-    "n": 8,
-    "totalR": -5.91,
-    "expectancyR": -0.739,
-    "winRatePct": 12.5,
-    "profitFactor": 0.33
-   },
-   "AUDUSD": {
-    "n": 11,
-    "totalR": 7.85,
-    "expectancyR": 0.713,
-    "winRatePct": 63.6,
-    "profitFactor": 2.84
-   },
-   "USDJPY": {
-    "n": 7,
-    "totalR": 2.74,
-    "expectancyR": 0.391,
-    "winRatePct": 42.9,
-    "profitFactor": 1.77
-   }
-  },
-  "byExit": {
-   "stop": {
-    "n": 24,
-    "totalR": -26.93,
-    "expectancyR": -1.122,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 5,
-    "totalR": 3,
-    "expectancyR": 0.6,
-    "winRatePct": 80,
-    "profitFactor": 10.79
-   },
-   "tp": {
-    "n": 13,
-    "totalR": 29.62,
-    "expectancyR": 2.279,
-    "winRatePct": 100,
-    "profitFactor": null
-   }
-  },
-  "rolling": {
-   "negative": 10,
-   "total": 20
-  },
-  "skipped": {
-   "expired": 32,
-   "cancelled_level": 30,
-   "missed_before_live": 4,
-   "currency_exposure": 2
-  },
-  "endBalance": 531.42
- },
- {
-  "model": "A",
-  "config": "A4",
-  "cost": "standard",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 110,
-  "stats": {
-   "n": 43,
-   "wins": 18,
-   "winRatePct": 41.9,
-   "expectancyR": 0.224,
-   "totalR": 9.61,
-   "profitFactor": 1.37,
-   "avgWinR": 1.986,
-   "avgLossR": -1.045,
-   "maxDrawdownR": 6.12,
-   "maxDrawdownPct": 5.3,
-   "longestLosingStreak": 6,
-   "tStat": 0.9,
-   "ci95": [
-    -0.271,
-    0.691
-   ],
-   "tradesPerMonth": 0.6,
-   "avgHoldHours": 3.2
-  },
-  "byYear": {
-   "2015": {
-    "n": 11,
-    "totalR": -1.34,
-    "expectancyR": -0.121,
-    "winRatePct": 36.4,
-    "profitFactor": 0.81
-   },
-   "2016": {
-    "n": 8,
-    "totalR": 9.12,
-    "expectancyR": 1.141,
-    "winRatePct": 75,
-    "profitFactor": 3.61
-   },
-   "2017": {
-    "n": 5,
-    "totalR": -0.82,
-    "expectancyR": -0.164,
-    "winRatePct": 40,
-    "profitFactor": 0.73
-   },
-   "2018": {
-    "n": 9,
-    "totalR": -2.01,
-    "expectancyR": -0.223,
-    "winRatePct": 22.2,
-    "profitFactor": 0.72
-   },
-   "2019": {
-    "n": 4,
-    "totalR": 3.67,
-    "expectancyR": 0.917,
-    "winRatePct": 50,
-    "profitFactor": 3.92
-   },
-   "2020": {
-    "n": 6,
-    "totalR": 0.98,
-    "expectancyR": 0.164,
-    "winRatePct": 33.3,
-    "profitFactor": 1.24
-   }
-  },
-  "byPair": {
-   "GBPUSD": {
-    "n": 17,
-    "totalR": 3.71,
-    "expectancyR": 0.218,
-    "winRatePct": 41.2,
-    "profitFactor": 1.37
-   },
-   "EURUSD": {
-    "n": 8,
-    "totalR": -5.58,
-    "expectancyR": -0.698,
-    "winRatePct": 12.5,
-    "profitFactor": 0.35
-   },
-   "AUDUSD": {
-    "n": 11,
-    "totalR": 8.31,
-    "expectancyR": 0.755,
-    "winRatePct": 63.6,
-    "profitFactor": 3.04
-   },
-   "USDJPY": {
-    "n": 7,
-    "totalR": 3.18,
-    "expectancyR": 0.454,
-    "winRatePct": 42.9,
-    "profitFactor": 1.96
-   }
-  },
-  "byExit": {
-   "stop": {
-    "n": 24,
-    "totalR": -25.89,
-    "expectancyR": -1.079,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 5,
-    "totalR": 3.13,
-    "expectancyR": 0.626,
-    "winRatePct": 80,
-    "profitFactor": 13.83
-   },
-   "tp": {
-    "n": 14,
-    "totalR": 32.38,
-    "expectancyR": 2.313,
-    "winRatePct": 100,
-    "profitFactor": null
-   }
-  },
-  "rolling": {
-   "negative": 10,
-   "total": 20
-  },
-  "skipped": {
-   "expired": 32,
-   "cancelled_level": 30,
-   "missed_before_live": 3,
-   "currency_exposure": 2
-  },
-  "endBalance": 545.42
- },
- {
-  "model": "A",
-  "config": "A5",
-  "cost": "raw",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 559,
-  "stats": {
-   "n": 272,
-   "wins": 101,
-   "winRatePct": 37.1,
-   "expectancyR": -0.146,
-   "totalR": -39.73,
-   "profitFactor": 0.77,
-   "avgWinR": 1.299,
-   "avgLossR": -1,
-   "maxDrawdownR": 55.71,
-   "maxDrawdownPct": 38.1,
-   "longestLosingStreak": 11,
-   "tStat": -1.98,
-   "ci95": [
-    -0.285,
-    0.006
-   ],
-   "tradesPerMonth": 3.8,
-   "avgHoldHours": 4.3
-  },
-  "byYear": {
-   "2015": {
-    "n": 41,
-    "totalR": -1.21,
-    "expectancyR": -0.03,
-    "winRatePct": 46.3,
-    "profitFactor": 0.95
-   },
-   "2016": {
-    "n": 39,
-    "totalR": -15.18,
-    "expectancyR": -0.389,
-    "winRatePct": 28.2,
-    "profitFactor": 0.49
-   },
-   "2017": {
-    "n": 48,
-    "totalR": -19.37,
-    "expectancyR": -0.404,
-    "winRatePct": 29.2,
-    "profitFactor": 0.43
-   },
-   "2018": {
-    "n": 50,
-    "totalR": -11.75,
-    "expectancyR": -0.235,
-    "winRatePct": 32,
-    "profitFactor": 0.64
-   },
-   "2019": {
-    "n": 41,
-    "totalR": 0.94,
-    "expectancyR": 0.023,
-    "winRatePct": 46.3,
-    "profitFactor": 1.05
-   },
-   "2020": {
-    "n": 53,
-    "totalR": 6.84,
-    "expectancyR": 0.129,
-    "winRatePct": 41.5,
-    "profitFactor": 1.21
-   }
-  },
-  "byPair": {
-   "EURUSD": {
-    "n": 83,
-    "totalR": -14.19,
-    "expectancyR": -0.171,
-    "winRatePct": 34.9,
-    "profitFactor": 0.74
-   },
-   "USDJPY": {
-    "n": 44,
-    "totalR": -12.44,
-    "expectancyR": -0.283,
-    "winRatePct": 31.8,
-    "profitFactor": 0.59
-   },
-   "AUDUSD": {
-    "n": 50,
-    "totalR": -4.8,
-    "expectancyR": -0.096,
-    "winRatePct": 44,
-    "profitFactor": 0.82
-   },
-   "GBPUSD": {
-    "n": 95,
-    "totalR": -8.3,
-    "expectancyR": -0.087,
-    "winRatePct": 37.9,
-    "profitFactor": 0.86
-   }
-  },
-  "byExit": {
-   "tp": {
-    "n": 53,
-    "totalR": 103.89,
-    "expectancyR": 1.96,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "stop": {
-    "n": 157,
-    "totalR": -167.25,
-    "expectancyR": -1.065,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 62,
-    "totalR": 23.63,
-    "expectancyR": 0.381,
-    "winRatePct": 77.4,
-    "profitFactor": 7.39
-   }
-  },
-  "rolling": {
-   "negative": 17,
-   "total": 21
-  },
-  "skipped": {
-   "missed_before_live": 51,
-   "cancelled_level": 76,
-   "expired": 138,
-   "currency_exposure": 21,
-   "pair_busy": 1
-  },
-  "endBalance": 356.01
- },
- {
-  "model": "A",
-  "config": "A5",
-  "cost": "standard",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 559,
-  "stats": {
-   "n": 268,
-   "wins": 98,
-   "winRatePct": 36.6,
-   "expectancyR": -0.149,
-   "totalR": -39.81,
-   "profitFactor": 0.76,
-   "avgWinR": 1.281,
-   "avgLossR": -0.972,
-   "maxDrawdownR": 53.24,
-   "maxDrawdownPct": 35.8,
-   "longestLosingStreak": 15,
-   "tStat": -2.03,
-   "ci95": [
-    -0.29,
-    -0.004
-   ],
-   "tradesPerMonth": 3.8,
-   "avgHoldHours": 4.3
-  },
-  "byYear": {
-   "2015": {
-    "n": 40,
-    "totalR": 0.94,
-    "expectancyR": 0.023,
-    "winRatePct": 47.5,
-    "profitFactor": 1.05
-   },
-   "2016": {
-    "n": 39,
-    "totalR": -11.07,
-    "expectancyR": -0.284,
-    "winRatePct": 30.8,
-    "profitFactor": 0.61
-   },
-   "2017": {
-    "n": 46,
-    "totalR": -21.51,
-    "expectancyR": -0.468,
-    "winRatePct": 26.1,
-    "profitFactor": 0.34
-   },
-   "2018": {
-    "n": 53,
-    "totalR": -11.88,
-    "expectancyR": -0.224,
-    "winRatePct": 32.1,
-    "profitFactor": 0.66
-   },
-   "2019": {
-    "n": 40,
-    "totalR": 0.89,
-    "expectancyR": 0.022,
-    "winRatePct": 47.5,
-    "profitFactor": 1.05
-   },
-   "2020": {
-    "n": 50,
-    "totalR": 2.82,
-    "expectancyR": 0.056,
-    "winRatePct": 38,
-    "profitFactor": 1.09
-   }
-  },
-  "byPair": {
-   "EURUSD": {
-    "n": 77,
-    "totalR": -14.78,
-    "expectancyR": -0.192,
-    "winRatePct": 33.8,
-    "profitFactor": 0.7
-   },
-   "USDJPY": {
-    "n": 46,
-    "totalR": -10.11,
-    "expectancyR": -0.22,
-    "winRatePct": 32.6,
-    "profitFactor": 0.66
-   },
-   "AUDUSD": {
-    "n": 51,
-    "totalR": -4.09,
-    "expectancyR": -0.08,
-    "winRatePct": 45.1,
-    "profitFactor": 0.85
-   },
-   "GBPUSD": {
-    "n": 94,
-    "totalR": -10.83,
-    "expectancyR": -0.115,
-    "winRatePct": 36.2,
-    "profitFactor": 0.82
-   }
-  },
-  "byExit": {
-   "tp": {
-    "n": 49,
-    "totalR": 98,
-    "expectancyR": 2,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "stop": {
-    "n": 158,
-    "totalR": -162.07,
-    "expectancyR": -1.026,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 61,
-    "totalR": 24.26,
-    "expectancyR": 0.398,
-    "winRatePct": 80.3,
-    "profitFactor": 8.48
-   }
-  },
-  "rolling": {
-   "negative": 16,
-   "total": 21
-  },
-  "skipped": {
-   "missed_before_live": 45,
-   "cancelled_level": 77,
-   "expired": 148,
-   "currency_exposure": 20,
-   "pair_busy": 1
-  },
-  "endBalance": 359.48
- },
- {
-  "model": "A",
-  "config": "A6",
-  "cost": "raw",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 266,
-  "stats": {
-   "n": 125,
-   "wins": 42,
-   "winRatePct": 33.6,
-   "expectancyR": -0.188,
-   "totalR": -23.54,
-   "profitFactor": 0.72,
-   "avgWinR": 1.451,
-   "avgLossR": -1.018,
-   "maxDrawdownR": 34.22,
-   "maxDrawdownPct": 25.9,
-   "longestLosingStreak": 12,
-   "tStat": -1.66,
-   "ci95": [
-    -0.407,
-    0.036
-   ],
-   "tradesPerMonth": 1.8,
-   "avgHoldHours": 3.6
-  },
-  "byYear": {
-   "2015": {
-    "n": 24,
-    "totalR": 4.08,
-    "expectancyR": 0.17,
-    "winRatePct": 50,
-    "profitFactor": 1.35
-   },
-   "2016": {
-    "n": 17,
-    "totalR": -8.7,
-    "expectancyR": -0.512,
-    "winRatePct": 29.4,
-    "profitFactor": 0.38
-   },
-   "2017": {
-    "n": 22,
-    "totalR": -9.69,
-    "expectancyR": -0.441,
-    "winRatePct": 27.3,
-    "profitFactor": 0.43
-   },
-   "2018": {
-    "n": 23,
-    "totalR": -5.55,
-    "expectancyR": -0.241,
-    "winRatePct": 26.1,
-    "profitFactor": 0.66
-   },
-   "2019": {
-    "n": 11,
-    "totalR": -4.92,
-    "expectancyR": -0.447,
-    "winRatePct": 18.2,
-    "profitFactor": 0.36
-   },
-   "2020": {
-    "n": 28,
-    "totalR": 1.24,
-    "expectancyR": 0.044,
-    "winRatePct": 39.3,
-    "profitFactor": 1.07
-   }
-  },
-  "byPair": {
-   "EURUSD": {
-    "n": 29,
-    "totalR": -11.58,
-    "expectancyR": -0.399,
-    "winRatePct": 24.1,
-    "profitFactor": 0.51
-   },
-   "USDJPY": {
-    "n": 30,
-    "totalR": -7.68,
-    "expectancyR": -0.256,
-    "winRatePct": 30,
-    "profitFactor": 0.66
-   },
-   "AUDUSD": {
-    "n": 26,
-    "totalR": 5.09,
-    "expectancyR": 0.196,
-    "winRatePct": 50,
-    "profitFactor": 1.46
-   },
-   "GBPUSD": {
-    "n": 40,
-    "totalR": -9.36,
-    "expectancyR": -0.234,
-    "winRatePct": 32.5,
-    "profitFactor": 0.66
-   }
-  },
-  "byExit": {
-   "tp": {
-    "n": 27,
-    "totalR": 51.35,
-    "expectancyR": 1.902,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "stop": {
-    "n": 78,
-    "totalR": -83.98,
-    "expectancyR": -1.077,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 20,
-    "totalR": 9.09,
-    "expectancyR": 0.455,
-    "winRatePct": 75,
-    "profitFactor": 19.9
-   }
-  },
-  "rolling": {
-   "negative": 18,
-   "total": 21
-  },
-  "skipped": {
-   "missed_before_live": 25,
-   "expired": 71,
-   "currency_exposure": 7,
-   "cancelled_level": 38
-  },
-  "endBalance": 406
- },
- {
-  "model": "A",
-  "config": "A6",
-  "cost": "standard",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 266,
-  "stats": {
-   "n": 126,
-   "wins": 42,
-   "winRatePct": 33.3,
-   "expectancyR": -0.185,
-   "totalR": -23.36,
-   "profitFactor": 0.72,
-   "avgWinR": 1.441,
-   "avgLossR": -0.998,
-   "maxDrawdownR": 31.99,
-   "maxDrawdownPct": 22.3,
-   "longestLosingStreak": 13,
-   "tStat": -1.66,
-   "ci95": [
-    -0.406,
-    0.046
-   ],
-   "tradesPerMonth": 1.8,
-   "avgHoldHours": 3.5
-  },
-  "byYear": {
-   "2015": {
-    "n": 23,
-    "totalR": 3.16,
-    "expectancyR": 0.137,
-    "winRatePct": 47.8,
-    "profitFactor": 1.28
-   },
-   "2016": {
-    "n": 17,
-    "totalR": -4.9,
-    "expectancyR": -0.288,
-    "winRatePct": 35.3,
-    "profitFactor": 0.61
-   },
-   "2017": {
-    "n": 21,
-    "totalR": -10.58,
-    "expectancyR": -0.504,
-    "winRatePct": 23.8,
-    "profitFactor": 0.35
-   },
-   "2018": {
-    "n": 26,
-    "totalR": -3.43,
-    "expectancyR": -0.132,
-    "winRatePct": 30.8,
-    "profitFactor": 0.8
-   },
-   "2019": {
-    "n": 11,
-    "totalR": -6.72,
-    "expectancyR": -0.611,
-    "winRatePct": 18.2,
-    "profitFactor": 0.18
-   },
-   "2020": {
-    "n": 28,
-    "totalR": -0.89,
-    "expectancyR": -0.032,
-    "winRatePct": 35.7,
-    "profitFactor": 0.95
-   }
-  },
-  "byPair": {
-   "EURUSD": {
-    "n": 29,
-    "totalR": -10.64,
-    "expectancyR": -0.367,
-    "winRatePct": 24.1,
-    "profitFactor": 0.53
-   },
-   "USDJPY": {
-    "n": 31,
-    "totalR": -5.01,
-    "expectancyR": -0.162,
-    "winRatePct": 32.3,
-    "profitFactor": 0.77
-   },
-   "AUDUSD": {
-    "n": 27,
-    "totalR": 2.8,
-    "expectancyR": 0.104,
-    "winRatePct": 48.1,
-    "profitFactor": 1.21
-   },
-   "GBPUSD": {
-    "n": 39,
-    "totalR": -10.51,
-    "expectancyR": -0.27,
-    "winRatePct": 30.8,
-    "profitFactor": 0.6
-   }
-  },
-  "byExit": {
-   "tp": {
-    "n": 26,
-    "totalR": 51.02,
-    "expectancyR": 1.962,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "stop": {
-    "n": 81,
-    "totalR": -83.78,
-    "expectancyR": -1.034,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 19,
-    "totalR": 9.39,
-    "expectancyR": 0.494,
-    "winRatePct": 84.2,
-    "profitFactor": 102.94
-   }
-  },
-  "rolling": {
-   "negative": 19,
-   "total": 21
-  },
-  "skipped": {
-   "missed_before_live": 20,
-   "expired": 74,
-   "currency_exposure": 7,
-   "cancelled_level": 39
-  },
-  "endBalance": 418.07
- },
- {
-  "model": "A",
-  "config": "A7",
-  "cost": "raw",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 206,
-  "stats": {
-   "n": 75,
-   "wins": 32,
-   "winRatePct": 42.7,
-   "expectancyR": -0.007,
-   "totalR": -0.49,
-   "profitFactor": 0.99,
-   "avgWinR": 1.436,
-   "avgLossR": -1.08,
-   "maxDrawdownR": 16.32,
-   "maxDrawdownPct": 13.9,
-   "longestLosingStreak": 11,
-   "tStat": -0.04,
-   "ci95": [
-    -0.32,
-    0.295
-   ],
-   "tradesPerMonth": 1.1,
-   "avgHoldHours": 3.6
-  },
-  "byYear": {
-   "2015": {
-    "n": 14,
-    "totalR": 1.93,
-    "expectancyR": 0.138,
-    "winRatePct": 50,
-    "profitFactor": 1.26
-   },
-   "2016": {
-    "n": 11,
-    "totalR": -2.69,
-    "expectancyR": -0.245,
-    "winRatePct": 36.4,
-    "profitFactor": 0.7
-   },
-   "2017": {
-    "n": 16,
-    "totalR": -9.2,
-    "expectancyR": -0.575,
-    "winRatePct": 18.8,
-    "profitFactor": 0.32
-   },
-   "2018": {
-    "n": 10,
-    "totalR": 3.43,
-    "expectancyR": 0.343,
-    "winRatePct": 50,
-    "profitFactor": 1.65
-   },
-   "2019": {
-    "n": 9,
-    "totalR": -0.15,
-    "expectancyR": -0.017,
-    "winRatePct": 55.6,
-    "profitFactor": 0.96
-   },
-   "2020": {
-    "n": 15,
-    "totalR": 6.19,
-    "expectancyR": 0.413,
-    "winRatePct": 53.3,
-    "profitFactor": 1.89
-   }
-  },
-  "byPair": {
-   "EURUSD": {
-    "n": 19,
-    "totalR": -3.6,
-    "expectancyR": -0.19,
-    "winRatePct": 42.1,
-    "profitFactor": 0.72
-   },
-   "AUDUSD": {
-    "n": 14,
-    "totalR": 2.79,
-    "expectancyR": 0.199,
-    "winRatePct": 50,
-    "profitFactor": 1.39
-   },
-   "GBPUSD": {
-    "n": 32,
-    "totalR": 0.3,
-    "expectancyR": 0.009,
-    "winRatePct": 40.6,
-    "profitFactor": 1.02
-   },
-   "USDJPY": {
-    "n": 10,
-    "totalR": 0.02,
-    "expectancyR": 0.002,
-    "winRatePct": 40,
-    "profitFactor": 1
-   }
-  },
-  "byExit": {
-   "stop": {
-    "n": 41,
-    "totalR": -45.03,
-    "expectancyR": -1.098,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 15,
-    "totalR": 7.43,
-    "expectancyR": 0.496,
-    "winRatePct": 86.7,
-    "profitFactor": 6.28
-   },
-   "tp": {
-    "n": 19,
-    "totalR": 37.1,
-    "expectancyR": 1.953,
-    "winRatePct": 100,
-    "profitFactor": null
-   }
-  },
-  "rolling": {
-   "negative": 11,
-   "total": 20
-  },
-  "skipped": {
-   "cancelled_level": 64,
-   "expired": 57,
-   "missed_before_live": 8,
-   "currency_exposure": 2
-  },
-  "endBalance": 494.51
- },
- {
-  "model": "A",
-  "config": "A7",
-  "cost": "standard",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 206,
-  "stats": {
-   "n": 74,
-   "wins": 30,
-   "winRatePct": 40.5,
-   "expectancyR": -0.037,
-   "totalR": -2.77,
-   "profitFactor": 0.94,
-   "avgWinR": 1.429,
-   "avgLossR": -1.037,
-   "maxDrawdownR": 16.81,
-   "maxDrawdownPct": 14.3,
-   "longestLosingStreak": 13,
-   "tStat": -0.25,
-   "ci95": [
-    -0.324,
-    0.28
-   ],
-   "tradesPerMonth": 1.1,
-   "avgHoldHours": 3.5
-  },
-  "byYear": {
-   "2015": {
-    "n": 14,
-    "totalR": 2.37,
-    "expectancyR": 0.169,
-    "winRatePct": 50,
-    "profitFactor": 1.33
-   },
-   "2016": {
-    "n": 11,
-    "totalR": -2.3,
-    "expectancyR": -0.209,
-    "winRatePct": 36.4,
-    "profitFactor": 0.73
-   },
-   "2017": {
-    "n": 15,
-    "totalR": -10.44,
-    "expectancyR": -0.696,
-    "winRatePct": 13.3,
-    "profitFactor": 0.19
-   },
-   "2018": {
-    "n": 11,
-    "totalR": 5.83,
-    "expectancyR": 0.53,
-    "winRatePct": 54.5,
-    "profitFactor": 2.15
-   },
-   "2019": {
-    "n": 9,
-    "totalR": 0.13,
-    "expectancyR": 0.015,
-    "winRatePct": 55.6,
-    "profitFactor": 1.03
-   },
-   "2020": {
-    "n": 14,
-    "totalR": 1.64,
-    "expectancyR": 0.117,
-    "winRatePct": 42.9,
-    "profitFactor": 1.21
-   }
-  },
-  "byPair": {
-   "EURUSD": {
-    "n": 18,
-    "totalR": -5.09,
-    "expectancyR": -0.283,
-    "winRatePct": 38.9,
-    "profitFactor": 0.59
-   },
-   "AUDUSD": {
-    "n": 14,
-    "totalR": 0.31,
-    "expectancyR": 0.022,
-    "winRatePct": 42.9,
-    "profitFactor": 1.04
-   },
-   "GBPUSD": {
-    "n": 32,
-    "totalR": 1.31,
-    "expectancyR": 0.041,
-    "winRatePct": 40.6,
-    "profitFactor": 1.07
-   },
-   "USDJPY": {
-    "n": 10,
-    "totalR": 0.7,
-    "expectancyR": 0.07,
-    "winRatePct": 40,
-    "profitFactor": 1.11
-   }
-  },
-  "byExit": {
-   "stop": {
-    "n": 42,
-    "totalR": -44.21,
-    "expectancyR": -1.053,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 15,
-    "totalR": 7.45,
-    "expectancyR": 0.496,
-    "winRatePct": 86.7,
-    "profitFactor": 6.26
-   },
-   "tp": {
-    "n": 17,
-    "totalR": 34,
-    "expectancyR": 2,
-    "winRatePct": 100,
-    "profitFactor": null
-   }
-  },
-  "rolling": {
-   "negative": 11,
-   "total": 20
-  },
-  "skipped": {
-   "cancelled_level": 64,
-   "expired": 59,
-   "missed_before_live": 7,
-   "currency_exposure": 2
-  },
-  "endBalance": 487.42
- },
- {
-  "model": "A",
-  "config": "A8",
-  "cost": "raw",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 118,
-  "stats": {
-   "n": 40,
-   "wins": 18,
-   "winRatePct": 45,
-   "expectancyR": 0.104,
-   "totalR": 4.14,
-   "profitFactor": 1.17,
-   "avgWinR": 1.615,
-   "avgLossR": -1.133,
-   "maxDrawdownR": 5.39,
-   "maxDrawdownPct": 4.7,
-   "longestLosingStreak": 5,
-   "tStat": 0.45,
-   "ci95": [
-    -0.331,
-    0.532
-   ],
-   "tradesPerMonth": 0.6,
-   "avgHoldHours": 3.7
-  },
-  "byYear": {
-   "2015": {
-    "n": 8,
-    "totalR": 3,
-    "expectancyR": 0.375,
-    "winRatePct": 50,
-    "profitFactor": 1.71
-   },
-   "2016": {
-    "n": 6,
-    "totalR": -1.02,
-    "expectancyR": -0.171,
-    "winRatePct": 50,
-    "profitFactor": 0.78
-   },
-   "2017": {
-    "n": 8,
-    "totalR": -1.53,
-    "expectancyR": -0.191,
-    "winRatePct": 37.5,
-    "profitFactor": 0.72
-   },
-   "2018": {
-    "n": 7,
-    "totalR": 3.97,
-    "expectancyR": 0.567,
-    "winRatePct": 57.1,
-    "profitFactor": 2.25
-   },
-   "2019": {
-    "n": 2,
-    "totalR": -2.19,
-    "expectancyR": -1.097,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "2020": {
-    "n": 9,
-    "totalR": 1.91,
-    "expectancyR": 0.213,
-    "winRatePct": 44.4,
-    "profitFactor": 1.36
-   }
-  },
-  "byPair": {
-   "EURUSD": {
-    "n": 7,
-    "totalR": -3.41,
-    "expectancyR": -0.486,
-    "winRatePct": 28.6,
-    "profitFactor": 0.49
-   },
-   "AUDUSD": {
-    "n": 9,
-    "totalR": 5.56,
-    "expectancyR": 0.618,
-    "winRatePct": 66.7,
-    "profitFactor": 2.74
-   },
-   "GBPUSD": {
-    "n": 16,
-    "totalR": 1.42,
-    "expectancyR": 0.089,
-    "winRatePct": 43.8,
-    "profitFactor": 1.15
-   },
-   "USDJPY": {
-    "n": 8,
-    "totalR": 0.56,
-    "expectancyR": 0.071,
-    "winRatePct": 37.5,
-    "profitFactor": 1.1
-   }
-  },
-  "byExit": {
-   "stop": {
-    "n": 22,
-    "totalR": -24.93,
-    "expectancyR": -1.133,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "tp": {
-    "n": 11,
-    "totalR": 21.66,
-    "expectancyR": 1.969,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "time": {
-    "n": 7,
-    "totalR": 7.41,
-    "expectancyR": 1.059,
-    "winRatePct": 100,
-    "profitFactor": null
-   }
-  },
-  "rolling": {
-   "negative": 10,
-   "total": 20
-  },
-  "skipped": {
-   "expired": 38,
-   "missed_before_live": 6,
-   "cancelled_level": 32,
-   "currency_exposure": 2
-  },
-  "endBalance": 523.46
- },
- {
-  "model": "A",
-  "config": "A8",
-  "cost": "standard",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 118,
-  "stats": {
-   "n": 40,
-   "wins": 17,
-   "winRatePct": 42.5,
-   "expectancyR": 0.07,
-   "totalR": 2.79,
-   "profitFactor": 1.11,
-   "avgWinR": 1.629,
-   "avgLossR": -1.082,
-   "maxDrawdownR": 6.12,
-   "maxDrawdownPct": 5.2,
-   "longestLosingStreak": 6,
-   "tStat": 0.31,
-   "ci95": [
-    -0.367,
-    0.544
-   ],
-   "tradesPerMonth": 0.6,
-   "avgHoldHours": 3.5
-  },
-  "byYear": {
-   "2015": {
-    "n": 8,
-    "totalR": 3.33,
-    "expectancyR": 0.416,
-    "winRatePct": 50,
-    "profitFactor": 1.82
-   },
-   "2016": {
-    "n": 6,
-    "totalR": -0.86,
-    "expectancyR": -0.143,
-    "winRatePct": 50,
-    "profitFactor": 0.81
-   },
-   "2017": {
-    "n": 7,
-    "totalR": -2.86,
-    "expectancyR": -0.409,
-    "winRatePct": 28.6,
-    "profitFactor": 0.44
-   },
-   "2018": {
-    "n": 8,
-    "totalR": 6.33,
-    "expectancyR": 0.791,
-    "winRatePct": 62.5,
-    "profitFactor": 3.08
-   },
-   "2019": {
-    "n": 2,
-    "totalR": -2.05,
-    "expectancyR": -1.024,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "2020": {
-    "n": 9,
-    "totalR": -1.09,
-    "expectancyR": -0.122,
-    "winRatePct": 33.3,
-    "profitFactor": 0.82
-   }
-  },
-  "byPair": {
-   "EURUSD": {
-    "n": 7,
-    "totalR": -3.2,
-    "expectancyR": -0.457,
-    "winRatePct": 28.6,
-    "profitFactor": 0.51
-   },
-   "AUDUSD": {
-    "n": 9,
-    "totalR": 2.62,
-    "expectancyR": 0.291,
-    "winRatePct": 55.6,
-    "profitFactor": 1.64
-   },
-   "GBPUSD": {
-    "n": 16,
-    "totalR": 2.26,
-    "expectancyR": 0.141,
-    "winRatePct": 43.8,
-    "profitFactor": 1.25
-   },
-   "USDJPY": {
-    "n": 8,
-    "totalR": 1.11,
-    "expectancyR": 0.139,
-    "winRatePct": 37.5,
-    "profitFactor": 1.22
-   }
-  },
-  "byExit": {
-   "stop": {
-    "n": 23,
-    "totalR": -24.89,
-    "expectancyR": -1.082,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "tp": {
-    "n": 10,
-    "totalR": 20.18,
-    "expectancyR": 2.018,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "time": {
-    "n": 7,
-    "totalR": 7.51,
-    "expectancyR": 1.072,
-    "winRatePct": 100,
-    "profitFactor": null
-   }
-  },
-  "rolling": {
-   "negative": 12,
-   "total": 20
-  },
-  "skipped": {
-   "expired": 39,
-   "missed_before_live": 5,
-   "cancelled_level": 32,
-   "currency_exposure": 2
-  },
-  "endBalance": 516.98
- },
- {
-  "model": "B",
-  "config": "B1",
-  "cost": "raw",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 4940,
-  "stats": {
-   "n": 1210,
-   "wins": 418,
-   "winRatePct": 34.5,
-   "expectancyR": -0.096,
-   "totalR": -116.34,
-   "profitFactor": 0.82,
-   "avgWinR": 1.265,
-   "avgLossR": -0.814,
-   "maxDrawdownR": 122.78,
-   "maxDrawdownPct": 62.6,
-   "longestLosingStreak": 14,
-   "tStat": -3.12,
-   "ci95": [
-    -0.153,
-    -0.035
-   ],
-   "tradesPerMonth": 16.8,
-   "avgHoldHours": 2.5
-  },
-  "byYear": {
-   "2015": {
-    "n": 240,
-    "totalR": -22.02,
-    "expectancyR": -0.092,
-    "winRatePct": 35,
-    "profitFactor": 0.84
-   },
-   "2016": {
-    "n": 237,
-    "totalR": -40.29,
-    "expectancyR": -0.17,
-    "winRatePct": 31.6,
-    "profitFactor": 0.71
-   },
-   "2017": {
-    "n": 221,
-    "totalR": -29.23,
-    "expectancyR": -0.132,
-    "winRatePct": 33,
-    "profitFactor": 0.75
-   },
-   "2018": {
-    "n": 185,
-    "totalR": -22.32,
-    "expectancyR": -0.121,
-    "winRatePct": 34.6,
-    "profitFactor": 0.78
-   },
-   "2019": {
-    "n": 116,
-    "totalR": 5.14,
-    "expectancyR": 0.044,
-    "winRatePct": 42.2,
-    "profitFactor": 1.1
-   },
-   "2020": {
-    "n": 211,
-    "totalR": -7.61,
-    "expectancyR": -0.036,
-    "winRatePct": 34.6,
-    "profitFactor": 0.93
-   }
-  },
-  "byPair": {
-   "USDJPY": {
-    "n": 253,
-    "totalR": -34.96,
-    "expectancyR": -0.138,
-    "winRatePct": 34,
-    "profitFactor": 0.75
-   },
-   "GBPUSD": {
-    "n": 447,
-    "totalR": -19.15,
-    "expectancyR": -0.043,
-    "winRatePct": 35.1,
-    "profitFactor": 0.92
-   },
-   "EURUSD": {
-    "n": 295,
-    "totalR": -38.71,
-    "expectancyR": -0.131,
-    "winRatePct": 32.9,
-    "profitFactor": 0.75
-   },
-   "AUDUSD": {
-    "n": 215,
-    "totalR": -23.52,
-    "expectancyR": -0.109,
-    "winRatePct": 36.3,
-    "profitFactor": 0.79
-   }
-  },
-  "byExit": {
-   "stop": {
-    "n": 580,
-    "totalR": -613.17,
-    "expectancyR": -1.057,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "tp": {
-    "n": 336,
-    "totalR": 491.26,
-    "expectancyR": 1.462,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "breakeven": {
-    "n": 142,
-    "totalR": -7.95,
-    "expectancyR": -0.056,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 152,
-    "totalR": 13.51,
-    "expectancyR": 0.089,
-    "winRatePct": 53.9,
-    "profitFactor": 1.57
-   }
-  },
-  "rolling": {
-   "negative": 18,
-   "total": 21
-  },
-  "skipped": {
-   "cancelled_level": 2660,
-   "daily_cap": 141,
-   "expired": 642,
-   "missed_before_live": 89,
-   "currency_exposure": 154,
-   "pair_busy": 43,
-   "daily_loss_limit": 1
-  },
-  "endBalance": 197.15
- },
- {
-  "model": "B",
-  "config": "B1",
-  "cost": "standard",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 4940,
-  "stats": {
-   "n": 1200,
-   "wins": 398,
-   "winRatePct": 33.2,
-   "expectancyR": -0.099,
-   "totalR": -119.29,
-   "profitFactor": 0.81,
-   "avgWinR": 1.29,
-   "avgLossR": -0.789,
-   "maxDrawdownR": 122.6,
-   "maxDrawdownPct": 61.6,
-   "longestLosingStreak": 19,
-   "tStat": -3.23,
-   "ci95": [
-    -0.157,
-    -0.039
-   ],
-   "tradesPerMonth": 16.7,
-   "avgHoldHours": 2.5
-  },
-  "byYear": {
-   "2015": {
-    "n": 239,
-    "totalR": -23.44,
-    "expectancyR": -0.098,
-    "winRatePct": 33.5,
-    "profitFactor": 0.83
-   },
-   "2016": {
-    "n": 230,
-    "totalR": -40.06,
-    "expectancyR": -0.174,
-    "winRatePct": 29.6,
-    "profitFactor": 0.69
-   },
-   "2017": {
-    "n": 218,
-    "totalR": -28.77,
-    "expectancyR": -0.132,
-    "winRatePct": 32.1,
-    "profitFactor": 0.75
-   },
-   "2018": {
-    "n": 186,
-    "totalR": -22.71,
-    "expectancyR": -0.122,
-    "winRatePct": 33.3,
-    "profitFactor": 0.77
-   },
-   "2019": {
-    "n": 116,
-    "totalR": 7.37,
-    "expectancyR": 0.063,
-    "winRatePct": 42.2,
-    "profitFactor": 1.15
-   },
-   "2020": {
-    "n": 211,
-    "totalR": -11.68,
-    "expectancyR": -0.055,
-    "winRatePct": 32.7,
-    "profitFactor": 0.89
-   }
-  },
-  "byPair": {
-   "USDJPY": {
-    "n": 247,
-    "totalR": -27.96,
-    "expectancyR": -0.113,
-    "winRatePct": 33.2,
-    "profitFactor": 0.78
-   },
-   "GBPUSD": {
-    "n": 446,
-    "totalR": -24.45,
-    "expectancyR": -0.055,
-    "winRatePct": 33,
-    "profitFactor": 0.9
-   },
-   "EURUSD": {
-    "n": 295,
-    "totalR": -39.16,
-    "expectancyR": -0.133,
-    "winRatePct": 32.2,
-    "profitFactor": 0.75
-   },
-   "AUDUSD": {
-    "n": 212,
-    "totalR": -27.71,
-    "expectancyR": -0.131,
-    "winRatePct": 34.9,
-    "profitFactor": 0.75
-   }
-  },
-  "byExit": {
-   "stop": {
-    "n": 596,
-    "totalR": -607.99,
-    "expectancyR": -1.02,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "tp": {
-    "n": 316,
-    "totalR": 474,
-    "expectancyR": 1.5,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "breakeven": {
-    "n": 139,
-    "totalR": -2.51,
-    "expectancyR": -0.018,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 149,
-    "totalR": 17.2,
-    "expectancyR": 0.115,
-    "winRatePct": 55,
-    "profitFactor": 1.77
-   }
-  },
-  "rolling": {
-   "negative": 19,
-   "total": 21
-  },
-  "skipped": {
-   "cancelled_level": 2676,
-   "daily_cap": 139,
-   "expired": 662,
-   "missed_before_live": 80,
-   "currency_exposure": 141,
-   "pair_busy": 42
-  },
-  "endBalance": 196.38
- },
- {
-  "model": "B",
-  "config": "B2",
-  "cost": "raw",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 3268,
-  "stats": {
-   "n": 946,
-   "wins": 392,
-   "winRatePct": 41.4,
-   "expectancyR": -0.085,
-   "totalR": -80.26,
-   "profitFactor": 0.83,
-   "avgWinR": 1.004,
-   "avgLossR": -0.855,
-   "maxDrawdownR": 97.47,
-   "maxDrawdownPct": 52,
-   "longestLosingStreak": 12,
-   "tStat": -2.57,
-   "ci95": [
-    -0.149,
-    -0.019
-   ],
-   "tradesPerMonth": 13.2,
-   "avgHoldHours": 4.6
-  },
-  "byYear": {
-   "2015": {
-    "n": 183,
-    "totalR": -2.48,
-    "expectancyR": -0.014,
-    "winRatePct": 43.7,
-    "profitFactor": 0.97
-   },
-   "2016": {
-    "n": 174,
-    "totalR": -36.61,
-    "expectancyR": -0.21,
-    "winRatePct": 36.2,
-    "profitFactor": 0.62
-   },
-   "2017": {
-    "n": 186,
-    "totalR": -27,
-    "expectancyR": -0.145,
-    "winRatePct": 39.2,
-    "profitFactor": 0.73
-   },
-   "2018": {
-    "n": 153,
-    "totalR": -13.04,
-    "expectancyR": -0.085,
-    "winRatePct": 41.2,
-    "profitFactor": 0.83
-   },
-   "2019": {
-    "n": 99,
-    "totalR": 7.69,
-    "expectancyR": 0.078,
-    "winRatePct": 51.5,
-    "profitFactor": 1.21
-   },
-   "2020": {
-    "n": 151,
-    "totalR": -8.82,
-    "expectancyR": -0.058,
-    "winRatePct": 41.1,
-    "profitFactor": 0.88
-   }
-  },
-  "byPair": {
-   "GBPUSD": {
-    "n": 305,
-    "totalR": -21.8,
-    "expectancyR": -0.071,
-    "winRatePct": 42,
-    "profitFactor": 0.87
-   },
-   "USDJPY": {
-    "n": 217,
-    "totalR": -30.29,
-    "expectancyR": -0.14,
-    "winRatePct": 41.5,
-    "profitFactor": 0.73
-   },
-   "AUDUSD": {
-    "n": 198,
-    "totalR": -12.56,
-    "expectancyR": -0.063,
-    "winRatePct": 40.4,
-    "profitFactor": 0.85
-   },
-   "EURUSD": {
-    "n": 226,
-    "totalR": -15.61,
-    "expectancyR": -0.069,
-    "winRatePct": 41.6,
-    "profitFactor": 0.86
-   }
-  },
-  "byExit": {
-   "tp": {
-    "n": 217,
-    "totalR": 317.33,
-    "expectancyR": 1.462,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "stop": {
-    "n": 407,
-    "totalR": -423.62,
-    "expectancyR": -1.041,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 322,
-    "totalR": 26.04,
-    "expectancyR": 0.081,
-    "winRatePct": 54.3,
-    "profitFactor": 1.52
-   }
-  },
-  "rolling": {
-   "negative": 19,
-   "total": 21
-  },
-  "skipped": {
-   "daily_cap": 53,
-   "cancelled_level": 1725,
-   "missed_before_live": 77,
-   "currency_exposure": 124,
-   "expired": 275,
-   "pair_busy": 68
-  },
-  "endBalance": 279.1
- },
- {
-  "model": "B",
-  "config": "B2",
-  "cost": "standard",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 3268,
-  "stats": {
-   "n": 927,
-   "wins": 375,
-   "winRatePct": 40.5,
-   "expectancyR": -0.09,
-   "totalR": -83.34,
-   "profitFactor": 0.82,
-   "avgWinR": 1.015,
-   "avgLossR": -0.84,
-   "maxDrawdownR": 98.29,
-   "maxDrawdownPct": 52.3,
-   "longestLosingStreak": 13,
-   "tStat": -2.72,
-   "ci95": [
-    -0.151,
-    -0.024
-   ],
-   "tradesPerMonth": 12.9,
-   "avgHoldHours": 4.5
-  },
-  "byYear": {
-   "2015": {
-    "n": 180,
-    "totalR": -6.28,
-    "expectancyR": -0.035,
-    "winRatePct": 42.8,
-    "profitFactor": 0.93
-   },
-   "2016": {
-    "n": 168,
-    "totalR": -35.05,
-    "expectancyR": -0.209,
-    "winRatePct": 34.5,
-    "profitFactor": 0.62
-   },
-   "2017": {
-    "n": 183,
-    "totalR": -24.89,
-    "expectancyR": -0.136,
-    "winRatePct": 39.9,
-    "profitFactor": 0.74
-   },
-   "2018": {
-    "n": 151,
-    "totalR": -17.38,
-    "expectancyR": -0.115,
-    "winRatePct": 38.4,
-    "profitFactor": 0.77
-   },
-   "2019": {
-    "n": 99,
-    "totalR": 7.98,
-    "expectancyR": 0.081,
-    "winRatePct": 51.5,
-    "profitFactor": 1.21
-   },
-   "2020": {
-    "n": 146,
-    "totalR": -7.71,
-    "expectancyR": -0.053,
-    "winRatePct": 39.7,
-    "profitFactor": 0.89
-   }
-  },
-  "byPair": {
-   "GBPUSD": {
-    "n": 304,
-    "totalR": -27.43,
-    "expectancyR": -0.09,
-    "winRatePct": 40.1,
-    "profitFactor": 0.83
-   },
-   "USDJPY": {
-    "n": 210,
-    "totalR": -29.69,
-    "expectancyR": -0.141,
-    "winRatePct": 39.5,
-    "profitFactor": 0.72
-   },
-   "AUDUSD": {
-    "n": 192,
-    "totalR": -11.86,
-    "expectancyR": -0.062,
-    "winRatePct": 41.7,
-    "profitFactor": 0.86
-   },
-   "EURUSD": {
-    "n": 221,
-    "totalR": -14.37,
-    "expectancyR": -0.065,
-    "winRatePct": 40.7,
-    "profitFactor": 0.87
-   }
-  },
-  "byExit": {
-   "tp": {
-    "n": 204,
-    "totalR": 303.94,
-    "expectancyR": 1.49,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "stop": {
-    "n": 413,
-    "totalR": -418.31,
-    "expectancyR": -1.013,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 310,
-    "totalR": 31.03,
-    "expectancyR": 0.1,
-    "winRatePct": 55.2,
-    "profitFactor": 1.68
-   }
-  },
-  "rolling": {
-   "negative": 19,
-   "total": 21
-  },
-  "skipped": {
-   "daily_cap": 53,
-   "cancelled_level": 1739,
-   "missed_before_live": 68,
-   "currency_exposure": 113,
-   "expired": 294,
-   "pair_busy": 69,
-   "below_min_lot": 5
-  },
-  "endBalance": 269.66
- },
- {
-  "model": "B",
-  "config": "B3",
-  "cost": "raw",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 6896,
-  "stats": {
-   "n": 1265,
-   "wins": 428,
-   "winRatePct": 33.8,
-   "expectancyR": -0.12,
-   "totalR": -151.69,
-   "profitFactor": 0.78,
-   "avgWinR": 1.26,
-   "avgLossR": -0.826,
-   "maxDrawdownR": 165.03,
-   "maxDrawdownPct": 73.5,
-   "longestLosingStreak": 14,
-   "tStat": -3.99,
-   "ci95": [
-    -0.177,
-    -0.063
-   ],
-   "tradesPerMonth": 17.6,
-   "avgHoldHours": 2.6
-  },
-  "byYear": {
-   "2015": {
-    "n": 301,
-    "totalR": -22.12,
-    "expectancyR": -0.073,
-    "winRatePct": 35.5,
-    "profitFactor": 0.87
-   },
-   "2016": {
-    "n": 309,
-    "totalR": -21.26,
-    "expectancyR": -0.069,
-    "winRatePct": 34.3,
-    "profitFactor": 0.87
-   },
-   "2017": {
-    "n": 258,
-    "totalR": -41.45,
-    "expectancyR": -0.161,
-    "winRatePct": 31.8,
-    "profitFactor": 0.7
-   },
-   "2018": {
-    "n": 239,
-    "totalR": -52.1,
-    "expectancyR": -0.218,
-    "winRatePct": 31.8,
-    "profitFactor": 0.62
-   },
-   "2019": {
-    "n": 38,
-    "totalR": -13.73,
-    "expectancyR": -0.361,
-    "winRatePct": 23.7,
-    "profitFactor": 0.43
-   },
-   "2020": {
-    "n": 120,
-    "totalR": -1.02,
-    "expectancyR": -0.008,
-    "winRatePct": 40,
-    "profitFactor": 0.98
-   }
-  },
-  "byPair": {
-   "USDJPY": {
-    "n": 330,
-    "totalR": -40.46,
-    "expectancyR": -0.123,
-    "winRatePct": 34.2,
-    "profitFactor": 0.77
-   },
-   "GBPUSD": {
-    "n": 415,
-    "totalR": -42.37,
-    "expectancyR": -0.102,
-    "winRatePct": 32.5,
-    "profitFactor": 0.82
-   },
-   "EURUSD": {
-    "n": 296,
-    "totalR": -38.53,
-    "expectancyR": -0.13,
-    "winRatePct": 33.1,
-    "profitFactor": 0.76
-   },
-   "AUDUSD": {
-    "n": 224,
-    "totalR": -30.32,
-    "expectancyR": -0.135,
-    "winRatePct": 36.6,
-    "profitFactor": 0.74
-   }
-  },
-  "byExit": {
-   "stop": {
-    "n": 627,
-    "totalR": -662.2,
-    "expectancyR": -1.056,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "tp": {
-    "n": 340,
-    "totalR": 496.78,
-    "expectancyR": 1.461,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "breakeven": {
-    "n": 147,
-    "totalR": -8.28,
-    "expectancyR": -0.056,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 151,
-    "totalR": 22,
-    "expectancyR": 0.146,
-    "winRatePct": 58.3,
-    "profitFactor": 2.07
-   }
-  },
-  "rolling": {
-   "negative": 18,
-   "total": 21
-  },
-  "skipped": {
-   "cancelled_level": 3740,
-   "expired": 1028,
-   "daily_cap": 210,
-   "currency_exposure": 197,
-   "missed_before_live": 109,
-   "pair_busy": 36,
-   "below_min_lot": 311
-  },
-  "endBalance": 145.72
- },
- {
-  "model": "B",
-  "config": "B3",
-  "cost": "standard",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 6896,
-  "stats": {
-   "n": 1476,
-   "wins": 503,
-   "winRatePct": 34.1,
-   "expectancyR": -0.094,
-   "totalR": -138.06,
-   "profitFactor": 0.82,
-   "avgWinR": 1.271,
-   "avgLossR": -0.799,
-   "maxDrawdownR": 156.28,
-   "maxDrawdownPct": 70.4,
-   "longestLosingStreak": 16,
-   "tStat": -3.37,
-   "ci95": [
-    -0.149,
-    -0.038
-   ],
-   "tradesPerMonth": 20.5,
-   "avgHoldHours": 2.6
-  },
-  "byYear": {
-   "2015": {
-    "n": 299,
-    "totalR": -24.38,
-    "expectancyR": -0.082,
-    "winRatePct": 34.8,
-    "profitFactor": 0.85
-   },
-   "2016": {
-    "n": 301,
-    "totalR": -21.79,
-    "expectancyR": -0.072,
-    "winRatePct": 32.9,
-    "profitFactor": 0.86
-   },
-   "2017": {
-    "n": 253,
-    "totalR": -33.63,
-    "expectancyR": -0.133,
-    "winRatePct": 33.2,
-    "profitFactor": 0.75
-   },
-   "2018": {
-    "n": 238,
-    "totalR": -58.35,
-    "expectancyR": -0.245,
-    "winRatePct": 29.4,
-    "profitFactor": 0.58
-   },
-   "2019": {
-    "n": 145,
-    "totalR": 0.75,
-    "expectancyR": 0.005,
-    "winRatePct": 40.7,
-    "profitFactor": 1.01
-   },
-   "2020": {
-    "n": 240,
-    "totalR": -0.67,
-    "expectancyR": -0.003,
-    "winRatePct": 36.3,
-    "profitFactor": 0.99
-   }
-  },
-  "byPair": {
-   "USDJPY": {
-    "n": 323,
-    "totalR": -35.02,
-    "expectancyR": -0.108,
-    "winRatePct": 33.7,
-    "profitFactor": 0.79
-   },
-   "GBPUSD": {
-    "n": 534,
-    "totalR": -8.95,
-    "expectancyR": -0.017,
-    "winRatePct": 35,
-    "profitFactor": 0.97
-   },
-   "EURUSD": {
-    "n": 357,
-    "totalR": -58.21,
-    "expectancyR": -0.163,
-    "winRatePct": 31.1,
-    "profitFactor": 0.7
-   },
-   "AUDUSD": {
-    "n": 262,
-    "totalR": -35.87,
-    "expectancyR": -0.137,
-    "winRatePct": 36.6,
-    "profitFactor": 0.74
-   }
-  },
-  "byExit": {
-   "stop": {
-    "n": 736,
-    "totalR": -749.2,
-    "expectancyR": -1.018,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "tp": {
-    "n": 389,
-    "totalR": 583.5,
-    "expectancyR": 1.5,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "breakeven": {
-    "n": 163,
-    "totalR": -2.88,
-    "expectancyR": -0.018,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 188,
-    "totalR": 30.52,
-    "expectancyR": 0.162,
-    "winRatePct": 60.6,
-    "profitFactor": 2.21
-   }
-  },
-  "rolling": {
-   "negative": 17,
-   "total": 21
-  },
-  "skipped": {
-   "cancelled_level": 3766,
-   "expired": 1059,
-   "daily_cap": 243,
-   "currency_exposure": 213,
-   "missed_before_live": 94,
-   "pair_busy": 41,
-   "below_min_lot": 4
-  },
-  "endBalance": 173.64
- },
- {
-  "model": "B",
-  "config": "B4",
-  "cost": "raw",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 4310,
-  "stats": {
-   "n": 955,
-   "wins": 386,
-   "winRatePct": 40.4,
-   "expectancyR": -0.116,
-   "totalR": -111.06,
-   "profitFactor": 0.78,
-   "avgWinR": 0.993,
-   "avgLossR": -0.869,
-   "maxDrawdownR": 129.44,
-   "maxDrawdownPct": 63.2,
-   "longestLosingStreak": 9,
-   "tStat": -3.55,
-   "ci95": [
-    -0.18,
-    -0.05
-   ],
-   "tradesPerMonth": 13.3,
-   "avgHoldHours": 4.6
-  },
-  "byYear": {
-   "2015": {
-    "n": 213,
-    "totalR": -10.57,
-    "expectancyR": -0.05,
-    "winRatePct": 44.1,
-    "profitFactor": 0.9
-   },
-   "2016": {
-    "n": 208,
-    "totalR": -32.29,
-    "expectancyR": -0.155,
-    "winRatePct": 36.5,
-    "profitFactor": 0.73
-   },
-   "2017": {
-    "n": 216,
-    "totalR": -32.68,
-    "expectancyR": -0.151,
-    "winRatePct": 38.4,
-    "profitFactor": 0.71
-   },
-   "2018": {
-    "n": 165,
-    "totalR": -34.34,
-    "expectancyR": -0.208,
-    "winRatePct": 38.8,
-    "profitFactor": 0.62
-   },
-   "2019": {
-    "n": 59,
-    "totalR": -2.69,
-    "expectancyR": -0.046,
-    "winRatePct": 44.1,
-    "profitFactor": 0.89
-   },
-   "2020": {
-    "n": 94,
-    "totalR": 1.51,
-    "expectancyR": 0.016,
-    "winRatePct": 45.7,
-    "profitFactor": 1.04
-   }
-  },
-  "byPair": {
-   "GBPUSD": {
-    "n": 255,
-    "totalR": -33.95,
-    "expectancyR": -0.133,
-    "winRatePct": 39.2,
-    "profitFactor": 0.77
-   },
-   "USDJPY": {
-    "n": 260,
-    "totalR": -46.93,
-    "expectancyR": -0.18,
-    "winRatePct": 39.2,
-    "profitFactor": 0.67
-   },
-   "EURUSD": {
-    "n": 225,
-    "totalR": -3.18,
-    "expectancyR": -0.014,
-    "winRatePct": 43.6,
-    "profitFactor": 0.97
-   },
-   "AUDUSD": {
-    "n": 215,
-    "totalR": -27,
-    "expectancyR": -0.126,
-    "winRatePct": 40,
-    "profitFactor": 0.72
-   }
-  },
-  "byExit": {
-   "tp": {
-    "n": 215,
-    "totalR": 314.26,
-    "expectancyR": 1.462,
-    "winRatePct": 100,
-    "profitFactor": null
-   },
-   "stop": {
-    "n": 430,
-    "totalR": -447.38,
-    "expectancyR": -1.04,
-    "winRatePct": 0,
-    "profitFactor": 0
-   },
-   "time": {
-    "n": 310,
-    "totalR": 22.07,
-    "expectancyR": 0.071,
-    "winRatePct": 55.2,
-    "profitFactor": 1.47
-   }
-  },
-  "rolling": {
-   "negative": 19,
-   "total": 21
-  },
-  "skipped": {
-   "daily_cap": 66,
-   "cancelled_level": 2311,
-   "missed_before_live": 94,
-   "currency_exposure": 170,
-   "expired": 415,
-   "pair_busy": 67,
-   "below_min_lot": 232
-  },
-  "endBalance": 216.83
- },
- {
-  "model": "B",
-  "config": "B4",
-  "cost": "standard",
-  "from": "2015-01-05",
-  "to": "2021-01-01",
-  "orders": 4310,
-  "stats": {
-   "n": 930,
-   "wins": 371,
-   "winRatePct": 39.9,
-   "expectancyR": -0.12,
-   "totalR": -111.32,
-   "profitFactor": 0.77,
-   "avgWinR": 1,
-   "avgLossR": -0.863,
-   "maxDrawdownR": 130.38,
-   "maxDrawdownPct": 63.4,
-   "longestLosingStreak": 10,
-   "tStat": -3.62,
-   "ci95": [
-    -0.187,
-    -0.054
-   ],
-   "tradesPerMonth": 12.9,
-   "avgHoldHours": 4.5
-  },
-  "byYear": {
-   "2015": {
-    "n": 208,
-    "totalR": -13.04,
-    "expectancyR": -0.063,
-    "winRatePct": 43.3,
-    "profitFactor": 0.88
-   },
-   "2016": {
-    "n": 203,
-    "totalR": -29.53,
-    "expectancyR": -0.145,
-    "winRatePct": 35.5,
-    "profitFactor": 0.74
-   },
-   "2017": {
-    "n": 213,
-    "totalR": -32.39,
-    "expectancyR": -0.152,
-    "winRatePct": 39.4,
-    "profitFactor": 0.7
-   },
-   "2018": {
-    "n": 161,
-    "totalR": -33.81,
-    "expectancyR": -0.21,
-    "winRatePct": 37.9,
-    "profitFactor": 0.63
-   },
-   "2019": {
-    "n": 56,
-    "totalR": -3.59,
-    "expectancyR": -0.064,
-    "winRatePct": 42.9,
-    "profitFactor": 0.85
-   },
-   "2020": {
+    "expectancyR": -0.083,
+    "totalR": -22.36,
+    "profitFactor": 0.86,
+    "avgWinR": 1.346,
+    "avgLossR": -0.962,
+    "maxDrawdownR": 36.06,
+    "maxDrawdownPct": 26.5,
+    "longestLosingStreak": 10,
+    "tStat": -1.11,
+    "ci95": [
+     -0.227,
+     0.073
+    ],
+    "tradesPerMonth": 3.7,
+    "avgHoldHours": 4.4
+   },
+   "byYear": {
+    "2015": {
+     "n": 54,
+     "totalR": 4.9,
+     "expectancyR": 0.091,
+     "winRatePct": 46.3,
+     "profitFactor": 1.17
+    },
+    "2016": {
+     "n": 41,
+     "totalR": -2.02,
+     "expectancyR": -0.049,
+     "winRatePct": 36.6,
+     "profitFactor": 0.93
+    },
+    "2017": {
+     "n": 41,
+     "totalR": -21.38,
+     "expectancyR": -0.521,
+     "winRatePct": 22,
+     "profitFactor": 0.33
+    },
+    "2018": {
+     "n": 47,
+     "totalR": -6.05,
+     "expectancyR": -0.129,
+     "winRatePct": 38.3,
+     "profitFactor": 0.78
+    },
+    "2019": {
+     "n": 42,
+     "totalR": 5.2,
+     "expectancyR": 0.124,
+     "winRatePct": 50,
+     "profitFactor": 1.31
+    },
+    "2020": {
+     "n": 43,
+     "totalR": -3,
+     "expectancyR": -0.07,
+     "winRatePct": 32.6,
+     "profitFactor": 0.89
+    }
+   },
+   "byPair": {
+    "USDJPY": {
+     "n": 50,
+     "totalR": -4.46,
+     "expectancyR": -0.089,
+     "winRatePct": 36,
+     "profitFactor": 0.85
+    },
+    "EURUSD": {
+     "n": 77,
+     "totalR": -22.87,
+     "expectancyR": -0.297,
+     "winRatePct": 28.6,
+     "profitFactor": 0.57
+    },
+    "AUDUSD": {
+     "n": 47,
+     "totalR": -0.57,
+     "expectancyR": -0.012,
+     "winRatePct": 46.8,
+     "profitFactor": 0.98
+    },
+    "GBPUSD": {
+     "n": 94,
+     "totalR": 5.54,
+     "expectancyR": 0.059,
+     "winRatePct": 42.6,
+     "profitFactor": 1.11
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 150,
+     "totalR": -153.97,
+     "expectancyR": -1.026,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 53,
+     "totalR": 106,
+     "expectancyR": 2,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "time": {
+     "n": 65,
+     "totalR": 25.61,
+     "expectancyR": 0.394,
+     "winRatePct": 75.4,
+     "profitFactor": 5.52
+    }
+   },
+   "rolling": {
+    "negative": 13,
+    "total": 21
+   },
+   "skipped": {
+    "cancelled_level": 67,
+    "expired": 137,
+    "missed_before_live": 34,
+    "currency_exposure": 12
+   },
+   "endBalance": 404.22
+  },
+  {
+   "model": "A",
+   "config": "A1",
+   "cost": "standard, no lot-size limits",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 518,
+   "stats": {
+    "n": 268,
+    "wins": 102,
+    "winRatePct": 38.1,
+    "expectancyR": -0.083,
+    "totalR": -22.36,
+    "profitFactor": 0.86,
+    "avgWinR": 1.346,
+    "avgLossR": -0.962,
+    "maxDrawdownR": 36.06,
+    "maxDrawdownPct": 30.8,
+    "longestLosingStreak": 10,
+    "tStat": -1.11,
+    "ci95": [
+     -0.227,
+     0.073
+    ],
+    "tradesPerMonth": 3.7,
+    "avgHoldHours": 4.4
+   },
+   "byYear": {
+    "2015": {
+     "n": 54,
+     "totalR": 4.9,
+     "expectancyR": 0.091,
+     "winRatePct": 46.3,
+     "profitFactor": 1.17
+    },
+    "2016": {
+     "n": 41,
+     "totalR": -2.02,
+     "expectancyR": -0.049,
+     "winRatePct": 36.6,
+     "profitFactor": 0.93
+    },
+    "2017": {
+     "n": 41,
+     "totalR": -21.38,
+     "expectancyR": -0.521,
+     "winRatePct": 22,
+     "profitFactor": 0.33
+    },
+    "2018": {
+     "n": 47,
+     "totalR": -6.05,
+     "expectancyR": -0.129,
+     "winRatePct": 38.3,
+     "profitFactor": 0.78
+    },
+    "2019": {
+     "n": 42,
+     "totalR": 5.2,
+     "expectancyR": 0.124,
+     "winRatePct": 50,
+     "profitFactor": 1.31
+    },
+    "2020": {
+     "n": 43,
+     "totalR": -3,
+     "expectancyR": -0.07,
+     "winRatePct": 32.6,
+     "profitFactor": 0.89
+    }
+   },
+   "byPair": {
+    "USDJPY": {
+     "n": 50,
+     "totalR": -4.46,
+     "expectancyR": -0.089,
+     "winRatePct": 36,
+     "profitFactor": 0.85
+    },
+    "EURUSD": {
+     "n": 77,
+     "totalR": -22.87,
+     "expectancyR": -0.297,
+     "winRatePct": 28.6,
+     "profitFactor": 0.57
+    },
+    "AUDUSD": {
+     "n": 47,
+     "totalR": -0.57,
+     "expectancyR": -0.012,
+     "winRatePct": 46.8,
+     "profitFactor": 0.98
+    },
+    "GBPUSD": {
+     "n": 94,
+     "totalR": 5.54,
+     "expectancyR": 0.059,
+     "winRatePct": 42.6,
+     "profitFactor": 1.11
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 150,
+     "totalR": -153.97,
+     "expectancyR": -1.026,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 53,
+     "totalR": 106,
+     "expectancyR": 2,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "time": {
+     "n": 65,
+     "totalR": 25.61,
+     "expectancyR": 0.394,
+     "winRatePct": 75.4,
+     "profitFactor": 5.52
+    }
+   },
+   "rolling": {
+    "negative": 13,
+    "total": 21
+   },
+   "skipped": {
+    "cancelled_level": 67,
+    "expired": 137,
+    "missed_before_live": 34,
+    "currency_exposure": 12
+   },
+   "endBalance": 783779.46
+  },
+  {
+   "model": "A",
+   "config": "A2",
+   "cost": "raw",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 163,
+   "stats": {
     "n": 89,
-    "totalR": 1.04,
-    "expectancyR": 0.012,
-    "winRatePct": 44.9,
-    "profitFactor": 1.03
-   }
-  },
-  "byPair": {
-   "GBPUSD": {
-    "n": 257,
-    "totalR": -31.03,
-    "expectancyR": -0.121,
-    "winRatePct": 38.9,
-    "profitFactor": 0.79
+    "wins": 33,
+    "winRatePct": 37.1,
+    "expectancyR": -0.072,
+    "totalR": -6.41,
+    "profitFactor": 0.89,
+    "avgWinR": 1.522,
+    "avgLossR": -1.012,
+    "maxDrawdownR": 11.24,
+    "maxDrawdownPct": 8.9,
+    "longestLosingStreak": 5,
+    "tStat": -0.49,
+    "ci95": [
+     -0.342,
+     0.229
+    ],
+    "tradesPerMonth": 1.2,
+    "avgHoldHours": 3.5
    },
-   "USDJPY": {
-    "n": 250,
-    "totalR": -46.33,
-    "expectancyR": -0.185,
-    "winRatePct": 38,
-    "profitFactor": 0.65
+   "byYear": {
+    "2015": {
+     "n": 21,
+     "totalR": -2.53,
+     "expectancyR": -0.12,
+     "winRatePct": 42.9,
+     "profitFactor": 0.8
+    },
+    "2016": {
+     "n": 13,
+     "totalR": 1.85,
+     "expectancyR": 0.142,
+     "winRatePct": 38.5,
+     "profitFactor": 1.19
+    },
+    "2017": {
+     "n": 11,
+     "totalR": -3.02,
+     "expectancyR": -0.274,
+     "winRatePct": 36.4,
+     "profitFactor": 0.59
+    },
+    "2018": {
+     "n": 15,
+     "totalR": -1.52,
+     "expectancyR": -0.101,
+     "winRatePct": 33.3,
+     "profitFactor": 0.85
+    },
+    "2019": {
+     "n": 12,
+     "totalR": 1.38,
+     "expectancyR": 0.115,
+     "winRatePct": 41.7,
+     "profitFactor": 1.29
+    },
+    "2020": {
+     "n": 17,
+     "totalR": -2.56,
+     "expectancyR": -0.151,
+     "winRatePct": 29.4,
+     "profitFactor": 0.78
+    }
    },
-   "EURUSD": {
-    "n": 218,
-    "totalR": -10.41,
-    "expectancyR": -0.048,
-    "winRatePct": 41.7,
-    "profitFactor": 0.9
+   "byPair": {
+    "EURUSD": {
+     "n": 21,
+     "totalR": -14.57,
+     "expectancyR": -0.694,
+     "winRatePct": 19,
+     "profitFactor": 0.23
+    },
+    "AUDUSD": {
+     "n": 20,
+     "totalR": 4.65,
+     "expectancyR": 0.233,
+     "winRatePct": 50,
+     "profitFactor": 1.48
+    },
+    "USDJPY": {
+     "n": 21,
+     "totalR": -1.31,
+     "expectancyR": -0.062,
+     "winRatePct": 33.3,
+     "profitFactor": 0.9
+    },
+    "GBPUSD": {
+     "n": 27,
+     "totalR": 4.82,
+     "expectancyR": 0.179,
+     "winRatePct": 44.4,
+     "profitFactor": 1.33
+    }
    },
-   "AUDUSD": {
-    "n": 205,
-    "totalR": -23.54,
-    "expectancyR": -0.115,
-    "winRatePct": 41.5,
-    "profitFactor": 0.75
-   }
-  },
-  "byExit": {
-   "tp": {
-    "n": 202,
-    "totalR": 301.02,
-    "expectancyR": 1.49,
-    "winRatePct": 100,
-    "profitFactor": null
+   "byExit": {
+    "stop": {
+     "n": 51,
+     "totalR": -55.45,
+     "expectancyR": -1.087,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 18,
+     "totalR": 40.19,
+     "expectancyR": 2.233,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "time": {
+     "n": 20,
+     "totalR": 8.85,
+     "expectancyR": 0.443,
+     "winRatePct": 75,
+     "profitFactor": 8.39
+    }
    },
-   "stop": {
-    "n": 437,
-    "totalR": -442.02,
-    "expectancyR": -1.011,
-    "winRatePct": 0,
-    "profitFactor": 0
+   "rolling": {
+    "negative": 13,
+    "total": 21
    },
-   "time": {
-    "n": 291,
-    "totalR": 29.69,
-    "expectancyR": 0.102,
-    "winRatePct": 58.1,
-    "profitFactor": 1.74
-   }
+   "skipped": {
+    "expired": 42,
+    "missed_before_live": 10,
+    "cancelled_level": 20,
+    "currency_exposure": 2
+   },
+   "endBalance": 481.1
   },
-  "rolling": {
-   "negative": 19,
-   "total": 21
+  {
+   "model": "A",
+   "config": "A2",
+   "cost": "standard",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 163,
+   "stats": {
+    "n": 89,
+    "wins": 36,
+    "winRatePct": 40.4,
+    "expectancyR": 0.036,
+    "totalR": 3.25,
+    "profitFactor": 1.06,
+    "avgWinR": 1.543,
+    "avgLossR": -0.987,
+    "maxDrawdownR": 8.27,
+    "maxDrawdownPct": 6.8,
+    "longestLosingStreak": 4,
+    "tStat": 0.24,
+    "ci95": [
+     -0.253,
+     0.332
+    ],
+    "tradesPerMonth": 1.2,
+    "avgHoldHours": 3.5
+   },
+   "byYear": {
+    "2015": {
+     "n": 20,
+     "totalR": -0.82,
+     "expectancyR": -0.041,
+     "winRatePct": 45,
+     "profitFactor": 0.93
+    },
+    "2016": {
+     "n": 14,
+     "totalR": 4.52,
+     "expectancyR": 0.323,
+     "winRatePct": 42.9,
+     "profitFactor": 1.47
+    },
+    "2017": {
+     "n": 11,
+     "totalR": -2.61,
+     "expectancyR": -0.237,
+     "winRatePct": 36.4,
+     "profitFactor": 0.63
+    },
+    "2018": {
+     "n": 15,
+     "totalR": 2.24,
+     "expectancyR": 0.149,
+     "winRatePct": 40,
+     "profitFactor": 1.26
+    },
+    "2019": {
+     "n": 12,
+     "totalR": 1.82,
+     "expectancyR": 0.152,
+     "winRatePct": 50,
+     "profitFactor": 1.42
+    },
+    "2020": {
+     "n": 17,
+     "totalR": -1.9,
+     "expectancyR": -0.112,
+     "winRatePct": 29.4,
+     "profitFactor": 0.83
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 21,
+     "totalR": -13.8,
+     "expectancyR": -0.657,
+     "winRatePct": 19,
+     "profitFactor": 0.24
+    },
+    "AUDUSD": {
+     "n": 19,
+     "totalR": 9.74,
+     "expectancyR": 0.513,
+     "winRatePct": 63.2,
+     "profitFactor": 2.37
+    },
+    "USDJPY": {
+     "n": 21,
+     "totalR": -0.32,
+     "expectancyR": -0.015,
+     "winRatePct": 33.3,
+     "profitFactor": 0.97
+    },
+    "GBPUSD": {
+     "n": 28,
+     "totalR": 7.63,
+     "expectancyR": 0.273,
+     "winRatePct": 46.4,
+     "profitFactor": 1.53
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 49,
+     "totalR": -51.25,
+     "expectancyR": -1.046,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 20,
+     "totalR": 45.27,
+     "expectancyR": 2.264,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "time": {
+     "n": 20,
+     "totalR": 9.23,
+     "expectancyR": 0.462,
+     "winRatePct": 80,
+     "profitFactor": 9.9
+    }
+   },
+   "rolling": {
+    "negative": 11,
+    "total": 21
+   },
+   "skipped": {
+    "expired": 44,
+    "missed_before_live": 8,
+    "cancelled_level": 20,
+    "currency_exposure": 2
+   },
+   "endBalance": 522.49
   },
-  "skipped": {
-   "daily_cap": 62,
-   "cancelled_level": 2333,
-   "missed_before_live": 79,
-   "expired": 444,
-   "currency_exposure": 163,
-   "pair_busy": 63,
-   "below_min_lot": 236
+  {
+   "model": "A",
+   "config": "A2",
+   "cost": "standard, no lot-size limits",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 163,
+   "stats": {
+    "n": 89,
+    "wins": 36,
+    "winRatePct": 40.4,
+    "expectancyR": 0.036,
+    "totalR": 3.25,
+    "profitFactor": 1.06,
+    "avgWinR": 1.543,
+    "avgLossR": -0.987,
+    "maxDrawdownR": 8.27,
+    "maxDrawdownPct": 8.2,
+    "longestLosingStreak": 4,
+    "tStat": 0.24,
+    "ci95": [
+     -0.253,
+     0.332
+    ],
+    "tradesPerMonth": 1.2,
+    "avgHoldHours": 3.5
+   },
+   "byYear": {
+    "2015": {
+     "n": 20,
+     "totalR": -0.82,
+     "expectancyR": -0.041,
+     "winRatePct": 45,
+     "profitFactor": 0.93
+    },
+    "2016": {
+     "n": 14,
+     "totalR": 4.52,
+     "expectancyR": 0.323,
+     "winRatePct": 42.9,
+     "profitFactor": 1.47
+    },
+    "2017": {
+     "n": 11,
+     "totalR": -2.61,
+     "expectancyR": -0.237,
+     "winRatePct": 36.4,
+     "profitFactor": 0.63
+    },
+    "2018": {
+     "n": 15,
+     "totalR": 2.24,
+     "expectancyR": 0.149,
+     "winRatePct": 40,
+     "profitFactor": 1.26
+    },
+    "2019": {
+     "n": 12,
+     "totalR": 1.82,
+     "expectancyR": 0.152,
+     "winRatePct": 50,
+     "profitFactor": 1.42
+    },
+    "2020": {
+     "n": 17,
+     "totalR": -1.9,
+     "expectancyR": -0.112,
+     "winRatePct": 29.4,
+     "profitFactor": 0.83
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 21,
+     "totalR": -13.8,
+     "expectancyR": -0.657,
+     "winRatePct": 19,
+     "profitFactor": 0.24
+    },
+    "AUDUSD": {
+     "n": 19,
+     "totalR": 9.74,
+     "expectancyR": 0.513,
+     "winRatePct": 63.2,
+     "profitFactor": 2.37
+    },
+    "USDJPY": {
+     "n": 21,
+     "totalR": -0.32,
+     "expectancyR": -0.015,
+     "winRatePct": 33.3,
+     "profitFactor": 0.97
+    },
+    "GBPUSD": {
+     "n": 28,
+     "totalR": 7.63,
+     "expectancyR": 0.273,
+     "winRatePct": 46.4,
+     "profitFactor": 1.53
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 49,
+     "totalR": -51.25,
+     "expectancyR": -1.046,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 20,
+     "totalR": 45.27,
+     "expectancyR": 2.264,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "time": {
+     "n": 20,
+     "totalR": 9.23,
+     "expectancyR": 0.462,
+     "winRatePct": 80,
+     "profitFactor": 9.9
+    }
+   },
+   "rolling": {
+    "negative": 11,
+    "total": 21
+   },
+   "skipped": {
+    "expired": 44,
+    "missed_before_live": 8,
+    "cancelled_level": 20,
+    "currency_exposure": 2
+   },
+   "endBalance": 1023639.77
   },
-  "endBalance": 216.89
- }
-]
+  {
+   "model": "A",
+   "config": "A3",
+   "cost": "raw",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 201,
+   "stats": {
+    "n": 77,
+    "wins": 33,
+    "winRatePct": 42.9,
+    "expectancyR": 0.015,
+    "totalR": 1.15,
+    "profitFactor": 1.02,
+    "avgWinR": 1.449,
+    "avgLossR": -1.061,
+    "maxDrawdownR": 14.27,
+    "maxDrawdownPct": 11.8,
+    "longestLosingStreak": 5,
+    "tStat": 0.1,
+    "ci95": [
+     -0.294,
+     0.331
+    ],
+    "tradesPerMonth": 1.1,
+    "avgHoldHours": 3.6
+   },
+   "byYear": {
+    "2015": {
+     "n": 19,
+     "totalR": -0.32,
+     "expectancyR": -0.017,
+     "winRatePct": 42.1,
+     "profitFactor": 0.97
+    },
+    "2016": {
+     "n": 10,
+     "totalR": 7.43,
+     "expectancyR": 0.743,
+     "winRatePct": 70,
+     "profitFactor": 2.6
+    },
+    "2017": {
+     "n": 13,
+     "totalR": -5.97,
+     "expectancyR": -0.459,
+     "winRatePct": 23.1,
+     "profitFactor": 0.42
+    },
+    "2018": {
+     "n": 12,
+     "totalR": -5.44,
+     "expectancyR": -0.453,
+     "winRatePct": 25,
+     "profitFactor": 0.43
+    },
+    "2019": {
+     "n": 13,
+     "totalR": 5.06,
+     "expectancyR": 0.389,
+     "winRatePct": 61.5,
+     "profitFactor": 2.11
+    },
+    "2020": {
+     "n": 10,
+     "totalR": 0.4,
+     "expectancyR": 0.04,
+     "winRatePct": 40,
+     "profitFactor": 1.07
+    }
+   },
+   "byPair": {
+    "AUDUSD": {
+     "n": 12,
+     "totalR": 0.24,
+     "expectancyR": 0.02,
+     "winRatePct": 50,
+     "profitFactor": 1.04
+    },
+    "GBPUSD": {
+     "n": 36,
+     "totalR": 7.53,
+     "expectancyR": 0.209,
+     "winRatePct": 47.2,
+     "profitFactor": 1.38
+    },
+    "EURUSD": {
+     "n": 20,
+     "totalR": -8.61,
+     "expectancyR": -0.43,
+     "winRatePct": 30,
+     "profitFactor": 0.46
+    },
+    "USDJPY": {
+     "n": 9,
+     "totalR": 1.99,
+     "expectancyR": 0.221,
+     "winRatePct": 44.4,
+     "profitFactor": 1.43
+    }
+   },
+   "byExit": {
+    "tp": {
+     "n": 21,
+     "totalR": 41.03,
+     "expectancyR": 1.954,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "stop": {
+     "n": 41,
+     "totalR": -44.96,
+     "expectancyR": -1.097,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 15,
+     "totalR": 5.08,
+     "expectancyR": 0.339,
+     "winRatePct": 80,
+     "profitFactor": 3.97
+    }
+   },
+   "rolling": {
+    "negative": 9,
+    "total": 21
+   },
+   "skipped": {
+    "cancelled_level": 59,
+    "expired": 57,
+    "missed_before_live": 6,
+    "currency_exposure": 2
+   },
+   "endBalance": 505.08
+  },
+  {
+   "model": "A",
+   "config": "A3",
+   "cost": "standard",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 201,
+   "stats": {
+    "n": 76,
+    "wins": 32,
+    "winRatePct": 42.1,
+    "expectancyR": 0.026,
+    "totalR": 1.98,
+    "profitFactor": 1.04,
+    "avgWinR": 1.463,
+    "avgLossR": -1.019,
+    "maxDrawdownR": 11,
+    "maxDrawdownPct": 9.1,
+    "longestLosingStreak": 5,
+    "tStat": 0.17,
+    "ci95": [
+     -0.267,
+     0.344
+    ],
+    "tradesPerMonth": 1.1,
+    "avgHoldHours": 3.6
+   },
+   "byYear": {
+    "2015": {
+     "n": 18,
+     "totalR": -1.69,
+     "expectancyR": -0.094,
+     "winRatePct": 38.9,
+     "profitFactor": 0.85
+    },
+    "2016": {
+     "n": 10,
+     "totalR": 7.76,
+     "expectancyR": 0.776,
+     "winRatePct": 70,
+     "profitFactor": 2.72
+    },
+    "2017": {
+     "n": 13,
+     "totalR": -5.39,
+     "expectancyR": -0.414,
+     "winRatePct": 23.1,
+     "profitFactor": 0.46
+    },
+    "2018": {
+     "n": 13,
+     "totalR": -2.91,
+     "expectancyR": -0.224,
+     "winRatePct": 30.8,
+     "profitFactor": 0.68
+    },
+    "2019": {
+     "n": 13,
+     "totalR": 5.5,
+     "expectancyR": 0.423,
+     "winRatePct": 61.5,
+     "profitFactor": 2.27
+    },
+    "2020": {
+     "n": 9,
+     "totalR": -1.3,
+     "expectancyR": -0.144,
+     "winRatePct": 33.3,
+     "profitFactor": 0.77
+    }
+   },
+   "byPair": {
+    "AUDUSD": {
+     "n": 12,
+     "totalR": 0.61,
+     "expectancyR": 0.051,
+     "winRatePct": 50,
+     "profitFactor": 1.1
+    },
+    "GBPUSD": {
+     "n": 36,
+     "totalR": 8.75,
+     "expectancyR": 0.243,
+     "winRatePct": 47.2,
+     "profitFactor": 1.45
+    },
+    "EURUSD": {
+     "n": 19,
+     "totalR": -9.91,
+     "expectancyR": -0.521,
+     "winRatePct": 26.3,
+     "profitFactor": 0.36
+    },
+    "USDJPY": {
+     "n": 9,
+     "totalR": 2.52,
+     "expectancyR": 0.28,
+     "winRatePct": 44.4,
+     "profitFactor": 1.58
+    }
+   },
+   "byExit": {
+    "tp": {
+     "n": 20,
+     "totalR": 40,
+     "expectancyR": 2,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "stop": {
+     "n": 41,
+     "totalR": -43.19,
+     "expectancyR": -1.053,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 15,
+     "totalR": 5.16,
+     "expectancyR": 0.344,
+     "winRatePct": 80,
+     "profitFactor": 4.11
+    }
+   },
+   "rolling": {
+    "negative": 11,
+    "total": 21
+   },
+   "skipped": {
+    "cancelled_level": 59,
+    "expired": 59,
+    "missed_before_live": 5,
+    "currency_exposure": 2
+   },
+   "endBalance": 509.55
+  },
+  {
+   "model": "A",
+   "config": "A3",
+   "cost": "standard, no lot-size limits",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 201,
+   "stats": {
+    "n": 76,
+    "wins": 32,
+    "winRatePct": 42.1,
+    "expectancyR": 0.026,
+    "totalR": 1.98,
+    "profitFactor": 1.04,
+    "avgWinR": 1.463,
+    "avgLossR": -1.019,
+    "maxDrawdownR": 11,
+    "maxDrawdownPct": 10.6,
+    "longestLosingStreak": 5,
+    "tStat": 0.17,
+    "ci95": [
+     -0.267,
+     0.344
+    ],
+    "tradesPerMonth": 1.1,
+    "avgHoldHours": 3.6
+   },
+   "byYear": {
+    "2015": {
+     "n": 18,
+     "totalR": -1.69,
+     "expectancyR": -0.094,
+     "winRatePct": 38.9,
+     "profitFactor": 0.85
+    },
+    "2016": {
+     "n": 10,
+     "totalR": 7.76,
+     "expectancyR": 0.776,
+     "winRatePct": 70,
+     "profitFactor": 2.72
+    },
+    "2017": {
+     "n": 13,
+     "totalR": -5.39,
+     "expectancyR": -0.414,
+     "winRatePct": 23.1,
+     "profitFactor": 0.46
+    },
+    "2018": {
+     "n": 13,
+     "totalR": -2.91,
+     "expectancyR": -0.224,
+     "winRatePct": 30.8,
+     "profitFactor": 0.68
+    },
+    "2019": {
+     "n": 13,
+     "totalR": 5.5,
+     "expectancyR": 0.423,
+     "winRatePct": 61.5,
+     "profitFactor": 2.27
+    },
+    "2020": {
+     "n": 9,
+     "totalR": -1.3,
+     "expectancyR": -0.144,
+     "winRatePct": 33.3,
+     "profitFactor": 0.77
+    }
+   },
+   "byPair": {
+    "AUDUSD": {
+     "n": 12,
+     "totalR": 0.61,
+     "expectancyR": 0.051,
+     "winRatePct": 50,
+     "profitFactor": 1.1
+    },
+    "GBPUSD": {
+     "n": 36,
+     "totalR": 8.75,
+     "expectancyR": 0.243,
+     "winRatePct": 47.2,
+     "profitFactor": 1.45
+    },
+    "EURUSD": {
+     "n": 19,
+     "totalR": -9.91,
+     "expectancyR": -0.521,
+     "winRatePct": 26.3,
+     "profitFactor": 0.36
+    },
+    "USDJPY": {
+     "n": 9,
+     "totalR": 2.52,
+     "expectancyR": 0.28,
+     "winRatePct": 44.4,
+     "profitFactor": 1.58
+    }
+   },
+   "byExit": {
+    "tp": {
+     "n": 20,
+     "totalR": 40,
+     "expectancyR": 2,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "stop": {
+     "n": 41,
+     "totalR": -43.19,
+     "expectancyR": -1.053,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 15,
+     "totalR": 5.16,
+     "expectancyR": 0.344,
+     "winRatePct": 80,
+     "profitFactor": 4.11
+    }
+   },
+   "rolling": {
+    "negative": 11,
+    "total": 21
+   },
+   "skipped": {
+    "cancelled_level": 59,
+    "expired": 59,
+    "missed_before_live": 5,
+    "currency_exposure": 2
+   },
+   "endBalance": 1013143.88
+  },
+  {
+   "model": "A",
+   "config": "A4",
+   "cost": "raw",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 81,
+   "stats": {
+    "n": 34,
+    "wins": 15,
+    "winRatePct": 44.1,
+    "expectancyR": 0.264,
+    "totalR": 8.97,
+    "profitFactor": 1.43,
+    "avgWinR": 1.987,
+    "avgLossR": -1.097,
+    "maxDrawdownR": 7.2,
+    "maxDrawdownPct": 6,
+    "longestLosingStreak": 4,
+    "tStat": 0.91,
+    "ci95": [
+     -0.26,
+     0.845
+    ],
+    "tradesPerMonth": 0.5,
+    "avgHoldHours": 3.7
+   },
+   "byYear": {
+    "2015": {
+     "n": 8,
+     "totalR": 2.16,
+     "expectancyR": 0.269,
+     "winRatePct": 50,
+     "profitFactor": 1.51
+    },
+    "2016": {
+     "n": 6,
+     "totalR": 6.8,
+     "expectancyR": 1.133,
+     "winRatePct": 66.7,
+     "profitFactor": 2.9
+    },
+    "2017": {
+     "n": 2,
+     "totalR": 0.25,
+     "expectancyR": 0.126,
+     "winRatePct": 50,
+     "profitFactor": 1.23
+    },
+    "2018": {
+     "n": 9,
+     "totalR": -4.21,
+     "expectancyR": -0.467,
+     "winRatePct": 22.2,
+     "profitFactor": 0.44
+    },
+    "2019": {
+     "n": 4,
+     "totalR": 2.16,
+     "expectancyR": 0.541,
+     "winRatePct": 50,
+     "profitFactor": 2.6
+    },
+    "2020": {
+     "n": 5,
+     "totalR": 1.8,
+     "expectancyR": 0.36,
+     "winRatePct": 40,
+     "profitFactor": 1.57
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 7,
+     "totalR": -8.86,
+     "expectancyR": -1.266,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "AUDUSD": {
+     "n": 7,
+     "totalR": 6.93,
+     "expectancyR": 0.991,
+     "winRatePct": 71.4,
+     "profitFactor": 4.26
+    },
+    "GBPUSD": {
+     "n": 15,
+     "totalR": 9.01,
+     "expectancyR": 0.601,
+     "winRatePct": 53.3,
+     "profitFactor": 2.22
+    },
+    "USDJPY": {
+     "n": 5,
+     "totalR": 1.88,
+     "expectancyR": 0.376,
+     "winRatePct": 40,
+     "profitFactor": 1.77
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 18,
+     "totalR": -20.53,
+     "expectancyR": -1.14,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 11,
+     "totalR": 26.3,
+     "expectancyR": 2.391,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "time": {
+     "n": 5,
+     "totalR": 3.2,
+     "expectancyR": 0.639,
+     "winRatePct": 80,
+     "profitFactor": 11.43
+    }
+   },
+   "rolling": {
+    "negative": 7,
+    "total": 20
+   },
+   "skipped": {
+    "expired": 25,
+    "missed_before_live": 4,
+    "cancelled_level": 17,
+    "currency_exposure": 1
+   },
+   "endBalance": 538.2
+  },
+  {
+   "model": "A",
+   "config": "A4",
+   "cost": "standard",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 81,
+   "stats": {
+    "n": 34,
+    "wins": 15,
+    "winRatePct": 44.1,
+    "expectancyR": 0.313,
+    "totalR": 10.65,
+    "profitFactor": 1.53,
+    "avgWinR": 2.045,
+    "avgLossR": -1.054,
+    "maxDrawdownR": 5.86,
+    "maxDrawdownPct": 5,
+    "longestLosingStreak": 3,
+    "tStat": 1.07,
+    "ci95": [
+     -0.224,
+     0.9
+    ],
+    "tradesPerMonth": 0.5,
+    "avgHoldHours": 3.6
+   },
+   "byYear": {
+    "2015": {
+     "n": 7,
+     "totalR": 0.72,
+     "expectancyR": 0.103,
+     "winRatePct": 42.9,
+     "profitFactor": 1.18
+    },
+    "2016": {
+     "n": 6,
+     "totalR": 7.03,
+     "expectancyR": 1.171,
+     "winRatePct": 66.7,
+     "profitFactor": 3.01
+    },
+    "2017": {
+     "n": 2,
+     "totalR": 0.32,
+     "expectancyR": 0.159,
+     "winRatePct": 50,
+     "profitFactor": 1.31
+    },
+    "2018": {
+     "n": 10,
+     "totalR": -1.75,
+     "expectancyR": -0.175,
+     "winRatePct": 30,
+     "profitFactor": 0.75
+    },
+    "2019": {
+     "n": 4,
+     "totalR": 2.33,
+     "expectancyR": 0.582,
+     "winRatePct": 50,
+     "profitFactor": 2.85
+    },
+    "2020": {
+     "n": 5,
+     "totalR": 2,
+     "expectancyR": 0.401,
+     "winRatePct": 40,
+     "profitFactor": 1.66
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 7,
+     "totalR": -8.59,
+     "expectancyR": -1.226,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "AUDUSD": {
+     "n": 7,
+     "totalR": 7.24,
+     "expectancyR": 1.035,
+     "winRatePct": 71.4,
+     "profitFactor": 4.56
+    },
+    "GBPUSD": {
+     "n": 15,
+     "totalR": 9.87,
+     "expectancyR": 0.658,
+     "winRatePct": 53.3,
+     "profitFactor": 2.39
+    },
+    "USDJPY": {
+     "n": 5,
+     "totalR": 2.12,
+     "expectancyR": 0.425,
+     "winRatePct": 40,
+     "profitFactor": 1.93
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 18,
+     "totalR": -19.77,
+     "expectancyR": -1.099,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 11,
+     "totalR": 27.13,
+     "expectancyR": 2.467,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "time": {
+     "n": 5,
+     "totalR": 3.29,
+     "expectancyR": 0.658,
+     "winRatePct": 80,
+     "profitFactor": 14.5
+    }
+   },
+   "rolling": {
+    "negative": 7,
+    "total": 20
+   },
+   "skipped": {
+    "expired": 26,
+    "missed_before_live": 3,
+    "cancelled_level": 17,
+    "currency_exposure": 1
+   },
+   "endBalance": 547.18
+  },
+  {
+   "model": "A",
+   "config": "A4",
+   "cost": "standard, no lot-size limits",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 81,
+   "stats": {
+    "n": 34,
+    "wins": 15,
+    "winRatePct": 44.1,
+    "expectancyR": 0.313,
+    "totalR": 10.65,
+    "profitFactor": 1.53,
+    "avgWinR": 2.045,
+    "avgLossR": -1.054,
+    "maxDrawdownR": 5.86,
+    "maxDrawdownPct": 5.7,
+    "longestLosingStreak": 3,
+    "tStat": 1.07,
+    "ci95": [
+     -0.224,
+     0.9
+    ],
+    "tradesPerMonth": 0.5,
+    "avgHoldHours": 3.6
+   },
+   "byYear": {
+    "2015": {
+     "n": 7,
+     "totalR": 0.72,
+     "expectancyR": 0.103,
+     "winRatePct": 42.9,
+     "profitFactor": 1.18
+    },
+    "2016": {
+     "n": 6,
+     "totalR": 7.03,
+     "expectancyR": 1.171,
+     "winRatePct": 66.7,
+     "profitFactor": 3.01
+    },
+    "2017": {
+     "n": 2,
+     "totalR": 0.32,
+     "expectancyR": 0.159,
+     "winRatePct": 50,
+     "profitFactor": 1.31
+    },
+    "2018": {
+     "n": 10,
+     "totalR": -1.75,
+     "expectancyR": -0.175,
+     "winRatePct": 30,
+     "profitFactor": 0.75
+    },
+    "2019": {
+     "n": 4,
+     "totalR": 2.33,
+     "expectancyR": 0.582,
+     "winRatePct": 50,
+     "profitFactor": 2.85
+    },
+    "2020": {
+     "n": 5,
+     "totalR": 2,
+     "expectancyR": 0.401,
+     "winRatePct": 40,
+     "profitFactor": 1.66
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 7,
+     "totalR": -8.59,
+     "expectancyR": -1.226,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "AUDUSD": {
+     "n": 7,
+     "totalR": 7.24,
+     "expectancyR": 1.035,
+     "winRatePct": 71.4,
+     "profitFactor": 4.56
+    },
+    "GBPUSD": {
+     "n": 15,
+     "totalR": 9.87,
+     "expectancyR": 0.658,
+     "winRatePct": 53.3,
+     "profitFactor": 2.39
+    },
+    "USDJPY": {
+     "n": 5,
+     "totalR": 2.12,
+     "expectancyR": 0.425,
+     "winRatePct": 40,
+     "profitFactor": 1.93
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 18,
+     "totalR": -19.77,
+     "expectancyR": -1.099,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 11,
+     "totalR": 27.13,
+     "expectancyR": 2.467,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "time": {
+     "n": 5,
+     "totalR": 3.29,
+     "expectancyR": 0.658,
+     "winRatePct": 80,
+     "profitFactor": 14.5
+    }
+   },
+   "rolling": {
+    "negative": 7,
+    "total": 20
+   },
+   "skipped": {
+    "expired": 26,
+    "missed_before_live": 3,
+    "cancelled_level": 17,
+    "currency_exposure": 1
+   },
+   "endBalance": 1106509.99
+  },
+  {
+   "model": "A",
+   "config": "A5",
+   "cost": "raw",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 578,
+   "stats": {
+    "n": 283,
+    "wins": 107,
+    "winRatePct": 37.8,
+    "expectancyR": -0.127,
+    "totalR": -36.06,
+    "profitFactor": 0.8,
+    "avgWinR": 1.31,
+    "avgLossR": -1.001,
+    "maxDrawdownR": 55.78,
+    "maxDrawdownPct": 35.9,
+    "longestLosingStreak": 11,
+    "tStat": -1.74,
+    "ci95": [
+     -0.262,
+     0.022
+    ],
+    "tradesPerMonth": 3.9,
+    "avgHoldHours": 4.3
+   },
+   "byYear": {
+    "2015": {
+     "n": 43,
+     "totalR": 5.52,
+     "expectancyR": 0.128,
+     "winRatePct": 51.2,
+     "profitFactor": 1.26
+    },
+    "2016": {
+     "n": 42,
+     "totalR": -18.32,
+     "expectancyR": -0.436,
+     "winRatePct": 26.2,
+     "profitFactor": 0.45
+    },
+    "2017": {
+     "n": 48,
+     "totalR": -19.37,
+     "expectancyR": -0.404,
+     "winRatePct": 29.2,
+     "profitFactor": 0.43
+    },
+    "2018": {
+     "n": 54,
+     "totalR": -9.59,
+     "expectancyR": -0.178,
+     "winRatePct": 35.2,
+     "profitFactor": 0.72
+    },
+    "2019": {
+     "n": 41,
+     "totalR": 0.94,
+     "expectancyR": 0.023,
+     "winRatePct": 46.3,
+     "profitFactor": 1.05
+    },
+    "2020": {
+     "n": 55,
+     "totalR": 4.76,
+     "expectancyR": 0.087,
+     "winRatePct": 40,
+     "profitFactor": 1.14
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 86,
+     "totalR": -14.33,
+     "expectancyR": -0.167,
+     "winRatePct": 34.9,
+     "profitFactor": 0.75
+    },
+    "USDJPY": {
+     "n": 46,
+     "totalR": -12.48,
+     "expectancyR": -0.271,
+     "winRatePct": 32.6,
+     "profitFactor": 0.6
+    },
+    "AUDUSD": {
+     "n": 54,
+     "totalR": -1.85,
+     "expectancyR": -0.034,
+     "winRatePct": 46.3,
+     "profitFactor": 0.93
+    },
+    "GBPUSD": {
+     "n": 97,
+     "totalR": -7.41,
+     "expectancyR": -0.076,
+     "winRatePct": 38.1,
+     "profitFactor": 0.88
+    }
+   },
+   "byExit": {
+    "tp": {
+     "n": 56,
+     "totalR": 109.76,
+     "expectancyR": 1.96,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "stop": {
+     "n": 162,
+     "totalR": -172.51,
+     "expectancyR": -1.065,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 65,
+     "totalR": 26.68,
+     "expectancyR": 0.41,
+     "winRatePct": 78.5,
+     "profitFactor": 8.21
+    }
+   },
+   "rolling": {
+    "negative": 16,
+    "total": 21
+   },
+   "skipped": {
+    "missed_before_live": 54,
+    "cancelled_level": 81,
+    "expired": 138,
+    "currency_exposure": 21,
+    "pair_busy": 1
+   },
+   "endBalance": 370.39
+  },
+  {
+   "model": "A",
+   "config": "A5",
+   "cost": "standard",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 578,
+   "stats": {
+    "n": 279,
+    "wins": 104,
+    "winRatePct": 37.3,
+    "expectancyR": -0.128,
+    "totalR": -35.81,
+    "profitFactor": 0.79,
+    "avgWinR": 1.294,
+    "avgLossR": -0.974,
+    "maxDrawdownR": 54.02,
+    "maxDrawdownPct": 36.3,
+    "longestLosingStreak": 15,
+    "tStat": -1.77,
+    "ci95": [
+     -0.27,
+     0.013
+    ],
+    "tradesPerMonth": 3.9,
+    "avgHoldHours": 4.3
+   },
+   "byYear": {
+    "2015": {
+     "n": 42,
+     "totalR": 7.75,
+     "expectancyR": 0.185,
+     "winRatePct": 52.4,
+     "profitFactor": 1.4
+    },
+    "2016": {
+     "n": 42,
+     "totalR": -14.11,
+     "expectancyR": -0.336,
+     "winRatePct": 28.6,
+     "profitFactor": 0.55
+    },
+    "2017": {
+     "n": 46,
+     "totalR": -21.51,
+     "expectancyR": -0.468,
+     "winRatePct": 26.1,
+     "profitFactor": 0.34
+    },
+    "2018": {
+     "n": 57,
+     "totalR": -9.63,
+     "expectancyR": -0.169,
+     "winRatePct": 35.1,
+     "profitFactor": 0.73
+    },
+    "2019": {
+     "n": 40,
+     "totalR": 0.89,
+     "expectancyR": 0.022,
+     "winRatePct": 47.5,
+     "profitFactor": 1.05
+    },
+    "2020": {
+     "n": 52,
+     "totalR": 0.8,
+     "expectancyR": 0.015,
+     "winRatePct": 36.5,
+     "profitFactor": 1.02
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 80,
+     "totalR": -14.82,
+     "expectancyR": -0.185,
+     "winRatePct": 33.8,
+     "profitFactor": 0.71
+    },
+    "USDJPY": {
+     "n": 48,
+     "totalR": -10.11,
+     "expectancyR": -0.211,
+     "winRatePct": 33.3,
+     "profitFactor": 0.67
+    },
+    "AUDUSD": {
+     "n": 55,
+     "totalR": -1.04,
+     "expectancyR": -0.019,
+     "winRatePct": 47.3,
+     "profitFactor": 0.96
+    },
+    "GBPUSD": {
+     "n": 96,
+     "totalR": -9.85,
+     "expectancyR": -0.103,
+     "winRatePct": 36.5,
+     "profitFactor": 0.84
+    }
+   },
+   "byExit": {
+    "tp": {
+     "n": 52,
+     "totalR": 104,
+     "expectancyR": 2,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "stop": {
+     "n": 163,
+     "totalR": -167.14,
+     "expectancyR": -1.025,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 64,
+     "totalR": 27.33,
+     "expectancyR": 0.427,
+     "winRatePct": 81.3,
+     "profitFactor": 9.43
+    }
+   },
+   "rolling": {
+    "negative": 15,
+    "total": 21
+   },
+   "skipped": {
+    "missed_before_live": 48,
+    "cancelled_level": 82,
+    "expired": 148,
+    "currency_exposure": 20,
+    "pair_busy": 1
+   },
+   "endBalance": 362.42
+  },
+  {
+   "model": "A",
+   "config": "A5",
+   "cost": "standard, no lot-size limits",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 578,
+   "stats": {
+    "n": 279,
+    "wins": 104,
+    "winRatePct": 37.3,
+    "expectancyR": -0.128,
+    "totalR": -35.81,
+    "profitFactor": 0.79,
+    "avgWinR": 1.294,
+    "avgLossR": -0.974,
+    "maxDrawdownR": 54.02,
+    "maxDrawdownPct": 42.3,
+    "longestLosingStreak": 15,
+    "tStat": -1.77,
+    "ci95": [
+     -0.27,
+     0.013
+    ],
+    "tradesPerMonth": 3.9,
+    "avgHoldHours": 4.3
+   },
+   "byYear": {
+    "2015": {
+     "n": 42,
+     "totalR": 7.75,
+     "expectancyR": 0.185,
+     "winRatePct": 52.4,
+     "profitFactor": 1.4
+    },
+    "2016": {
+     "n": 42,
+     "totalR": -14.11,
+     "expectancyR": -0.336,
+     "winRatePct": 28.6,
+     "profitFactor": 0.55
+    },
+    "2017": {
+     "n": 46,
+     "totalR": -21.51,
+     "expectancyR": -0.468,
+     "winRatePct": 26.1,
+     "profitFactor": 0.34
+    },
+    "2018": {
+     "n": 57,
+     "totalR": -9.63,
+     "expectancyR": -0.169,
+     "winRatePct": 35.1,
+     "profitFactor": 0.73
+    },
+    "2019": {
+     "n": 40,
+     "totalR": 0.89,
+     "expectancyR": 0.022,
+     "winRatePct": 47.5,
+     "profitFactor": 1.05
+    },
+    "2020": {
+     "n": 52,
+     "totalR": 0.8,
+     "expectancyR": 0.015,
+     "winRatePct": 36.5,
+     "profitFactor": 1.02
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 80,
+     "totalR": -14.82,
+     "expectancyR": -0.185,
+     "winRatePct": 33.8,
+     "profitFactor": 0.71
+    },
+    "USDJPY": {
+     "n": 48,
+     "totalR": -10.11,
+     "expectancyR": -0.211,
+     "winRatePct": 33.3,
+     "profitFactor": 0.67
+    },
+    "AUDUSD": {
+     "n": 55,
+     "totalR": -1.04,
+     "expectancyR": -0.019,
+     "winRatePct": 47.3,
+     "profitFactor": 0.96
+    },
+    "GBPUSD": {
+     "n": 96,
+     "totalR": -9.85,
+     "expectancyR": -0.103,
+     "winRatePct": 36.5,
+     "profitFactor": 0.84
+    }
+   },
+   "byExit": {
+    "tp": {
+     "n": 52,
+     "totalR": 104,
+     "expectancyR": 2,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "stop": {
+     "n": 163,
+     "totalR": -167.14,
+     "expectancyR": -1.025,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 64,
+     "totalR": 27.33,
+     "expectancyR": 0.427,
+     "winRatePct": 81.3,
+     "profitFactor": 9.43
+    }
+   },
+   "rolling": {
+    "negative": 15,
+    "total": 21
+   },
+   "skipped": {
+    "missed_before_live": 48,
+    "cancelled_level": 82,
+    "expired": 148,
+    "currency_exposure": 20,
+    "pair_busy": 1
+   },
+   "endBalance": 685192.39
+  },
+  {
+   "model": "A",
+   "config": "A6",
+   "cost": "raw",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 170,
+   "stats": {
+    "n": 84,
+    "wins": 30,
+    "winRatePct": 35.7,
+    "expectancyR": -0.077,
+    "totalR": -6.48,
+    "profitFactor": 0.88,
+    "avgWinR": 1.522,
+    "avgLossR": -0.966,
+    "maxDrawdownR": 14.07,
+    "maxDrawdownPct": 10.6,
+    "longestLosingStreak": 10,
+    "tStat": -0.54,
+    "ci95": [
+     -0.349,
+     0.199
+    ],
+    "tradesPerMonth": 1.2,
+    "avgHoldHours": 3.7
+   },
+   "byYear": {
+    "2015": {
+     "n": 18,
+     "totalR": -2.32,
+     "expectancyR": -0.129,
+     "winRatePct": 38.9,
+     "profitFactor": 0.76
+    },
+    "2016": {
+     "n": 11,
+     "totalR": -3.45,
+     "expectancyR": -0.314,
+     "winRatePct": 36.4,
+     "profitFactor": 0.61
+    },
+    "2017": {
+     "n": 10,
+     "totalR": -4.02,
+     "expectancyR": -0.402,
+     "winRatePct": 30,
+     "profitFactor": 0.46
+    },
+    "2018": {
+     "n": 16,
+     "totalR": 6.23,
+     "expectancyR": 0.389,
+     "winRatePct": 43.8,
+     "profitFactor": 1.81
+    },
+    "2019": {
+     "n": 8,
+     "totalR": -3.67,
+     "expectancyR": -0.459,
+     "winRatePct": 12.5,
+     "profitFactor": 0.34
+    },
+    "2020": {
+     "n": 21,
+     "totalR": 0.75,
+     "expectancyR": 0.036,
+     "winRatePct": 38.1,
+     "profitFactor": 1.06
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 17,
+     "totalR": -5.32,
+     "expectancyR": -0.313,
+     "winRatePct": 29.4,
+     "profitFactor": 0.56
+    },
+    "AUDUSD": {
+     "n": 24,
+     "totalR": 5.41,
+     "expectancyR": 0.225,
+     "winRatePct": 45.8,
+     "profitFactor": 1.49
+    },
+    "USDJPY": {
+     "n": 22,
+     "totalR": -0.68,
+     "expectancyR": -0.031,
+     "winRatePct": 36.4,
+     "profitFactor": 0.95
+    },
+    "GBPUSD": {
+     "n": 21,
+     "totalR": -5.89,
+     "expectancyR": -0.28,
+     "winRatePct": 28.6,
+     "profitFactor": 0.6
+    }
+   },
+   "byExit": {
+    "time": {
+     "n": 18,
+     "totalR": 7.1,
+     "expectancyR": 0.394,
+     "winRatePct": 61.1,
+     "profitFactor": 8.35
+    },
+    "tp": {
+     "n": 19,
+     "totalR": 37.6,
+     "expectancyR": 1.979,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "stop": {
+     "n": 47,
+     "totalR": -51.18,
+     "expectancyR": -1.089,
+     "winRatePct": 0,
+     "profitFactor": 0
+    }
+   },
+   "rolling": {
+    "negative": 13,
+    "total": 21
+   },
+   "skipped": {
+    "missed_before_live": 14,
+    "expired": 43,
+    "cancelled_level": 26,
+    "currency_exposure": 3
+   },
+   "endBalance": 480.83
+  },
+  {
+   "model": "A",
+   "config": "A6",
+   "cost": "standard",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 170,
+   "stats": {
+    "n": 84,
+    "wins": 31,
+    "winRatePct": 36.9,
+    "expectancyR": -0.052,
+    "totalR": -4.37,
+    "profitFactor": 0.91,
+    "avgWinR": 1.497,
+    "avgLossR": -0.958,
+    "maxDrawdownR": 9.59,
+    "maxDrawdownPct": 7.8,
+    "longestLosingStreak": 5,
+    "tStat": -0.36,
+    "ci95": [
+     -0.324,
+     0.213
+    ],
+    "tradesPerMonth": 1.2,
+    "avgHoldHours": 3.6
+   },
+   "byYear": {
+    "2015": {
+     "n": 17,
+     "totalR": -0.74,
+     "expectancyR": -0.044,
+     "winRatePct": 41.2,
+     "profitFactor": 0.91
+    },
+    "2016": {
+     "n": 12,
+     "totalR": -0.92,
+     "expectancyR": -0.076,
+     "winRatePct": 41.7,
+     "profitFactor": 0.89
+    },
+    "2017": {
+     "n": 9,
+     "totalR": -5.33,
+     "expectancyR": -0.592,
+     "winRatePct": 22.2,
+     "profitFactor": 0.25
+    },
+    "2018": {
+     "n": 17,
+     "totalR": 7.64,
+     "expectancyR": 0.45,
+     "winRatePct": 47.1,
+     "profitFactor": 1.94
+    },
+    "2019": {
+     "n": 8,
+     "totalR": -3.22,
+     "expectancyR": -0.403,
+     "winRatePct": 25,
+     "profitFactor": 0.38
+    },
+    "2020": {
+     "n": 21,
+     "totalR": -1.8,
+     "expectancyR": -0.086,
+     "winRatePct": 33.3,
+     "profitFactor": 0.87
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 17,
+     "totalR": -4.86,
+     "expectancyR": -0.286,
+     "winRatePct": 29.4,
+     "profitFactor": 0.59
+    },
+    "AUDUSD": {
+     "n": 24,
+     "totalR": 5,
+     "expectancyR": 0.208,
+     "winRatePct": 50,
+     "profitFactor": 1.45
+    },
+    "USDJPY": {
+     "n": 22,
+     "totalR": 0.51,
+     "expectancyR": 0.023,
+     "winRatePct": 36.4,
+     "profitFactor": 1.04
+    },
+    "GBPUSD": {
+     "n": 21,
+     "totalR": -5.02,
+     "expectancyR": -0.239,
+     "winRatePct": 28.6,
+     "profitFactor": 0.65
+    }
+   },
+   "byExit": {
+    "time": {
+     "n": 18,
+     "totalR": 9.82,
+     "expectancyR": 0.546,
+     "winRatePct": 72.2,
+     "profitFactor": 19.26
+    },
+    "tp": {
+     "n": 18,
+     "totalR": 36.03,
+     "expectancyR": 2.002,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "stop": {
+     "n": 48,
+     "totalR": -50.22,
+     "expectancyR": -1.046,
+     "winRatePct": 0,
+     "profitFactor": 0
+    }
+   },
+   "rolling": {
+    "negative": 14,
+    "total": 21
+   },
+   "skipped": {
+    "missed_before_live": 12,
+    "expired": 45,
+    "cancelled_level": 26,
+    "currency_exposure": 3
+   },
+   "endBalance": 489.29
+  },
+  {
+   "model": "A",
+   "config": "A6",
+   "cost": "standard, no lot-size limits",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 170,
+   "stats": {
+    "n": 84,
+    "wins": 31,
+    "winRatePct": 36.9,
+    "expectancyR": -0.052,
+    "totalR": -4.37,
+    "profitFactor": 0.91,
+    "avgWinR": 1.497,
+    "avgLossR": -0.958,
+    "maxDrawdownR": 9.59,
+    "maxDrawdownPct": 9.3,
+    "longestLosingStreak": 5,
+    "tStat": -0.36,
+    "ci95": [
+     -0.324,
+     0.213
+    ],
+    "tradesPerMonth": 1.2,
+    "avgHoldHours": 3.6
+   },
+   "byYear": {
+    "2015": {
+     "n": 17,
+     "totalR": -0.74,
+     "expectancyR": -0.044,
+     "winRatePct": 41.2,
+     "profitFactor": 0.91
+    },
+    "2016": {
+     "n": 12,
+     "totalR": -0.92,
+     "expectancyR": -0.076,
+     "winRatePct": 41.7,
+     "profitFactor": 0.89
+    },
+    "2017": {
+     "n": 9,
+     "totalR": -5.33,
+     "expectancyR": -0.592,
+     "winRatePct": 22.2,
+     "profitFactor": 0.25
+    },
+    "2018": {
+     "n": 17,
+     "totalR": 7.64,
+     "expectancyR": 0.45,
+     "winRatePct": 47.1,
+     "profitFactor": 1.94
+    },
+    "2019": {
+     "n": 8,
+     "totalR": -3.22,
+     "expectancyR": -0.403,
+     "winRatePct": 25,
+     "profitFactor": 0.38
+    },
+    "2020": {
+     "n": 21,
+     "totalR": -1.8,
+     "expectancyR": -0.086,
+     "winRatePct": 33.3,
+     "profitFactor": 0.87
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 17,
+     "totalR": -4.86,
+     "expectancyR": -0.286,
+     "winRatePct": 29.4,
+     "profitFactor": 0.59
+    },
+    "AUDUSD": {
+     "n": 24,
+     "totalR": 5,
+     "expectancyR": 0.208,
+     "winRatePct": 50,
+     "profitFactor": 1.45
+    },
+    "USDJPY": {
+     "n": 22,
+     "totalR": 0.51,
+     "expectancyR": 0.023,
+     "winRatePct": 36.4,
+     "profitFactor": 1.04
+    },
+    "GBPUSD": {
+     "n": 21,
+     "totalR": -5.02,
+     "expectancyR": -0.239,
+     "winRatePct": 28.6,
+     "profitFactor": 0.65
+    }
+   },
+   "byExit": {
+    "time": {
+     "n": 18,
+     "totalR": 9.82,
+     "expectancyR": 0.546,
+     "winRatePct": 72.2,
+     "profitFactor": 19.26
+    },
+    "tp": {
+     "n": 18,
+     "totalR": 36.03,
+     "expectancyR": 2.002,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "stop": {
+     "n": 48,
+     "totalR": -50.22,
+     "expectancyR": -1.046,
+     "winRatePct": 0,
+     "profitFactor": 0
+    }
+   },
+   "rolling": {
+    "negative": 14,
+    "total": 21
+   },
+   "skipped": {
+    "missed_before_live": 12,
+    "expired": 45,
+    "cancelled_level": 26,
+    "currency_exposure": 3
+   },
+   "endBalance": 950723.84
+  },
+  {
+   "model": "A",
+   "config": "A7",
+   "cost": "raw",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 217,
+   "stats": {
+    "n": 78,
+    "wins": 34,
+    "winRatePct": 43.6,
+    "expectancyR": 0.009,
+    "totalR": 0.68,
+    "profitFactor": 1.01,
+    "avgWinR": 1.417,
+    "avgLossR": -1.079,
+    "maxDrawdownR": 19.04,
+    "maxDrawdownPct": 15,
+    "longestLosingStreak": 13,
+    "tStat": 0.06,
+    "ci95": [
+     -0.266,
+     0.319
+    ],
+    "tradesPerMonth": 1.1,
+    "avgHoldHours": 3.6
+   },
+   "byYear": {
+    "2015": {
+     "n": 16,
+     "totalR": 5.83,
+     "expectancyR": 0.364,
+     "winRatePct": 56.3,
+     "profitFactor": 1.79
+    },
+    "2016": {
+     "n": 11,
+     "totalR": -2.69,
+     "expectancyR": -0.245,
+     "winRatePct": 36.4,
+     "profitFactor": 0.7
+    },
+    "2017": {
+     "n": 15,
+     "totalR": -11.13,
+     "expectancyR": -0.742,
+     "winRatePct": 13.3,
+     "profitFactor": 0.18
+    },
+    "2018": {
+     "n": 12,
+     "totalR": 2.64,
+     "expectancyR": 0.22,
+     "winRatePct": 50,
+     "profitFactor": 1.42
+    },
+    "2019": {
+     "n": 9,
+     "totalR": -0.15,
+     "expectancyR": -0.017,
+     "winRatePct": 55.6,
+     "profitFactor": 0.96
+    },
+    "2020": {
+     "n": 15,
+     "totalR": 6.19,
+     "expectancyR": 0.413,
+     "winRatePct": 53.3,
+     "profitFactor": 1.89
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 20,
+     "totalR": -1.65,
+     "expectancyR": -0.083,
+     "winRatePct": 45,
+     "profitFactor": 0.87
+    },
+    "AUDUSD": {
+     "n": 15,
+     "totalR": 3.06,
+     "expectancyR": 0.204,
+     "winRatePct": 53.3,
+     "profitFactor": 1.43
+    },
+    "GBPUSD": {
+     "n": 33,
+     "totalR": -0.74,
+     "expectancyR": -0.022,
+     "winRatePct": 39.4,
+     "profitFactor": 0.96
+    },
+    "USDJPY": {
+     "n": 10,
+     "totalR": 0.02,
+     "expectancyR": 0.002,
+     "winRatePct": 40,
+     "profitFactor": 1
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 42,
+     "totalR": -46.08,
+     "expectancyR": -1.097,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 16,
+     "totalR": 7.7,
+     "expectancyR": 0.481,
+     "winRatePct": 87.5,
+     "profitFactor": 6.47
+    },
+    "tp": {
+     "n": 20,
+     "totalR": 39.07,
+     "expectancyR": 1.953,
+     "winRatePct": 100,
+     "profitFactor": null
+    }
+   },
+   "rolling": {
+    "negative": 10,
+    "total": 20
+   },
+   "skipped": {
+    "cancelled_level": 70,
+    "expired": 57,
+    "missed_before_live": 10,
+    "currency_exposure": 2
+   },
+   "endBalance": 507.94
+  },
+  {
+   "model": "A",
+   "config": "A7",
+   "cost": "standard",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 217,
+   "stats": {
+    "n": 77,
+    "wins": 32,
+    "winRatePct": 41.6,
+    "expectancyR": -0.02,
+    "totalR": -1.53,
+    "profitFactor": 0.97,
+    "avgWinR": 1.41,
+    "avgLossR": -1.037,
+    "maxDrawdownR": 16.81,
+    "maxDrawdownPct": 13.9,
+    "longestLosingStreak": 13,
+    "tStat": -0.13,
+    "ci95": [
+     -0.306,
+     0.273
+    ],
+    "tradesPerMonth": 1.1,
+    "avgHoldHours": 3.5
+   },
+   "byYear": {
+    "2015": {
+     "n": 15,
+     "totalR": 4.37,
+     "expectancyR": 0.291,
+     "winRatePct": 53.3,
+     "profitFactor": 1.61
+    },
+    "2016": {
+     "n": 11,
+     "totalR": -2.3,
+     "expectancyR": -0.209,
+     "winRatePct": 36.4,
+     "profitFactor": 0.73
+    },
+    "2017": {
+     "n": 15,
+     "totalR": -10.44,
+     "expectancyR": -0.696,
+     "winRatePct": 13.3,
+     "profitFactor": 0.19
+    },
+    "2018": {
+     "n": 13,
+     "totalR": 5.07,
+     "expectancyR": 0.39,
+     "winRatePct": 53.8,
+     "profitFactor": 1.83
+    },
+    "2019": {
+     "n": 9,
+     "totalR": 0.13,
+     "expectancyR": 0.015,
+     "winRatePct": 55.6,
+     "profitFactor": 1.03
+    },
+    "2020": {
+     "n": 14,
+     "totalR": 1.64,
+     "expectancyR": 0.117,
+     "winRatePct": 42.9,
+     "profitFactor": 1.21
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 19,
+     "totalR": -3.09,
+     "expectancyR": -0.162,
+     "winRatePct": 42.1,
+     "profitFactor": 0.75
+    },
+    "AUDUSD": {
+     "n": 15,
+     "totalR": 0.57,
+     "expectancyR": 0.038,
+     "winRatePct": 46.7,
+     "profitFactor": 1.07
+    },
+    "GBPUSD": {
+     "n": 33,
+     "totalR": 0.29,
+     "expectancyR": 0.009,
+     "winRatePct": 39.4,
+     "profitFactor": 1.01
+    },
+    "USDJPY": {
+     "n": 10,
+     "totalR": 0.7,
+     "expectancyR": 0.07,
+     "winRatePct": 40,
+     "profitFactor": 1.11
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 43,
+     "totalR": -45.23,
+     "expectancyR": -1.052,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 16,
+     "totalR": 7.7,
+     "expectancyR": 0.481,
+     "winRatePct": 87.5,
+     "profitFactor": 6.44
+    },
+    "tp": {
+     "n": 18,
+     "totalR": 36,
+     "expectancyR": 2,
+     "winRatePct": 100,
+     "profitFactor": null
+    }
+   },
+   "rolling": {
+    "negative": 11,
+    "total": 20
+   },
+   "skipped": {
+    "cancelled_level": 70,
+    "expired": 59,
+    "missed_before_live": 9,
+    "currency_exposure": 2
+   },
+   "endBalance": 493.54
+  },
+  {
+   "model": "A",
+   "config": "A7",
+   "cost": "standard, no lot-size limits",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 217,
+   "stats": {
+    "n": 77,
+    "wins": 32,
+    "winRatePct": 41.6,
+    "expectancyR": -0.02,
+    "totalR": -1.53,
+    "profitFactor": 0.97,
+    "avgWinR": 1.41,
+    "avgLossR": -1.037,
+    "maxDrawdownR": 16.81,
+    "maxDrawdownPct": 15.6,
+    "longestLosingStreak": 13,
+    "tStat": -0.13,
+    "ci95": [
+     -0.306,
+     0.273
+    ],
+    "tradesPerMonth": 1.1,
+    "avgHoldHours": 3.5
+   },
+   "byYear": {
+    "2015": {
+     "n": 15,
+     "totalR": 4.37,
+     "expectancyR": 0.291,
+     "winRatePct": 53.3,
+     "profitFactor": 1.61
+    },
+    "2016": {
+     "n": 11,
+     "totalR": -2.3,
+     "expectancyR": -0.209,
+     "winRatePct": 36.4,
+     "profitFactor": 0.73
+    },
+    "2017": {
+     "n": 15,
+     "totalR": -10.44,
+     "expectancyR": -0.696,
+     "winRatePct": 13.3,
+     "profitFactor": 0.19
+    },
+    "2018": {
+     "n": 13,
+     "totalR": 5.07,
+     "expectancyR": 0.39,
+     "winRatePct": 53.8,
+     "profitFactor": 1.83
+    },
+    "2019": {
+     "n": 9,
+     "totalR": 0.13,
+     "expectancyR": 0.015,
+     "winRatePct": 55.6,
+     "profitFactor": 1.03
+    },
+    "2020": {
+     "n": 14,
+     "totalR": 1.64,
+     "expectancyR": 0.117,
+     "winRatePct": 42.9,
+     "profitFactor": 1.21
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 19,
+     "totalR": -3.09,
+     "expectancyR": -0.162,
+     "winRatePct": 42.1,
+     "profitFactor": 0.75
+    },
+    "AUDUSD": {
+     "n": 15,
+     "totalR": 0.57,
+     "expectancyR": 0.038,
+     "winRatePct": 46.7,
+     "profitFactor": 1.07
+    },
+    "GBPUSD": {
+     "n": 33,
+     "totalR": 0.29,
+     "expectancyR": 0.009,
+     "winRatePct": 39.4,
+     "profitFactor": 1.01
+    },
+    "USDJPY": {
+     "n": 10,
+     "totalR": 0.7,
+     "expectancyR": 0.07,
+     "winRatePct": 40,
+     "profitFactor": 1.11
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 43,
+     "totalR": -45.23,
+     "expectancyR": -1.052,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 16,
+     "totalR": 7.7,
+     "expectancyR": 0.481,
+     "winRatePct": 87.5,
+     "profitFactor": 6.44
+    },
+    "tp": {
+     "n": 18,
+     "totalR": 36,
+     "expectancyR": 2,
+     "winRatePct": 100,
+     "profitFactor": null
+    }
+   },
+   "rolling": {
+    "negative": 11,
+    "total": 20
+   },
+   "skipped": {
+    "cancelled_level": 70,
+    "expired": 59,
+    "missed_before_live": 9,
+    "currency_exposure": 2
+   },
+   "endBalance": 979004.09
+  },
+  {
+   "model": "A",
+   "config": "A8",
+   "cost": "raw",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 82,
+   "stats": {
+    "n": 30,
+    "wins": 15,
+    "winRatePct": 50,
+    "expectancyR": 0.29,
+    "totalR": 8.69,
+    "profitFactor": 1.5,
+    "avgWinR": 1.742,
+    "avgLossR": -1.163,
+    "maxDrawdownR": 4.63,
+    "maxDrawdownPct": 4.2,
+    "longestLosingStreak": 4,
+    "tStat": 1,
+    "ci95": [
+     -0.258,
+     0.819
+    ],
+    "tradesPerMonth": 0.5,
+    "avgHoldHours": 4.3
+   },
+   "byYear": {
+    "2015": {
+     "n": 7,
+     "totalR": 4.68,
+     "expectancyR": 0.669,
+     "winRatePct": 57.1,
+     "profitFactor": 2.48
+    },
+    "2016": {
+     "n": 5,
+     "totalR": 2.06,
+     "expectancyR": 0.411,
+     "winRatePct": 60,
+     "profitFactor": 1.58
+    },
+    "2017": {
+     "n": 4,
+     "totalR": -1.91,
+     "expectancyR": -0.478,
+     "winRatePct": 25,
+     "profitFactor": 0.41
+    },
+    "2018": {
+     "n": 7,
+     "totalR": 3.15,
+     "expectancyR": 0.449,
+     "winRatePct": 57.1,
+     "profitFactor": 1.99
+    },
+    "2019": {
+     "n": 2,
+     "totalR": -2.19,
+     "expectancyR": -1.097,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "2020": {
+     "n": 5,
+     "totalR": 2.91,
+     "expectancyR": 0.582,
+     "winRatePct": 60,
+     "profitFactor": 2.4
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 6,
+     "totalR": -1.65,
+     "expectancyR": -0.275,
+     "winRatePct": 33.3,
+     "profitFactor": 0.71
+    },
+    "AUDUSD": {
+     "n": 8,
+     "totalR": 7.41,
+     "expectancyR": 0.926,
+     "winRatePct": 75,
+     "profitFactor": 4.49
+    },
+    "GBPUSD": {
+     "n": 10,
+     "totalR": 0.48,
+     "expectancyR": 0.048,
+     "winRatePct": 40,
+     "profitFactor": 1.08
+    },
+    "USDJPY": {
+     "n": 6,
+     "totalR": 2.44,
+     "expectancyR": 0.407,
+     "winRatePct": 50,
+     "profitFactor": 1.73
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 15,
+     "totalR": -17.44,
+     "expectancyR": -1.163,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 9,
+     "totalR": 19.65,
+     "expectancyR": 2.183,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "time": {
+     "n": 6,
+     "totalR": 6.48,
+     "expectancyR": 1.08,
+     "winRatePct": 100,
+     "profitFactor": null
+    }
+   },
+   "rolling": {
+    "negative": 7,
+    "total": 18
+   },
+   "skipped": {
+    "missed_before_live": 5,
+    "expired": 23,
+    "cancelled_level": 23,
+    "currency_exposure": 1
+   },
+   "endBalance": 543.41
+  },
+  {
+   "model": "A",
+   "config": "A8",
+   "cost": "standard",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 82,
+   "stats": {
+    "n": 30,
+    "wins": 14,
+    "winRatePct": 46.7,
+    "expectancyR": 0.228,
+    "totalR": 6.84,
+    "profitFactor": 1.39,
+    "avgWinR": 1.757,
+    "avgLossR": -1.11,
+    "maxDrawdownR": 4.52,
+    "maxDrawdownPct": 4.1,
+    "longestLosingStreak": 4,
+    "tStat": 0.8,
+    "ci95": [
+     -0.299,
+     0.783
+    ],
+    "tradesPerMonth": 0.5,
+    "avgHoldHours": 3.9
+   },
+   "byYear": {
+    "2015": {
+     "n": 6,
+     "totalR": 3.22,
+     "expectancyR": 0.537,
+     "winRatePct": 50,
+     "profitFactor": 2.05
+    },
+    "2016": {
+     "n": 5,
+     "totalR": 2.2,
+     "expectancyR": 0.44,
+     "winRatePct": 60,
+     "profitFactor": 1.63
+    },
+    "2017": {
+     "n": 4,
+     "totalR": -1.72,
+     "expectancyR": -0.431,
+     "winRatePct": 25,
+     "profitFactor": 0.44
+    },
+    "2018": {
+     "n": 8,
+     "totalR": 5.46,
+     "expectancyR": 0.683,
+     "winRatePct": 62.5,
+     "profitFactor": 2.79
+    },
+    "2019": {
+     "n": 2,
+     "totalR": -2.05,
+     "expectancyR": -1.024,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "2020": {
+     "n": 5,
+     "totalR": -0.27,
+     "expectancyR": -0.054,
+     "winRatePct": 40,
+     "profitFactor": 0.91
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 6,
+     "totalR": -1.47,
+     "expectancyR": -0.246,
+     "winRatePct": 33.3,
+     "profitFactor": 0.73
+    },
+    "AUDUSD": {
+     "n": 8,
+     "totalR": 4.42,
+     "expectancyR": 0.552,
+     "winRatePct": 62.5,
+     "profitFactor": 2.44
+    },
+    "GBPUSD": {
+     "n": 10,
+     "totalR": 1.11,
+     "expectancyR": 0.111,
+     "winRatePct": 40,
+     "profitFactor": 1.18
+    },
+    "USDJPY": {
+     "n": 6,
+     "totalR": 2.78,
+     "expectancyR": 0.464,
+     "winRatePct": 50,
+     "profitFactor": 1.9
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 16,
+     "totalR": -17.76,
+     "expectancyR": -1.11,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 8,
+     "totalR": 18.08,
+     "expectancyR": 2.26,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "time": {
+     "n": 6,
+     "totalR": 6.51,
+     "expectancyR": 1.086,
+     "winRatePct": 100,
+     "profitFactor": null
+    }
+   },
+   "rolling": {
+    "negative": 5,
+    "total": 18
+   },
+   "skipped": {
+    "missed_before_live": 4,
+    "expired": 24,
+    "cancelled_level": 23,
+    "currency_exposure": 1
+   },
+   "endBalance": 532.31
+  },
+  {
+   "model": "A",
+   "config": "A8",
+   "cost": "standard, no lot-size limits",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 82,
+   "stats": {
+    "n": 30,
+    "wins": 14,
+    "winRatePct": 46.7,
+    "expectancyR": 0.228,
+    "totalR": 6.84,
+    "profitFactor": 1.39,
+    "avgWinR": 1.757,
+    "avgLossR": -1.11,
+    "maxDrawdownR": 4.52,
+    "maxDrawdownPct": 4.5,
+    "longestLosingStreak": 4,
+    "tStat": 0.8,
+    "ci95": [
+     -0.299,
+     0.783
+    ],
+    "tradesPerMonth": 0.5,
+    "avgHoldHours": 3.9
+   },
+   "byYear": {
+    "2015": {
+     "n": 6,
+     "totalR": 3.22,
+     "expectancyR": 0.537,
+     "winRatePct": 50,
+     "profitFactor": 2.05
+    },
+    "2016": {
+     "n": 5,
+     "totalR": 2.2,
+     "expectancyR": 0.44,
+     "winRatePct": 60,
+     "profitFactor": 1.63
+    },
+    "2017": {
+     "n": 4,
+     "totalR": -1.72,
+     "expectancyR": -0.431,
+     "winRatePct": 25,
+     "profitFactor": 0.44
+    },
+    "2018": {
+     "n": 8,
+     "totalR": 5.46,
+     "expectancyR": 0.683,
+     "winRatePct": 62.5,
+     "profitFactor": 2.79
+    },
+    "2019": {
+     "n": 2,
+     "totalR": -2.05,
+     "expectancyR": -1.024,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "2020": {
+     "n": 5,
+     "totalR": -0.27,
+     "expectancyR": -0.054,
+     "winRatePct": 40,
+     "profitFactor": 0.91
+    }
+   },
+   "byPair": {
+    "EURUSD": {
+     "n": 6,
+     "totalR": -1.47,
+     "expectancyR": -0.246,
+     "winRatePct": 33.3,
+     "profitFactor": 0.73
+    },
+    "AUDUSD": {
+     "n": 8,
+     "totalR": 4.42,
+     "expectancyR": 0.552,
+     "winRatePct": 62.5,
+     "profitFactor": 2.44
+    },
+    "GBPUSD": {
+     "n": 10,
+     "totalR": 1.11,
+     "expectancyR": 0.111,
+     "winRatePct": 40,
+     "profitFactor": 1.18
+    },
+    "USDJPY": {
+     "n": 6,
+     "totalR": 2.78,
+     "expectancyR": 0.464,
+     "winRatePct": 50,
+     "profitFactor": 1.9
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 16,
+     "totalR": -17.76,
+     "expectancyR": -1.11,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 8,
+     "totalR": 18.08,
+     "expectancyR": 2.26,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "time": {
+     "n": 6,
+     "totalR": 6.51,
+     "expectancyR": 1.086,
+     "winRatePct": 100,
+     "profitFactor": null
+    }
+   },
+   "rolling": {
+    "negative": 5,
+    "total": 18
+   },
+   "skipped": {
+    "missed_before_live": 4,
+    "expired": 24,
+    "cancelled_level": 23,
+    "currency_exposure": 1
+   },
+   "endBalance": 1066962.73
+  },
+  {
+   "model": "B",
+   "config": "B1",
+   "cost": "raw",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 4891,
+   "stats": {
+    "n": 1182,
+    "wins": 415,
+    "winRatePct": 35.1,
+    "expectancyR": -0.09,
+    "totalR": -105.93,
+    "profitFactor": 0.83,
+    "avgWinR": 1.266,
+    "avgLossR": -0.823,
+    "maxDrawdownR": 116.87,
+    "maxDrawdownPct": 60.5,
+    "longestLosingStreak": 14,
+    "tStat": -2.85,
+    "ci95": [
+     -0.152,
+     -0.027
+    ],
+    "tradesPerMonth": 16.5,
+    "avgHoldHours": 2.5
+   },
+   "byYear": {
+    "2015": {
+     "n": 238,
+     "totalR": -21.82,
+     "expectancyR": -0.092,
+     "winRatePct": 35.3,
+     "profitFactor": 0.84
+    },
+    "2016": {
+     "n": 228,
+     "totalR": -37.39,
+     "expectancyR": -0.164,
+     "winRatePct": 31.6,
+     "profitFactor": 0.71
+    },
+    "2017": {
+     "n": 212,
+     "totalR": -28.22,
+     "expectancyR": -0.133,
+     "winRatePct": 34,
+     "profitFactor": 0.76
+    },
+    "2018": {
+     "n": 189,
+     "totalR": -23.32,
+     "expectancyR": -0.123,
+     "winRatePct": 34.4,
+     "profitFactor": 0.77
+    },
+    "2019": {
+     "n": 113,
+     "totalR": 10.02,
+     "expectancyR": 0.089,
+     "winRatePct": 44.2,
+     "profitFactor": 1.21
+    },
+    "2020": {
+     "n": 202,
+     "totalR": -5.18,
+     "expectancyR": -0.026,
+     "winRatePct": 35.6,
+     "profitFactor": 0.95
+    }
+   },
+   "byPair": {
+    "USDJPY": {
+     "n": 237,
+     "totalR": -28.63,
+     "expectancyR": -0.121,
+     "winRatePct": 35,
+     "profitFactor": 0.78
+    },
+    "GBPUSD": {
+     "n": 442,
+     "totalR": -18.16,
+     "expectancyR": -0.041,
+     "winRatePct": 35.5,
+     "profitFactor": 0.92
+    },
+    "EURUSD": {
+     "n": 285,
+     "totalR": -39.22,
+     "expectancyR": -0.138,
+     "winRatePct": 33,
+     "profitFactor": 0.74
+    },
+    "AUDUSD": {
+     "n": 218,
+     "totalR": -19.92,
+     "expectancyR": -0.091,
+     "winRatePct": 37.2,
+     "profitFactor": 0.82
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 570,
+     "totalR": -602.54,
+     "expectancyR": -1.057,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 334,
+     "totalR": 488.36,
+     "expectancyR": 1.462,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "breakeven": {
+     "n": 133,
+     "totalR": -7.34,
+     "expectancyR": -0.055,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 145,
+     "totalR": 15.58,
+     "expectancyR": 0.107,
+     "winRatePct": 55.9,
+     "profitFactor": 1.73
+    }
+   },
+   "rolling": {
+    "negative": 18,
+    "total": 21
+   },
+   "skipped": {
+    "cancelled_level": 2758,
+    "daily_cap": 130,
+    "expired": 576,
+    "missed_before_live": 88,
+    "currency_exposure": 142,
+    "pair_busy": 14,
+    "daily_loss_limit": 1
+   },
+   "endBalance": 215.06
+  },
+  {
+   "model": "B",
+   "config": "B1",
+   "cost": "standard",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 4891,
+   "stats": {
+    "n": 1172,
+    "wins": 396,
+    "winRatePct": 33.8,
+    "expectancyR": -0.092,
+    "totalR": -107.54,
+    "profitFactor": 0.83,
+    "avgWinR": 1.296,
+    "avgLossR": -0.8,
+    "maxDrawdownR": 115.58,
+    "maxDrawdownPct": 59.6,
+    "longestLosingStreak": 32,
+    "tStat": -2.92,
+    "ci95": [
+     -0.151,
+     -0.034
+    ],
+    "tradesPerMonth": 16.3,
+    "avgHoldHours": 2.5
+   },
+   "byYear": {
+    "2015": {
+     "n": 237,
+     "totalR": -21.46,
+     "expectancyR": -0.091,
+     "winRatePct": 34.2,
+     "profitFactor": 0.84
+    },
+    "2016": {
+     "n": 220,
+     "totalR": -38.51,
+     "expectancyR": -0.175,
+     "winRatePct": 29.1,
+     "profitFactor": 0.69
+    },
+    "2017": {
+     "n": 210,
+     "totalR": -26.6,
+     "expectancyR": -0.127,
+     "winRatePct": 33.3,
+     "profitFactor": 0.76
+    },
+    "2018": {
+     "n": 190,
+     "totalR": -23.59,
+     "expectancyR": -0.124,
+     "winRatePct": 33.2,
+     "profitFactor": 0.77
+    },
+    "2019": {
+     "n": 113,
+     "totalR": 12.17,
+     "expectancyR": 0.108,
+     "winRatePct": 44.2,
+     "profitFactor": 1.26
+    },
+    "2020": {
+     "n": 202,
+     "totalR": -9.54,
+     "expectancyR": -0.047,
+     "winRatePct": 33.7,
+     "profitFactor": 0.91
+    }
+   },
+   "byPair": {
+    "USDJPY": {
+     "n": 231,
+     "totalR": -20.4,
+     "expectancyR": -0.088,
+     "winRatePct": 34.6,
+     "profitFactor": 0.83
+    },
+    "GBPUSD": {
+     "n": 440,
+     "totalR": -23.62,
+     "expectancyR": -0.054,
+     "winRatePct": 33.4,
+     "profitFactor": 0.9
+    },
+    "EURUSD": {
+     "n": 287,
+     "totalR": -39.46,
+     "expectancyR": -0.137,
+     "winRatePct": 32.4,
+     "profitFactor": 0.74
+    },
+    "AUDUSD": {
+     "n": 214,
+     "totalR": -24.05,
+     "expectancyR": -0.112,
+     "winRatePct": 35.5,
+     "profitFactor": 0.78
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 587,
+     "totalR": -598.85,
+     "expectancyR": -1.02,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 316,
+     "totalR": 474,
+     "expectancyR": 1.5,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "breakeven": {
+     "n": 129,
+     "totalR": -2.25,
+     "expectancyR": -0.017,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 140,
+     "totalR": 19.56,
+     "expectancyR": 0.14,
+     "winRatePct": 57.1,
+     "profitFactor": 1.99
+    }
+   },
+   "rolling": {
+    "negative": 18,
+    "total": 21
+   },
+   "skipped": {
+    "cancelled_level": 2773,
+    "daily_cap": 128,
+    "expired": 596,
+    "missed_before_live": 79,
+    "currency_exposure": 130,
+    "pair_busy": 12,
+    "daily_loss_limit": 1
+   },
+   "endBalance": 214.22
+  },
+  {
+   "model": "B",
+   "config": "B1",
+   "cost": "standard, no lot-size limits",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 4891,
+   "stats": {
+    "n": 1172,
+    "wins": 396,
+    "winRatePct": 33.8,
+    "expectancyR": -0.092,
+    "totalR": -107.54,
+    "profitFactor": 0.83,
+    "avgWinR": 1.296,
+    "avgLossR": -0.8,
+    "maxDrawdownR": 115.58,
+    "maxDrawdownPct": 70.1,
+    "longestLosingStreak": 32,
+    "tStat": -2.92,
+    "ci95": [
+     -0.151,
+     -0.034
+    ],
+    "tradesPerMonth": 16.3,
+    "avgHoldHours": 2.5
+   },
+   "byYear": {
+    "2015": {
+     "n": 237,
+     "totalR": -21.46,
+     "expectancyR": -0.091,
+     "winRatePct": 34.2,
+     "profitFactor": 0.84
+    },
+    "2016": {
+     "n": 220,
+     "totalR": -38.51,
+     "expectancyR": -0.175,
+     "winRatePct": 29.1,
+     "profitFactor": 0.69
+    },
+    "2017": {
+     "n": 210,
+     "totalR": -26.6,
+     "expectancyR": -0.127,
+     "winRatePct": 33.3,
+     "profitFactor": 0.76
+    },
+    "2018": {
+     "n": 190,
+     "totalR": -23.59,
+     "expectancyR": -0.124,
+     "winRatePct": 33.2,
+     "profitFactor": 0.77
+    },
+    "2019": {
+     "n": 113,
+     "totalR": 12.17,
+     "expectancyR": 0.108,
+     "winRatePct": 44.2,
+     "profitFactor": 1.26
+    },
+    "2020": {
+     "n": 202,
+     "totalR": -9.54,
+     "expectancyR": -0.047,
+     "winRatePct": 33.7,
+     "profitFactor": 0.91
+    }
+   },
+   "byPair": {
+    "USDJPY": {
+     "n": 231,
+     "totalR": -20.4,
+     "expectancyR": -0.088,
+     "winRatePct": 34.6,
+     "profitFactor": 0.83
+    },
+    "GBPUSD": {
+     "n": 440,
+     "totalR": -23.62,
+     "expectancyR": -0.054,
+     "winRatePct": 33.4,
+     "profitFactor": 0.9
+    },
+    "EURUSD": {
+     "n": 287,
+     "totalR": -39.46,
+     "expectancyR": -0.137,
+     "winRatePct": 32.4,
+     "profitFactor": 0.74
+    },
+    "AUDUSD": {
+     "n": 214,
+     "totalR": -24.05,
+     "expectancyR": -0.112,
+     "winRatePct": 35.5,
+     "profitFactor": 0.78
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 587,
+     "totalR": -598.85,
+     "expectancyR": -1.02,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 316,
+     "totalR": 474,
+     "expectancyR": 1.5,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "breakeven": {
+     "n": 129,
+     "totalR": -2.25,
+     "expectancyR": -0.017,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 140,
+     "totalR": 19.56,
+     "expectancyR": 0.14,
+     "winRatePct": 57.1,
+     "profitFactor": 1.99
+    }
+   },
+   "rolling": {
+    "negative": 18,
+    "total": 21
+   },
+   "skipped": {
+    "cancelled_level": 2773,
+    "daily_cap": 128,
+    "expired": 596,
+    "missed_before_live": 79,
+    "currency_exposure": 130,
+    "pair_busy": 12,
+    "daily_loss_limit": 1
+   },
+   "endBalance": 319057.91
+  },
+  {
+   "model": "B",
+   "config": "B2",
+   "cost": "raw",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 3232,
+   "stats": {
+    "n": 920,
+    "wins": 388,
+    "winRatePct": 42.2,
+    "expectancyR": -0.069,
+    "totalR": -63.35,
+    "profitFactor": 0.86,
+    "avgWinR": 1.009,
+    "avgLossR": -0.855,
+    "maxDrawdownR": 81.96,
+    "maxDrawdownPct": 45.6,
+    "longestLosingStreak": 11,
+    "tStat": -2.05,
+    "ci95": [
+     -0.132,
+     -0.003
+    ],
+    "tradesPerMonth": 12.8,
+    "avgHoldHours": 4.7
+   },
+   "byYear": {
+    "2015": {
+     "n": 179,
+     "totalR": -0.76,
+     "expectancyR": -0.004,
+     "winRatePct": 43.6,
+     "profitFactor": 0.99
+    },
+    "2016": {
+     "n": 170,
+     "totalR": -33.27,
+     "expectancyR": -0.196,
+     "winRatePct": 36.5,
+     "profitFactor": 0.64
+    },
+    "2017": {
+     "n": 177,
+     "totalR": -21.53,
+     "expectancyR": -0.122,
+     "winRatePct": 41.2,
+     "profitFactor": 0.76
+    },
+    "2018": {
+     "n": 155,
+     "totalR": -10.36,
+     "expectancyR": -0.067,
+     "winRatePct": 42.6,
+     "profitFactor": 0.86
+    },
+    "2019": {
+     "n": 93,
+     "totalR": 12,
+     "expectancyR": 0.129,
+     "winRatePct": 52.7,
+     "profitFactor": 1.35
+    },
+    "2020": {
+     "n": 146,
+     "totalR": -9.44,
+     "expectancyR": -0.065,
+     "winRatePct": 41.1,
+     "profitFactor": 0.87
+    }
+   },
+   "byPair": {
+    "GBPUSD": {
+     "n": 295,
+     "totalR": -19.9,
+     "expectancyR": -0.067,
+     "winRatePct": 42,
+     "profitFactor": 0.88
+    },
+    "USDJPY": {
+     "n": 206,
+     "totalR": -26.66,
+     "expectancyR": -0.129,
+     "winRatePct": 42.2,
+     "profitFactor": 0.75
+    },
+    "AUDUSD": {
+     "n": 200,
+     "totalR": -7.24,
+     "expectancyR": -0.036,
+     "winRatePct": 42,
+     "profitFactor": 0.91
+    },
+    "EURUSD": {
+     "n": 219,
+     "totalR": -9.55,
+     "expectancyR": -0.044,
+     "winRatePct": 42.5,
+     "profitFactor": 0.91
+    }
+   },
+   "byExit": {
+    "tp": {
+     "n": 217,
+     "totalR": 317.38,
+     "expectancyR": 1.463,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "stop": {
+     "n": 391,
+     "totalR": -406.96,
+     "expectancyR": -1.041,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 312,
+     "totalR": 26.23,
+     "expectancyR": 0.084,
+     "winRatePct": 54.8,
+     "profitFactor": 1.55
+    }
+   },
+   "rolling": {
+    "negative": 17,
+    "total": 21
+   },
+   "skipped": {
+    "daily_cap": 44,
+    "cancelled_level": 1806,
+    "missed_before_live": 76,
+    "currency_exposure": 121,
+    "expired": 227,
+    "pair_busy": 38
+   },
+   "endBalance": 317.54
+  },
+  {
+   "model": "B",
+   "config": "B2",
+   "cost": "standard",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 3232,
+   "stats": {
+    "n": 904,
+    "wins": 372,
+    "winRatePct": 41.2,
+    "expectancyR": -0.075,
+    "totalR": -67.87,
+    "profitFactor": 0.85,
+    "avgWinR": 1.023,
+    "avgLossR": -0.843,
+    "maxDrawdownR": 85.53,
+    "maxDrawdownPct": 47.3,
+    "longestLosingStreak": 13,
+    "tStat": -2.22,
+    "ci95": [
+     -0.143,
+     -0.009
+    ],
+    "tradesPerMonth": 12.6,
+    "avgHoldHours": 4.6
+   },
+   "byYear": {
+    "2015": {
+     "n": 176,
+     "totalR": -4.66,
+     "expectancyR": -0.026,
+     "winRatePct": 42.6,
+     "profitFactor": 0.95
+    },
+    "2016": {
+     "n": 163,
+     "totalR": -31.82,
+     "expectancyR": -0.195,
+     "winRatePct": 34.4,
+     "profitFactor": 0.64
+    },
+    "2017": {
+     "n": 175,
+     "totalR": -20.55,
+     "expectancyR": -0.117,
+     "winRatePct": 41.7,
+     "profitFactor": 0.77
+    },
+    "2018": {
+     "n": 153,
+     "totalR": -14.62,
+     "expectancyR": -0.096,
+     "winRatePct": 39.9,
+     "profitFactor": 0.81
+    },
+    "2019": {
+     "n": 93,
+     "totalR": 12.19,
+     "expectancyR": 0.131,
+     "winRatePct": 52.7,
+     "profitFactor": 1.36
+    },
+    "2020": {
+     "n": 144,
+     "totalR": -8.41,
+     "expectancyR": -0.058,
+     "winRatePct": 40.3,
+     "profitFactor": 0.88
+    }
+   },
+   "byPair": {
+    "GBPUSD": {
+     "n": 295,
+     "totalR": -26.7,
+     "expectancyR": -0.091,
+     "winRatePct": 40,
+     "profitFactor": 0.83
+    },
+    "USDJPY": {
+     "n": 198,
+     "totalR": -26.33,
+     "expectancyR": -0.133,
+     "winRatePct": 40.4,
+     "profitFactor": 0.74
+    },
+    "AUDUSD": {
+     "n": 194,
+     "totalR": -5.09,
+     "expectancyR": -0.026,
+     "winRatePct": 43.3,
+     "profitFactor": 0.94
+    },
+    "EURUSD": {
+     "n": 217,
+     "totalR": -9.76,
+     "expectancyR": -0.045,
+     "winRatePct": 41.5,
+     "profitFactor": 0.91
+    }
+   },
+   "byExit": {
+    "tp": {
+     "n": 205,
+     "totalR": 305.46,
+     "expectancyR": 1.49,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "stop": {
+     "n": 400,
+     "totalR": -405.16,
+     "expectancyR": -1.013,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 299,
+     "totalR": 31.83,
+     "expectancyR": 0.106,
+     "winRatePct": 55.9,
+     "profitFactor": 1.74
+    }
+   },
+   "rolling": {
+    "negative": 17,
+    "total": 21
+   },
+   "skipped": {
+    "daily_cap": 44,
+    "cancelled_level": 1819,
+    "missed_before_live": 67,
+    "currency_exposure": 114,
+    "expired": 246,
+    "pair_busy": 38
+   },
+   "endBalance": 304.35
+  },
+  {
+   "model": "B",
+   "config": "B2",
+   "cost": "standard, no lot-size limits",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 3232,
+   "stats": {
+    "n": 904,
+    "wins": 372,
+    "winRatePct": 41.2,
+    "expectancyR": -0.075,
+    "totalR": -67.87,
+    "profitFactor": 0.85,
+    "avgWinR": 1.023,
+    "avgLossR": -0.843,
+    "maxDrawdownR": 85.53,
+    "maxDrawdownPct": 58.7,
+    "longestLosingStreak": 13,
+    "tStat": -2.22,
+    "ci95": [
+     -0.143,
+     -0.009
+    ],
+    "tradesPerMonth": 12.6,
+    "avgHoldHours": 4.6
+   },
+   "byYear": {
+    "2015": {
+     "n": 176,
+     "totalR": -4.66,
+     "expectancyR": -0.026,
+     "winRatePct": 42.6,
+     "profitFactor": 0.95
+    },
+    "2016": {
+     "n": 163,
+     "totalR": -31.82,
+     "expectancyR": -0.195,
+     "winRatePct": 34.4,
+     "profitFactor": 0.64
+    },
+    "2017": {
+     "n": 175,
+     "totalR": -20.55,
+     "expectancyR": -0.117,
+     "winRatePct": 41.7,
+     "profitFactor": 0.77
+    },
+    "2018": {
+     "n": 153,
+     "totalR": -14.62,
+     "expectancyR": -0.096,
+     "winRatePct": 39.9,
+     "profitFactor": 0.81
+    },
+    "2019": {
+     "n": 93,
+     "totalR": 12.19,
+     "expectancyR": 0.131,
+     "winRatePct": 52.7,
+     "profitFactor": 1.36
+    },
+    "2020": {
+     "n": 144,
+     "totalR": -8.41,
+     "expectancyR": -0.058,
+     "winRatePct": 40.3,
+     "profitFactor": 0.88
+    }
+   },
+   "byPair": {
+    "GBPUSD": {
+     "n": 295,
+     "totalR": -26.7,
+     "expectancyR": -0.091,
+     "winRatePct": 40,
+     "profitFactor": 0.83
+    },
+    "USDJPY": {
+     "n": 198,
+     "totalR": -26.33,
+     "expectancyR": -0.133,
+     "winRatePct": 40.4,
+     "profitFactor": 0.74
+    },
+    "AUDUSD": {
+     "n": 194,
+     "totalR": -5.09,
+     "expectancyR": -0.026,
+     "winRatePct": 43.3,
+     "profitFactor": 0.94
+    },
+    "EURUSD": {
+     "n": 217,
+     "totalR": -9.76,
+     "expectancyR": -0.045,
+     "winRatePct": 41.5,
+     "profitFactor": 0.91
+    }
+   },
+   "byExit": {
+    "tp": {
+     "n": 205,
+     "totalR": 305.46,
+     "expectancyR": 1.49,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "stop": {
+     "n": 400,
+     "totalR": -405.16,
+     "expectancyR": -1.013,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 299,
+     "totalR": 31.83,
+     "expectancyR": 0.106,
+     "winRatePct": 55.9,
+     "profitFactor": 1.74
+    }
+   },
+   "rolling": {
+    "negative": 17,
+    "total": 21
+   },
+   "skipped": {
+    "daily_cap": 44,
+    "cancelled_level": 1819,
+    "missed_before_live": 67,
+    "currency_exposure": 114,
+    "expired": 246,
+    "pair_busy": 38
+   },
+   "endBalance": 485179.51
+  },
+  {
+   "model": "B",
+   "config": "B3",
+   "cost": "raw",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 6896,
+   "stats": {
+    "n": 1239,
+    "wins": 416,
+    "winRatePct": 33.6,
+    "expectancyR": -0.123,
+    "totalR": -152.74,
+    "profitFactor": 0.77,
+    "avgWinR": 1.261,
+    "avgLossR": -0.823,
+    "maxDrawdownR": 162.14,
+    "maxDrawdownPct": 72.8,
+    "longestLosingStreak": 14,
+    "tStat": -4.06,
+    "ci95": [
+     -0.182,
+     -0.064
+    ],
+    "tradesPerMonth": 17.3,
+    "avgHoldHours": 2.6
+   },
+   "byYear": {
+    "2015": {
+     "n": 300,
+     "totalR": -28.58,
+     "expectancyR": -0.095,
+     "winRatePct": 34.7,
+     "profitFactor": 0.83
+    },
+    "2016": {
+     "n": 307,
+     "totalR": -20.72,
+     "expectancyR": -0.067,
+     "winRatePct": 34.2,
+     "profitFactor": 0.88
+    },
+    "2017": {
+     "n": 251,
+     "totalR": -37.11,
+     "expectancyR": -0.148,
+     "winRatePct": 32.3,
+     "profitFactor": 0.72
+    },
+    "2018": {
+     "n": 236,
+     "totalR": -52.24,
+     "expectancyR": -0.221,
+     "winRatePct": 31.4,
+     "profitFactor": 0.62
+    },
+    "2019": {
+     "n": 35,
+     "totalR": -13.09,
+     "expectancyR": -0.374,
+     "winRatePct": 22.9,
+     "profitFactor": 0.41
+    },
+    "2020": {
+     "n": 110,
+     "totalR": -0.99,
+     "expectancyR": -0.009,
+     "winRatePct": 40,
+     "profitFactor": 0.98
+    }
+   },
+   "byPair": {
+    "USDJPY": {
+     "n": 323,
+     "totalR": -44.87,
+     "expectancyR": -0.139,
+     "winRatePct": 33.4,
+     "profitFactor": 0.74
+    },
+    "GBPUSD": {
+     "n": 401,
+     "totalR": -41.23,
+     "expectancyR": -0.103,
+     "winRatePct": 32.7,
+     "profitFactor": 0.82
+    },
+    "EURUSD": {
+     "n": 293,
+     "totalR": -34.2,
+     "expectancyR": -0.117,
+     "winRatePct": 33.1,
+     "profitFactor": 0.78
+    },
+    "AUDUSD": {
+     "n": 222,
+     "totalR": -32.44,
+     "expectancyR": -0.146,
+     "winRatePct": 36,
+     "profitFactor": 0.72
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 615,
+     "totalR": -649.57,
+     "expectancyR": -1.056,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 332,
+     "totalR": 485.12,
+     "expectancyR": 1.461,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "breakeven": {
+     "n": 148,
+     "totalR": -8.33,
+     "expectancyR": -0.056,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 144,
+     "totalR": 20.03,
+     "expectancyR": 0.139,
+     "winRatePct": 58.3,
+     "profitFactor": 2.02
+    }
+   },
+   "rolling": {
+    "negative": 18,
+    "total": 21
+   },
+   "skipped": {
+    "cancelled_level": 3927,
+    "expired": 925,
+    "daily_cap": 192,
+    "currency_exposure": 185,
+    "missed_before_live": 109,
+    "pair_busy": 13,
+    "below_min_lot": 306
+   },
+   "endBalance": 144.81
+  },
+  {
+   "model": "B",
+   "config": "B3",
+   "cost": "standard",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 6896,
+   "stats": {
+    "n": 1127,
+    "wins": 362,
+    "winRatePct": 32.1,
+    "expectancyR": -0.135,
+    "totalR": -151.93,
+    "profitFactor": 0.75,
+    "avgWinR": 1.288,
+    "avgLossR": -0.808,
+    "maxDrawdownR": 154.62,
+    "maxDrawdownPct": 72.2,
+    "longestLosingStreak": 16,
+    "tStat": -4.26,
+    "ci95": [
+     -0.197,
+     -0.07
+    ],
+    "tradesPerMonth": 16.6,
+    "avgHoldHours": 2.5
+   },
+   "byYear": {
+    "2015": {
+     "n": 298,
+     "totalR": -32.18,
+     "expectancyR": -0.108,
+     "winRatePct": 33.6,
+     "profitFactor": 0.81
+    },
+    "2016": {
+     "n": 299,
+     "totalR": -21.27,
+     "expectancyR": -0.071,
+     "winRatePct": 32.8,
+     "profitFactor": 0.87
+    },
+    "2017": {
+     "n": 247,
+     "totalR": -28.04,
+     "expectancyR": -0.114,
+     "winRatePct": 34,
+     "profitFactor": 0.78
+    },
+    "2018": {
+     "n": 235,
+     "totalR": -58.62,
+     "expectancyR": -0.249,
+     "winRatePct": 28.9,
+     "profitFactor": 0.58
+    },
+    "2019": {
+     "n": 28,
+     "totalR": -7.14,
+     "expectancyR": -0.255,
+     "winRatePct": 25,
+     "profitFactor": 0.55
+    },
+    "2020": {
+     "n": 20,
+     "totalR": -4.68,
+     "expectancyR": -0.234,
+     "winRatePct": 25,
+     "profitFactor": 0.54
+    }
+   },
+   "byPair": {
+    "USDJPY": {
+     "n": 288,
+     "totalR": -44.44,
+     "expectancyR": -0.154,
+     "winRatePct": 31.3,
+     "profitFactor": 0.72
+    },
+    "GBPUSD": {
+     "n": 362,
+     "totalR": -42.05,
+     "expectancyR": -0.116,
+     "winRatePct": 30.9,
+     "profitFactor": 0.79
+    },
+    "EURUSD": {
+     "n": 268,
+     "totalR": -32.47,
+     "expectancyR": -0.121,
+     "winRatePct": 32.1,
+     "profitFactor": 0.78
+    },
+    "AUDUSD": {
+     "n": 209,
+     "totalR": -32.97,
+     "expectancyR": -0.158,
+     "winRatePct": 35.4,
+     "profitFactor": 0.7
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 589,
+     "totalR": -600,
+     "expectancyR": -1.019,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 288,
+     "totalR": 432,
+     "expectancyR": 1.5,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "breakeven": {
+     "n": 128,
+     "totalR": -2.24,
+     "expectancyR": -0.018,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 122,
+     "totalR": 18.31,
+     "expectancyR": 0.15,
+     "winRatePct": 60.7,
+     "profitFactor": 2.15
+    }
+   },
+   "rolling": {
+    "negative": 20,
+    "total": 20
+   },
+   "skipped": {
+    "cancelled_level": 3953,
+    "expired": 954,
+    "daily_cap": 177,
+    "currency_exposure": 149,
+    "missed_before_live": 94,
+    "pair_busy": 11,
+    "below_min_lot": 431
+   },
+   "endBalance": 141.26
+  },
+  {
+   "model": "B",
+   "config": "B3",
+   "cost": "standard, no lot-size limits",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 6896,
+   "stats": {
+    "n": 1461,
+    "wins": 493,
+    "winRatePct": 33.7,
+    "expectancyR": -0.099,
+    "totalR": -145.29,
+    "profitFactor": 0.81,
+    "avgWinR": 1.274,
+    "avgLossR": -0.799,
+    "maxDrawdownR": 152.97,
+    "maxDrawdownPct": 79.5,
+    "longestLosingStreak": 16,
+    "tStat": -3.57,
+    "ci95": [
+     -0.156,
+     -0.045
+    ],
+    "tradesPerMonth": 20.3,
+    "avgHoldHours": 2.5
+   },
+   "byYear": {
+    "2015": {
+     "n": 298,
+     "totalR": -32.18,
+     "expectancyR": -0.108,
+     "winRatePct": 33.6,
+     "profitFactor": 0.81
+    },
+    "2016": {
+     "n": 299,
+     "totalR": -21.27,
+     "expectancyR": -0.071,
+     "winRatePct": 32.8,
+     "profitFactor": 0.87
+    },
+    "2017": {
+     "n": 247,
+     "totalR": -28.04,
+     "expectancyR": -0.114,
+     "winRatePct": 34,
+     "profitFactor": 0.78
+    },
+    "2018": {
+     "n": 235,
+     "totalR": -58.62,
+     "expectancyR": -0.249,
+     "winRatePct": 28.9,
+     "profitFactor": 0.58
+    },
+    "2019": {
+     "n": 143,
+     "totalR": -1.25,
+     "expectancyR": -0.009,
+     "winRatePct": 39.9,
+     "profitFactor": 0.98
+    },
+    "2020": {
+     "n": 239,
+     "totalR": -3.92,
+     "expectancyR": -0.016,
+     "winRatePct": 36,
+     "profitFactor": 0.97
+    }
+   },
+   "byPair": {
+    "USDJPY": {
+     "n": 315,
+     "totalR": -40.04,
+     "expectancyR": -0.127,
+     "winRatePct": 32.7,
+     "profitFactor": 0.76
+    },
+    "GBPUSD": {
+     "n": 527,
+     "totalR": -13.17,
+     "expectancyR": -0.025,
+     "winRatePct": 34.7,
+     "profitFactor": 0.95
+    },
+    "EURUSD": {
+     "n": 356,
+     "totalR": -55.2,
+     "expectancyR": -0.155,
+     "winRatePct": 31.2,
+     "profitFactor": 0.71
+    },
+    "AUDUSD": {
+     "n": 263,
+     "totalR": -36.89,
+     "expectancyR": -0.14,
+     "winRatePct": 36.5,
+     "profitFactor": 0.73
+    }
+   },
+   "byExit": {
+    "stop": {
+     "n": 733,
+     "totalR": -746.16,
+     "expectancyR": -1.018,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "tp": {
+     "n": 383,
+     "totalR": 574.5,
+     "expectancyR": 1.5,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "breakeven": {
+     "n": 163,
+     "totalR": -2.88,
+     "expectancyR": -0.018,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 182,
+     "totalR": 29.25,
+     "expectancyR": 0.161,
+     "winRatePct": 60.4,
+     "profitFactor": 2.2
+    }
+   },
+   "rolling": {
+    "negative": 18,
+    "total": 21
+   },
+   "skipped": {
+    "cancelled_level": 3953,
+    "expired": 954,
+    "daily_cap": 220,
+    "currency_exposure": 200,
+    "missed_before_live": 94,
+    "pair_busy": 14
+   },
+   "endBalance": 215623.59
+  },
+  {
+   "model": "B",
+   "config": "B4",
+   "cost": "raw",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 4310,
+   "stats": {
+    "n": 996,
+    "wins": 407,
+    "winRatePct": 40.9,
+    "expectancyR": -0.109,
+    "totalR": -108.92,
+    "profitFactor": 0.79,
+    "avgWinR": 0.991,
+    "avgLossR": -0.87,
+    "maxDrawdownR": 123.02,
+    "maxDrawdownPct": 60.9,
+    "longestLosingStreak": 9,
+    "tStat": -3.4,
+    "ci95": [
+     -0.175,
+     -0.046
+    ],
+    "tradesPerMonth": 13.9,
+    "avgHoldHours": 4.6
+   },
+   "byYear": {
+    "2015": {
+     "n": 212,
+     "totalR": -12.26,
+     "expectancyR": -0.058,
+     "winRatePct": 43.9,
+     "profitFactor": 0.89
+    },
+    "2016": {
+     "n": 208,
+     "totalR": -32.29,
+     "expectancyR": -0.155,
+     "winRatePct": 36.5,
+     "profitFactor": 0.73
+    },
+    "2017": {
+     "n": 210,
+     "totalR": -28.69,
+     "expectancyR": -0.137,
+     "winRatePct": 39.5,
+     "profitFactor": 0.73
+    },
+    "2018": {
+     "n": 170,
+     "totalR": -30.17,
+     "expectancyR": -0.177,
+     "winRatePct": 39.4,
+     "profitFactor": 0.67
+    },
+    "2019": {
+     "n": 79,
+     "totalR": -1.05,
+     "expectancyR": -0.013,
+     "winRatePct": 45.6,
+     "profitFactor": 0.97
+    },
+    "2020": {
+     "n": 117,
+     "totalR": -4.45,
+     "expectancyR": -0.038,
+     "winRatePct": 44.4,
+     "profitFactor": 0.92
+    }
+   },
+   "byPair": {
+    "GBPUSD": {
+     "n": 276,
+     "totalR": -33.82,
+     "expectancyR": -0.123,
+     "winRatePct": 39.9,
+     "profitFactor": 0.79
+    },
+    "USDJPY": {
+     "n": 264,
+     "totalR": -46.64,
+     "expectancyR": -0.177,
+     "winRatePct": 39.8,
+     "profitFactor": 0.67
+    },
+    "EURUSD": {
+     "n": 235,
+     "totalR": -3.65,
+     "expectancyR": -0.016,
+     "winRatePct": 43.4,
+     "profitFactor": 0.97
+    },
+    "AUDUSD": {
+     "n": 221,
+     "totalR": -24.81,
+     "expectancyR": -0.112,
+     "winRatePct": 40.7,
+     "profitFactor": 0.75
+    }
+   },
+   "byExit": {
+    "tp": {
+     "n": 225,
+     "totalR": 328.95,
+     "expectancyR": 1.462,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "stop": {
+     "n": 447,
+     "totalR": -464.91,
+     "expectancyR": -1.04,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 324,
+     "totalR": 27.04,
+     "expectancyR": 0.083,
+     "winRatePct": 56.2,
+     "profitFactor": 1.57
+    }
+   },
+   "rolling": {
+    "negative": 19,
+    "total": 21
+   },
+   "skipped": {
+    "daily_cap": 60,
+    "cancelled_level": 2445,
+    "missed_before_live": 94,
+    "currency_exposure": 162,
+    "expired": 353,
+    "pair_busy": 40,
+    "below_min_lot": 160
+   },
+   "endBalance": 219.27
+  },
+  {
+   "model": "B",
+   "config": "B4",
+   "cost": "standard",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 4310,
+   "stats": {
+    "n": 931,
+    "wins": 370,
+    "winRatePct": 39.7,
+    "expectancyR": -0.123,
+    "totalR": -114.34,
+    "profitFactor": 0.76,
+    "avgWinR": 0.994,
+    "avgLossR": -0.86,
+    "maxDrawdownR": 132.06,
+    "maxDrawdownPct": 63.3,
+    "longestLosingStreak": 10,
+    "tStat": -3.72,
+    "ci95": [
+     -0.186,
+     -0.059
+    ],
+    "tradesPerMonth": 13,
+    "avgHoldHours": 4.5
+   },
+   "byYear": {
+    "2015": {
+     "n": 207,
+     "totalR": -15.42,
+     "expectancyR": -0.075,
+     "winRatePct": 42.5,
+     "profitFactor": 0.86
+    },
+    "2016": {
+     "n": 203,
+     "totalR": -29.53,
+     "expectancyR": -0.145,
+     "winRatePct": 35.5,
+     "profitFactor": 0.74
+    },
+    "2017": {
+     "n": 208,
+     "totalR": -28.56,
+     "expectancyR": -0.137,
+     "winRatePct": 40.4,
+     "profitFactor": 0.73
+    },
+    "2018": {
+     "n": 166,
+     "totalR": -33.39,
+     "expectancyR": -0.201,
+     "winRatePct": 37.3,
+     "profitFactor": 0.64
+    },
+    "2019": {
+     "n": 65,
+     "totalR": -5.99,
+     "expectancyR": -0.092,
+     "winRatePct": 41.5,
+     "profitFactor": 0.79
+    },
+    "2020": {
+     "n": 82,
+     "totalR": -1.44,
+     "expectancyR": -0.018,
+     "winRatePct": 45.1,
+     "profitFactor": 0.96
+    }
+   },
+   "byPair": {
+    "GBPUSD": {
+     "n": 259,
+     "totalR": -37.77,
+     "expectancyR": -0.146,
+     "winRatePct": 37.8,
+     "profitFactor": 0.75
+    },
+    "USDJPY": {
+     "n": 244,
+     "totalR": -43.86,
+     "expectancyR": -0.18,
+     "winRatePct": 38.1,
+     "profitFactor": 0.66
+    },
+    "EURUSD": {
+     "n": 221,
+     "totalR": -8.02,
+     "expectancyR": -0.036,
+     "winRatePct": 42.5,
+     "profitFactor": 0.93
+    },
+    "AUDUSD": {
+     "n": 207,
+     "totalR": -24.68,
+     "expectancyR": -0.119,
+     "winRatePct": 41.1,
+     "profitFactor": 0.74
+    }
+   },
+   "byExit": {
+    "tp": {
+     "n": 200,
+     "totalR": 297.98,
+     "expectancyR": 1.49,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "stop": {
+     "n": 436,
+     "totalR": -441,
+     "expectancyR": -1.011,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 295,
+     "totalR": 28.68,
+     "expectancyR": 0.097,
+     "winRatePct": 57.6,
+     "profitFactor": 1.7
+    }
+   },
+   "rolling": {
+    "negative": 21,
+    "total": 21
+   },
+   "skipped": {
+    "daily_cap": 53,
+    "cancelled_level": 2467,
+    "missed_before_live": 79,
+    "expired": 380,
+    "currency_exposure": 149,
+    "pair_busy": 36,
+    "below_min_lot": 215
+   },
+   "endBalance": 214.92
+  },
+  {
+   "model": "B",
+   "config": "B4",
+   "cost": "standard, no lot-size limits",
+   "from": "2015-01-05",
+   "to": "2021-01-01",
+   "orders": 4310,
+   "stats": {
+    "n": 1108,
+    "wins": 443,
+    "winRatePct": 40,
+    "expectancyR": -0.109,
+    "totalR": -121.05,
+    "profitFactor": 0.79,
+    "avgWinR": 1.004,
+    "avgLossR": -0.852,
+    "maxDrawdownR": 133.26,
+    "maxDrawdownPct": 74.6,
+    "longestLosingStreak": 10,
+    "tStat": -3.61,
+    "ci95": [
+     -0.168,
+     -0.05
+    ],
+    "tradesPerMonth": 15.4,
+    "avgHoldHours": 4.5
+   },
+   "byYear": {
+    "2015": {
+     "n": 207,
+     "totalR": -15.42,
+     "expectancyR": -0.075,
+     "winRatePct": 42.5,
+     "profitFactor": 0.86
+    },
+    "2016": {
+     "n": 203,
+     "totalR": -29.53,
+     "expectancyR": -0.145,
+     "winRatePct": 35.5,
+     "profitFactor": 0.74
+    },
+    "2017": {
+     "n": 208,
+     "totalR": -28.56,
+     "expectancyR": -0.137,
+     "winRatePct": 40.4,
+     "profitFactor": 0.73
+    },
+    "2018": {
+     "n": 195,
+     "totalR": -43.36,
+     "expectancyR": -0.222,
+     "winRatePct": 36.4,
+     "profitFactor": 0.6
+    },
+    "2019": {
+     "n": 114,
+     "totalR": -1.92,
+     "expectancyR": -0.017,
+     "winRatePct": 44.7,
+     "profitFactor": 0.96
+    },
+    "2020": {
+     "n": 181,
+     "totalR": -2.25,
+     "expectancyR": -0.012,
+     "winRatePct": 42.5,
+     "profitFactor": 0.97
+    }
+   },
+   "byPair": {
+    "GBPUSD": {
+     "n": 343,
+     "totalR": -30.52,
+     "expectancyR": -0.089,
+     "winRatePct": 40.2,
+     "profitFactor": 0.84
+    },
+    "USDJPY": {
+     "n": 264,
+     "totalR": -43.88,
+     "expectancyR": -0.166,
+     "winRatePct": 39,
+     "profitFactor": 0.68
+    },
+    "EURUSD": {
+     "n": 269,
+     "totalR": -22.13,
+     "expectancyR": -0.082,
+     "winRatePct": 39.4,
+     "profitFactor": 0.83
+    },
+    "AUDUSD": {
+     "n": 232,
+     "totalR": -24.52,
+     "expectancyR": -0.106,
+     "winRatePct": 41.4,
+     "profitFactor": 0.77
+    }
+   },
+   "byExit": {
+    "tp": {
+     "n": 243,
+     "totalR": 362.18,
+     "expectancyR": 1.49,
+     "winRatePct": 100,
+     "profitFactor": null
+    },
+    "stop": {
+     "n": 506,
+     "totalR": -511.68,
+     "expectancyR": -1.011,
+     "winRatePct": 0,
+     "profitFactor": 0
+    },
+    "time": {
+     "n": 359,
+     "totalR": 28.45,
+     "expectancyR": 0.079,
+     "winRatePct": 55.7,
+     "profitFactor": 1.53
+    }
+   },
+   "rolling": {
+    "negative": 19,
+    "total": 21
+   },
+   "skipped": {
+    "daily_cap": 68,
+    "cancelled_level": 2467,
+    "missed_before_live": 79,
+    "expired": 380,
+    "currency_exposure": 169,
+    "pair_busy": 39
+   },
+   "endBalance": 282566.24
+  }
+ ],
+ "verdicts": [
+  {
+   "config": "A1",
+   "eligible": false,
+   "fails": [
+    "average above 0R",
+    "profit factor at least 1.15",
+    "at least 4 of 6 years positive",
+    "no more than 35% of rolling 12-month windows negative",
+    "worst fall no more than 15%"
+   ]
+  },
+  {
+   "config": "A2",
+   "eligible": false,
+   "fails": [
+    "at least 150 trades",
+    "average above 0R",
+    "profit factor at least 1.15",
+    "at least 4 of 6 years positive",
+    "no more than 35% of rolling 12-month windows negative"
+   ]
+  },
+  {
+   "config": "A3",
+   "eligible": false,
+   "fails": [
+    "at least 150 trades",
+    "profit factor at least 1.15",
+    "at least 4 of 6 years positive",
+    "no more than 35% of rolling 12-month windows negative"
+   ]
+  },
+  {
+   "config": "A4",
+   "eligible": false,
+   "fails": [
+    "at least 150 trades"
+   ]
+  },
+  {
+   "config": "A5",
+   "eligible": false,
+   "fails": [
+    "average above 0R",
+    "profit factor at least 1.15",
+    "at least 4 of 6 years positive",
+    "no more than 35% of rolling 12-month windows negative",
+    "worst fall no more than 15%"
+   ]
+  },
+  {
+   "config": "A6",
+   "eligible": false,
+   "fails": [
+    "at least 150 trades",
+    "average above 0R",
+    "profit factor at least 1.15",
+    "at least 4 of 6 years positive",
+    "no more than 35% of rolling 12-month windows negative"
+   ]
+  },
+  {
+   "config": "A7",
+   "eligible": false,
+   "fails": [
+    "at least 150 trades",
+    "average above 0R",
+    "profit factor at least 1.15",
+    "at least 4 of 6 years positive",
+    "no more than 35% of rolling 12-month windows negative"
+   ]
+  },
+  {
+   "config": "A8",
+   "eligible": false,
+   "fails": [
+    "at least 150 trades",
+    "at least 4 of 6 years positive",
+    "no more than 35% of rolling 12-month windows negative"
+   ]
+  },
+  {
+   "config": "B1",
+   "eligible": false,
+   "fails": [
+    "average above 0R",
+    "profit factor at least 1.15",
+    "at least 4 of 6 years positive",
+    "no more than 35% of rolling 12-month windows negative",
+    "worst fall no more than 15%"
+   ]
+  },
+  {
+   "config": "B2",
+   "eligible": false,
+   "fails": [
+    "average above 0R",
+    "profit factor at least 1.15",
+    "at least 4 of 6 years positive",
+    "no more than 35% of rolling 12-month windows negative",
+    "worst fall no more than 15%"
+   ]
+  },
+  {
+   "config": "B3",
+   "eligible": false,
+   "fails": [
+    "average above 0R",
+    "profit factor at least 1.15",
+    "at least 4 of 6 years positive",
+    "no more than 35% of rolling 12-month windows negative",
+    "worst fall no more than 15%"
+   ]
+  },
+  {
+   "config": "B4",
+   "eligible": false,
+   "fails": [
+    "average above 0R",
+    "profit factor at least 1.15",
+    "at least 4 of 6 years positive",
+    "no more than 35% of rolling 12-month windows negative",
+    "worst fall no more than 15%"
+   ]
+  }
+ ]
+}

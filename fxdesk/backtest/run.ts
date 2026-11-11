@@ -7,9 +7,12 @@
  *       all of history. That is at once the no-lookahead test and the proof
  *       that the live scanner (which holds a rolling window) matches the
  *       backtest.
- *   node fxdesk/backtest/run.ts run <phase>
+ *   node fxdesk/backtest/run.ts run calibration
  *       Runs every pre-registered configuration under the raw and standard
- *       cost models over one phase of the data split in SPEC section 9.
+ *       cost models and applies the SPEC section 9 pass marks.
+ *   node fxdesk/backtest/run.ts run <validation|verdict> <config...>
+ *       Sealed data: runs only the named configuration(s) that calibration
+ *       made eligible. Refuses to run without a name.
  *   node fxdesk/backtest/run.ts noise <phase> <config> [seeds]
  *       Re-runs one configuration with signals generated from a noisy
  *       second-vendor view of the candles (fills stay on the real feed).
@@ -78,22 +81,60 @@ function selftest(samples = 160) {
   if (bad) process.exit(1);
 }
 
-function runPhase(phase: string) {
+/** SPEC 9, calibration: the pass marks, applied to one configuration's two cost runs. */
+export function eligibility(raw: any, std: any): { eligible: boolean; fails: string[] } {
+  const marks: Array<[string, (r: any) => boolean]> = [
+    ["at least 150 trades", (r) => r.stats.n >= 150],
+    ["average above 0R", (r) => r.stats.expectancyR > 0],
+    ["profit factor at least 1.15", (r) => r.stats.profitFactor >= 1.15],
+    ["at least 4 of 6 years positive", (r) => Object.values(r.byYear).filter((y: any) => y.totalR > 0).length >= 4],
+    ["no more than 35% of rolling 12-month windows negative", (r) => r.rolling.total > 0 && r.rolling.negative / r.rolling.total <= 0.35],
+    ["worst fall no more than 15%", (r) => r.stats.maxDrawdownPct <= 15],
+  ];
+  const fails = marks.filter(([, ok]) => !(ok(raw) && ok(std))).map(([name]) => name);
+  return { eligible: fails.length === 0, fails };
+}
+
+const line = (c: string, cost: string, report: any) => {
+  const s = report.stats, yrs: any[] = Object.values(report.byYear);
+  console.log(`${c} ${cost.padEnd(8)} n=${String(s.n).padStart(4)} win=${String(s.winRatePct).padStart(5)}% exp=${s.expectancyR.toFixed(3).padStart(7)}R PF=${String(s.profitFactor).padStart(5)} totR=${String(s.totalR).padStart(8)} DD=${String(s.maxDrawdownR).padStart(6)}R/${String(s.maxDrawdownPct).padStart(5)}% t=${String(s.tStat).padStart(6)} ci=[${s.ci95[0]},${s.ci95[1]}] yrs+=${yrs.filter((y) => y.totalR > 0).length}/${yrs.length} roll-=${report.rolling.negative}/${report.rolling.total} /mo=${s.tradesPerMonth}`);
+};
+
+/**
+ * Calibration runs every configuration. The two later parts are SEALED:
+ * they run only for configurations named on the command line, which must be
+ * the (at most one per plan) configurations that calibration made eligible.
+ * The verdict adds the stress-cost run SPEC 9 requires.
+ */
+function runPhase(phase: string, only: string[]) {
+  if (phase !== "calibration" && !only.length) {
+    console.log(`"${phase}" is sealed. Name the configuration(s) that passed calibration, e.g. run ${phase} A1. As of the last calibration none did, so this should not be run.`);
+    process.exit(2);
+  }
   const [a, b] = PHASES[phase].map(utcDate);
   const u = loadUniverse(PAIRS);
-  const rows: any[] = [];
-  for (const m of MODELS) for (const c of Object.keys(m.configs)) for (const cost of ["raw", "standard"]) {
-    const { report } = run(m, c, u, a, b, COSTS[cost], DEFAULT_RAILS);
-    rows.push(report);
-    const s = report.stats;
-    const yrs = Object.values(report.byYear);
-    console.log(`${c} ${cost.padEnd(8)} n=${String(s.n).padStart(4)} win=${String(s.winRatePct).padStart(5)}% exp=${s.expectancyR.toFixed(3).padStart(7)}R PF=${String(s.profitFactor).padStart(5)} totR=${String(s.totalR).padStart(8)} DD=${String(s.maxDrawdownR).padStart(6)}R/${String(s.maxDrawdownPct).padStart(5)}% t=${String(s.tStat).padStart(6)} ci=[${s.ci95[0]},${s.ci95[1]}] yrs+=${yrs.filter((y) => y.totalR > 0).length}/${yrs.length} roll-=${report.rolling.negative}/${report.rolling.total} /mo=${s.tradesPerMonth} hold=${s.avgHoldHours}h`);
+  const costs = phase === "verdict" ? ["raw", "standard", "stress"] : ["raw", "standard"];
+  const rows: any[] = [], verdicts: any[] = [];
+  for (const m of MODELS) for (const c of Object.keys(m.configs)) {
+    if (only.length && !only.includes(c)) continue;
+    const by: Record<string, any> = {};
+    for (const cost of costs) { by[cost] = run(m, c, u, a, b, COSTS[cost], DEFAULT_RAILS).report; rows.push(by[cost]); line(c, cost, by[cost]); }
+    if (phase === "calibration") {
+      const e = eligibility(by.raw, by.standard);
+      verdicts.push({ config: c, ...e });
+      // sensitivity only, never used for a decision: the same run with a balance large enough that lot rounding never bites
+      const big = run(m, c, u, a, b, COSTS.standard, { ...DEFAULT_RAILS, startBalance: 1_000_000 }).report;
+      big.cost = "standard, no lot-size limits"; rows.push(big);
+      console.log(`   ${e.eligible ? "ELIGIBLE" : "not eligible: " + e.fails.join("; ")}  | without lot-size limits: n=${big.stats.n} exp=${big.stats.expectancyR}R PF=${big.stats.profitFactor} worst fall ${big.stats.maxDrawdownPct}%`);
+    }
   }
   mkdirSync(OUT, { recursive: true });
-  writeFileSync(`${OUT}/${phase}.json`, JSON.stringify(rows, null, 1));
+  writeFileSync(`${OUT}/${phase}.json`, JSON.stringify({ phase, from: PHASES[phase][0], to: PHASES[phase][1], rows, verdicts }, null, 1));
+  if (phase === "calibration") console.log(`eligible: ${verdicts.filter((v) => v.eligible).map((v) => v.config).join(", ") || "none"}`);
 }
 
 function noise(phase: string, config: string, seeds = 5) {
+  if (phase !== "calibration") console.log(`note: "${phase}" is sealed data; a noise run on it is only legitimate for a configuration that reached that stage.`);
   const [a, b] = PHASES[phase].map(utcDate);
   const u = loadUniverse(PAIRS);
   const [m, c] = findConfig(config);
@@ -114,6 +155,6 @@ function noise(phase: string, config: string, seeds = 5) {
 
 const [cmd, x, y, z] = process.argv.slice(2);
 if (cmd === "selftest") selftest(x ? Number(x) : 160);
-else if (cmd === "run" && PHASES[x]) runPhase(x);
+else if (cmd === "run" && PHASES[x]) runPhase(x, process.argv.slice(4));
 else if (cmd === "noise" && PHASES[x] && y) noise(x, y, z ? Number(z) : 5);
 else { console.log("usage: run.ts selftest | run <calibration|validation|verdict> | noise <phase> <config> [seeds]"); process.exit(2); }

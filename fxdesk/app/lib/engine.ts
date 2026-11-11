@@ -10,7 +10,7 @@
 import { type Bars, makeBars, emptyBars } from "../../core/bars.ts";
 import { frames, type Universe, type PairData } from "../../core/model.ts";
 import { generateSweep, SWEEP_FVG } from "../../core/models/sweepFvg.ts";
-import { prep, prevDay, candleBias, sessionHL, P } from "../../core/models/common.ts";
+import { prep, prevDay, candleBiasDetail, sessionHL, P } from "../../core/models/common.ts";
 import { simulate, DEFAULT_RAILS, type Order } from "../../core/sim.ts";
 import { STANDARD } from "../../core/costs.ts";
 import { pipSize, pipValuePerLot, lotsForRisk, roundPrice } from "../../core/pairs.ts";
@@ -65,17 +65,29 @@ export function buildUniverse(bars: Record<string, Bars>): Universe {
 
 const fmt = (pair: string, x: number) => x.toFixed(pair.endsWith("JPY") ? 3 : 5);
 const pips = (pair: string, d: number) => Math.round(d / pipSize(pair) * 10) / 10;
-const biasWords = (pd: PairData): { bias: number; why: string } => {
-  const p = prep(pd), di = p.days.length - 1, bias = candleBias(p, di);
-  const y = prevDay(p, di), q = y >= 0 ? prevDay(p, y) : -1;
-  if (y < 0 || q < 0) return { bias: 0, why: "Not enough history yet." };
-  const Y = p.days[y], Q = p.days[q];
-  if (Y.close > Q.hi) return { bias, why: "Yesterday closed above the previous day's high." };
-  if (Y.close < Q.lo) return { bias, why: "Yesterday closed below the previous day's low." };
-  if (bias < 0) return { bias, why: "Yesterday took the previous day's high and closed back under it." };
-  if (bias > 0) return { bias, why: "Yesterday took the previous day's low and closed back over it." };
-  return { bias: 0, why: "Yesterday gave no direction, so there is no trade today." };
+const WHY: Record<string, string> = {
+  "closed-above": "Yesterday closed above the previous day's high.", "closed-below": "Yesterday closed below the previous day's low.",
+  "failed-high": "Yesterday took the previous day's high and closed back under it.", "failed-low": "Yesterday took the previous day's low and closed back over it.",
+  "none": "Yesterday gave no direction, so there is no trade today.", "no-data": "Not enough history yet.",
 };
+const biasWords = (pd: PairData): { bias: number; why: string } => {
+  const p = prep(pd), d = candleBiasDetail(p, p.days.length - 1);
+  return { bias: d.bias, why: WHY[d.why] };
+};
+
+/**
+ * MT5 takes an order's expiry in the BROKER'S server clock, not UK time.
+ * Most MT5 brokers run New York time plus seven hours (so their daily
+ * candles start at the 17:00 New York roll).
+ */
+export type ServerClock = "ny7" | "utc" | "uk";
+const two = (n: number) => (n < 10 ? "0" : "") + n;
+export function mt5HM(t: number, clock: ServerClock): string {
+  if (clock === "uk") return ukHM(t);
+  if (clock === "utc") { const m = Math.floor((((t % 86400) + 86400) % 86400) / 60); return `${two(Math.floor(m / 60))}:${two(m % 60)}`; }
+  const c = nyClock(t + 7 * 3600);
+  return `${two(c.hh)}:${two(c.mm)}`;
+}
 
 function reasons(o: Order, biasWhy: string): string[] {
   const i = o.info ?? {}, buy = o.dir > 0, pair = o.pair;
@@ -117,7 +129,7 @@ export function sessionLabel(now: number): string {
 }
 
 /** One scan. `saved` is what was stored last time; nothing in it is mutated. */
-export function scan(u: Universe, saved: SignalRec[], now: number, balance: number, ccy = "GBP"): ScanResult {
+export function scan(u: Universe, saved: SignalRec[], now: number, balance: number, ccy = "GBP", clock: ServerClock = "ny7"): ScanResult {
   const from = now - WINDOW_DAYS * 86400;
   const byId = new Map<string, SignalRec>(saved.map((s) => [s.id, { ...s, alerted: { ...s.alerted } }]));
   const firstRun = saved.length === 0;
@@ -189,10 +201,11 @@ export function scan(u: Universe, saved: SignalRec[], now: number, balance: numb
     if (!s.alerted.fresh && (s.status === "pending" || s.status === "open")) {
       s.alerted.fresh = true;
       messages.push({ id: s.id, text: [
-        `<b>${head}</b>  (grade ${s.grade}, DEMO)`,
+        `<b>${head}</b>  (DEMO)`,
         `Entry <code>${fmt(s.pair, s.entry)}</code>`, `Stop loss <code>${fmt(s.pair, s.stop)}</code>  (${s.riskPips} pips)`, `Take profit <code>${fmt(s.pair, s.tp)}</code>  (${s.rewardPips} pips)`,
         s.lots ? `Volume <code>${s.lots.toFixed(2)}</code> lots  (risk about £${s.riskMoney.toFixed(2)})` : "Volume: stop too wide to size at 1%. Skip this one.",
-        `Order expires ${ukHM(s.expireAt)} UK. Close anything still open at ${ukHM(s.flatAt)} UK.`,
+        `Set Expiration in MT5 to <b>${mt5HM(s.expireAt, clock)}</b> (MT5 clock; ${ukHM(s.expireAt)} UK). If MT5 will not take an expiry, delete the order yourself at that time.`,
+        `Close anything still open at ${ukHM(s.flatAt)} UK.`,
         "If price has already traded through the entry, do not chase it.",
         "<i>This rule set did not pass its historical test. Demo account only.</i>",
       ].join("\n") });

@@ -29,10 +29,12 @@ Desk). His answers:
 3. DONE - rulebook `fxdesk/SPEC.md`, pre-registered before any result.
    Two ICT plans, 12 configurations. `node fxdesk/backtest/run.ts selftest`
    proves no lookahead and live/backtest equivalence.
-4. DONE - calibration 2015-2020: **nothing passed** (`research/RESULTS.md`).
-   Plan B loses clearly; Plan A is about break-even on too few trades.
-   Validation (2021 to mid-2023) and verdict (mid-2023 to Oct 2026) data are
-   SEALED and must stay sealed: no configuration earned the right to open them.
+4. DONE - calibration 2015-2020, run twice (before and after the code
+   review): **nothing passed** either time (`research/RESULTS.md`). Plan B
+   loses clearly; Plan A is about zero on too few trades and swings with
+   the price feed. Validation (2021 to mid-2023) and verdict (mid-2023 to
+   Oct 2026) data are SEALED; `run.ts` refuses to open them without a named
+   eligible configuration, and there is none.
 5. DONE - the app is deployed: https://fx-desk-ict.netlify.app (Netlify
    project `fx-desk-ict`, site id 81fd0cc6-186b-4738-885a-c3dbabad0cb5).
    Code in `fxdesk/app/`; deploy root is `fxdesk/` (`netlify.toml`). One
@@ -48,8 +50,12 @@ Desk). His answers:
    Twelve Data key; (c) Telegram bot; (d) the MT5 demo screenshot he said he
    would send (needed to match his broker's pair names, lot step and
    spreads; the app currently assumes standard names and 0.01 lots).
-7. Independent code review (3 reviewers) was run on 11 Nov; see
-   `research/REVIEW.md` for findings and what was done about each.
+7. DONE - independent code review, 11 Nov: 27 findings, all dealt with or
+   documented (`research/REVIEW.md`); decision log in `SPEC.md` section 11.
+8. OWNER DECISION PENDING - SPEC section 9 "Real money": the reviewers
+   showed the 40-trade demo gate alone is weak (a no-edge rule meets it
+   about one time in five). Proposed: no funding on a demo record alone for
+   a plan that failed its backtest. The app already shows live as locked.
 
 ## Honest position to keep telling the owner
 

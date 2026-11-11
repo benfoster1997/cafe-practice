@@ -22,7 +22,7 @@ import { dayOfWeek } from "./sweepFvg.ts";
 
 export interface OteCfg { bias: BiasKind; exits: "ict20-30" | "structure" }
 
-/** Model B parameters (tags in SPEC 7.8). */
+/** Model B parameters (tags in the table at the end of SPEC section 7). */
 export const B = {
   /** retracement level - ICT-VERBATIM (Charter Models 1 and 11) */
   retrace: 0.62,
@@ -73,7 +73,7 @@ function scan(pd: PairData, p: Prep, di: number, win: Win, dir: 1 | -1, cfg: Ote
           const risk = entryT - stopT;
           if (cfg.exits === "ict20-30" || risk <= B.maxStopPips * pip + 1e-9) {
             const px = (t: number) => roundPrice(pd.pair, dir * t);
-            const signalTime = b.end[i], legEnd = px(highV + P.closeMarginPips * pip);
+            const signalTime = b.end[i], legEnd = px(highV + pip / 10);
             const o: Order = {
               id: `OTE-${pd.pair}-${signalTime}-${dir > 0 ? "B" : "S"}`, pair: pd.pair, dir, kind: "limit",
               entry: px(entryT), stop: px(stopT), tp: px(tpT), signalTime,
