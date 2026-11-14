@@ -2,7 +2,7 @@
 
 FX Desk watches four forex pairs (EURUSD, GBPUSD, AUDUSD, USDJPY) every 15
 minutes, applies ICT's "sweep, shift, gap" sequence exactly as written in
-`SPEC.md`, and sends you a ready-to-copy order ticket on Telegram when a
+`SPEC.md`, and sends a notification with a ready-to-copy order ticket when a
 full setup appears. You copy the ticket into MetaTrader 5 by hand, on your
 **demo** account.
 
@@ -24,26 +24,42 @@ full setup appears. You copy the ticket into MetaTrader 5 by hand, on your
 
 ## One-time setup (about 10 minutes, all on your iPhone)
 
-1. Open the link Claude gave you. It already contains your setup code.
-   Choose a passcode (6 or more characters) and tap **Save passcode**.
+1. Open the link Claude gave you and choose a passcode. (Done on 14 Nov.)
 2. **Live prices.** Go to twelvedata.com, tap **Get your free API key**, and
    sign up on the free plan (no card). Copy the key from your dashboard.
    In FX Desk open **Setup**, paste it under "Live prices", tap **Save key**.
    It should say the first scan worked.
-3. **Telegram alerts.**
-   - In Telegram, search for **@BotFather** (blue tick) and send `/newbot`.
-   - Give it any name, then a username that ends in `bot`.
-   - BotFather replies with a long token. Copy it.
-   - In FX Desk Setup, paste it under "Telegram alerts", tap **Save token**.
-   - Back in Telegram, open your new bot and press **Start**.
-   - In FX Desk tap **Connect**. A test message should arrive.
-4. **Balance.** Leave it at 500 (pounds) or set what you really plan to
+3. **Put FX Desk on your Home Screen.** In Safari tap the **Share** button,
+   choose **Add to Home Screen**, then **Add**. Close Safari and open FX Desk
+   from its new icon. It asks for your passcode once more: the Home Screen
+   app keeps its own memory, separate from Safari.
+4. **Turn on notifications.** In the Home Screen app open **Setup**, tap
+   **Turn on notifications**, and choose **Allow**. A notification should
+   arrive within a few seconds. An iPhone only allows this from the Home
+   Screen app, never from a Safari tab.
+5. **Balance.** Leave it at 500 (pounds) or set what you really plan to
    trade live. Tickets are sized at 1% of this, whatever your demo shows.
-5. **Home Screen.** In Safari tap Share, then **Add to Home Screen**.
+
+## How you know alerts still work
+
+iPhone notifications from a web app are less dependable than a chat app, and
+real alerts are rare, so a break could go unnoticed. Three safeguards:
+
+- **A check-in every trading morning**, about 06:45 UK, saying which way
+  each pair is leaning. **No check-in by 7am on a weekday means alerts are
+  broken.** Open the app: it will say why in red.
+- **A red warning in the app** if Apple has dropped the link or a
+  notification was refused.
+- **Send a test notification** in Setup, any time.
+
+Things that silence notifications without anything being broken: a Focus
+mode or Sleep schedule, and Settings, Notifications, FX Desk being switched
+off. If you delete the Home Screen icon, notifications stop for good until
+you add it again and turn them back on.
 
 ## When an alert arrives
 
-1. Tap **Open ticket** in the Telegram message.
+1. Tap the notification. It opens the ticket.
 2. In MetaTrader 5: Quotes, tap the pair, **Trade**, and change the order
    type to **Buy Limit** or **Sell Limit** as the ticket says.
 3. Tap each number on the ticket to copy it, and paste it into MT5:
@@ -69,8 +85,8 @@ full setup appears. You copy the ticket into MetaTrader 5 by hand, on your
   levels they are watching.
 - **Record**: the historical test result, your demo scoreboard, and the
   four conditions for unlocking real money.
-- **Setup**: your keys, balance, the MT5 clock, alerts on or off, and
-  "Scan now".
+- **Setup**: your price key, notifications, balance, the MT5 clock, alerts
+  on or off, and "Scan now". Telegram is there as an optional backup.
 
 ## The rules the app will not break
 

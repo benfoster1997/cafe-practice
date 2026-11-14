@@ -12,7 +12,9 @@ NO TRADE with a suggested pair, easy to copy by hand into MT5 on iOS; demo
 account first, live later. Started from scratch (he said to forget Scalp
 Desk). His answers:
 - Method: ICT (Inner Circle Trader), "research his best strategy".
-- Style: intraday, M15 to H1. Placing: copy by hand. Alerts: Telegram, any UK hour.
+- Style: intraday, M15 to H1. Placing: copy by hand. Alerts: he first chose
+  Telegram, then on 14 Nov chose iPhone notifications instead (told plainly
+  they are less dependable; Telegram stays in Setup as an optional backup).
 - Broker: he will send a screenshot of his MT5 demo account (NOT YET RECEIVED).
 - Later live stake: about GBP 500.
 
@@ -46,10 +48,14 @@ Desk). His answers:
    The one-time setup code was given to the owner in chat; only its hash is
    in `app/lib/store.ts`. If the owner loses access, delete the `auth` key
    from the blob store (or change SETUP_HASH and redeploy).
-6. WAITING ON THE OWNER - (a) open the link and set a passcode; (b) free
-   Twelve Data key; (c) Telegram bot; (d) the MT5 demo screenshot he said he
-   would send (needed to match his broker's pair names, lot step and
-   spreads; the app currently assumes standard names and 0.01 lots).
+6. OWNER SETUP - (a) passcode: DONE 14 Nov; (b) free Twelve Data key: to
+   do; (c) add to Home Screen and turn on notifications: to do; (d) the MT5
+   demo screenshot: optional, to confirm broker clock and lot sizes.
+   Notifications are web push (`app/lib/push.ts`, `app/public/sw.js`):
+   signing keys live in the blob store (key `vapid`; never regenerate them,
+   it would silently cut off the phone), subscriptions in `push`. Not
+   testable from here: no iPhone. Safeguards: daily pre-London check-in,
+   red warning when Apple reports a dead subscription, test button.
 7. DONE - independent code review, 11 Nov: 27 findings, all dealt with or
    documented (`research/REVIEW.md`); decision log in `SPEC.md` section 11.
 8. OWNER DECISION PENDING - SPEC section 9 "Real money": the reviewers

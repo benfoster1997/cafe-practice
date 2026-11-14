@@ -266,6 +266,10 @@ decides, the app shows live trading as locked.
 
 ## 10. What every alert must carry
 
+(Alerts go out as iPhone notifications from the Home Screen app; Telegram
+is an optional second route. The notification is short and opens the
+ticket, which carries everything below.)
+
 Pair; Buy or Sell; "limit order"; entry, stop and target prices; lot size
 for the balance in Settings; expiry in UK time; the reasons, one line each
 (bias, what was swept or which leg, where the entry comes from); the plan
