@@ -41,7 +41,8 @@ export interface WatchRow {
   levels: Array<{ name: string; price: number; pips: number; taken: boolean }>;
   note: string;
 }
-export interface ScanResult { signals: SignalRec[]; watch: WatchRow[]; messages: Array<{ text: string; id?: string }>; lastBar: number; session: string }
+/** `text` is the Telegram version (HTML); `title` and `body` are the plain-text notification. */
+export interface ScanResult { signals: SignalRec[]; watch: WatchRow[]; messages: Array<{ text: string; id?: string; title: string; body: string }>; lastBar: number; session: string }
 
 /** Twelve Data time_series -> closed M15 bid candles, oldest first. */
 export async function fetchM15(pair: string, apiKey: string, now: number, outputsize = 3500): Promise<Bars> {
@@ -118,6 +119,17 @@ function watchRow(pd: PairData, now: number): WatchRow {
   else if (inLon || inNy) note = `${inLon ? "London" : "New York"} killzone is open. Watching for a sweep ${bias > 0 ? "below a low" : "above a high"}, then a shift ${bias > 0 ? "up" : "down"}.`;
   else note = `Looking to ${bias > 0 ? "buy" : "sell"}, but only inside a killzone.`;
   return { pair, price: roundPrice(pair, price), time: b.end[b.n - 1], bias, biasWhy: why, levels, note };
+}
+
+/**
+ * The daily check-in goes out on the scan in the quarter hour before the
+ * London killzone opens (01:45 to 02:00 New York), Monday to Friday.
+ * That is 06:45 UK for most of the year and 05:45 UK in the few weeks when
+ * US and UK clocks are out of step.
+ */
+export function isCheckInTime(now: number): boolean {
+  const c = nyClock(now);
+  return c.dow >= 1 && c.dow <= 5 && c.minuteOfDay >= 105 && c.minuteOfDay < 120;
 }
 
 export function sessionLabel(now: number): string {
@@ -200,7 +212,10 @@ export function scan(u: Universe, saved: SignalRec[], now: number, balance: numb
     const head = `${s.dir > 0 ? "BUY" : "SELL"} LIMIT ${s.pair}`;
     if (!s.alerted.fresh && (s.status === "pending" || s.status === "open")) {
       s.alerted.fresh = true;
-      messages.push({ id: s.id, text: [
+      messages.push({
+        id: s.id, title: `${head} (demo)`,
+        body: s.lots ? `Entry ${fmt(s.pair, s.entry)}, stop ${fmt(s.pair, s.stop)}, target ${fmt(s.pair, s.tp)}, ${s.lots.toFixed(2)} lots. Expiry ${mt5HM(s.expireAt, clock)} on the MT5 clock (${ukHM(s.expireAt)} UK). Tap for the ticket.` : "Stop too wide to size at 1%. Skip this one.",
+        text: [
         `<b>${head}</b>  (DEMO)`,
         `Entry <code>${fmt(s.pair, s.entry)}</code>`, `Stop loss <code>${fmt(s.pair, s.stop)}</code>  (${s.riskPips} pips)`, `Take profit <code>${fmt(s.pair, s.tp)}</code>  (${s.rewardPips} pips)`,
         s.lots ? `Volume <code>${s.lots.toFixed(2)}</code> lots  (risk about £${s.riskMoney.toFixed(2)})` : "Volume: stop too wide to size at 1%. Skip this one.",
@@ -208,13 +223,14 @@ export function scan(u: Universe, saved: SignalRec[], now: number, balance: numb
         `Close anything still open at ${ukHM(s.flatAt)} UK.`,
         "If price has already traded through the entry, do not chase it.",
         "<i>This rule set did not pass its historical test. Demo account only.</i>",
-      ].join("\n") });
-    } else if (!s.alerted.fresh && s.status === "blocked") { s.alerted.fresh = true; s.alerted.done = true; messages.push({ id: s.id, text: `Setup on ${s.pair} skipped by the account rules: ${s.statusNote}` }); }
-    if (s.status === "open" && !s.alerted.fill) { s.alerted.fill = true; messages.push({ id: s.id, text: `${s.pair}: the entry at ${fmt(s.pair, s.entry)} has traded. If you placed the order it should be filled.` }); }
+      ].join("\n"),
+      });
+    } else if (!s.alerted.fresh && s.status === "blocked") { s.alerted.fresh = true; s.alerted.done = true; messages.push({ id: s.id, title: `${s.pair}: setup skipped`, body: `Skipped by the account rules: ${s.statusNote}`, text: `Setup on ${s.pair} skipped by the account rules: ${s.statusNote}` }); }
+    if (s.status === "open" && !s.alerted.fill) { s.alerted.fill = true; messages.push({ id: s.id, title: `${s.pair}: entry traded`, body: `The entry at ${fmt(s.pair, s.entry)} has traded. If you placed the order it should be filled.`, text: `${s.pair}: the entry at ${fmt(s.pair, s.entry)} has traded. If you placed the order it should be filled.` }); }
     if (["won", "lost", "flat", "expired", "withdrawn"].includes(s.status) && !s.alerted.done) {
       s.alerted.done = true;
       const r = s.r !== undefined ? ` Result by the rules: ${s.r > 0 ? "+" : ""}${s.r}R.` : "";
-      messages.push({ id: s.id, text: `${s.pair} ${s.dir > 0 ? "buy" : "sell"}: ${s.statusNote}${r}` });
+      messages.push({ id: s.id, title: `${s.pair} ${s.dir > 0 ? "buy" : "sell"} finished`, body: `${s.statusNote}${r}`, text: `${s.pair} ${s.dir > 0 ? "buy" : "sell"}: ${s.statusNote}${r}` });
     }
   }
 

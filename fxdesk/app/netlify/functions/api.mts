@@ -2,6 +2,7 @@ import type { Config, Context } from "@netlify/functions";
 import { nyTimeOnDay } from "../../../core/models/common.ts";
 import { tradingDay, ukHM } from "../../../core/time.ts";
 import { mt5HM } from "../../lib/engine.ts";
+import { vapidPublic, pushState, addSub, removeSub, sendPush } from "../../lib/push.ts";
 import { load, save, getSettings, isClaimed, claim, checkPass, telegram, runScan, type Meta, type SignalRec, type WatchRow } from "../../lib/store.ts";
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
@@ -11,16 +12,18 @@ export default async (req: Request, context: Context) => {
   const site = Netlify.env.get("URL") ?? new URL(req.url).origin;
   const body: any = req.method === "POST" ? await req.json().catch(() => ({})) : {};
 
-  if (route === "status") return json({ claimed: await isClaimed(), scannerLastRan: (await load<Partial<Meta>>("meta", {})).time ?? null });
+  // pushKey is the PUBLIC half of the notification signing key; a phone needs it to subscribe.
+  if (route === "status") return json({ claimed: await isClaimed(), scannerLastRan: (await load<Partial<Meta>>("meta", {})).time ?? null, pushKey: await vapidPublic() });
   if (route === "claim" && req.method === "POST") { const err = await claim(body.code ?? "", body.pass ?? ""); return err ? json({ error: err }, 400) : json({ ok: true }); }
   if (!(await checkPass(req.headers.get("x-pass")))) return json({ error: "Wrong passcode." }, 401);
 
   if (route === "state") {
-    const [signals, watch, meta, s, journal] = await Promise.all([load<SignalRec[]>("signals", []), load<WatchRow[]>("watch", []), load<Partial<Meta>>("meta", {}), getSettings(), load<Record<string, SignalRec["mine"]>>("journal", {})]);
+    const [signals, watch, meta, s, journal, push] = await Promise.all([load<SignalRec[]>("signals", []), load<WatchRow[]>("watch", []), load<Partial<Meta>>("meta", {}), getSettings(), load<Record<string, SignalRec["mine"]>>("journal", {}), pushState()]);
     const now = Math.floor(Date.now() / 1000), day = tradingDay(now);
     const uk = (m: number) => ukHM(nyTimeOnDay(day, m));
     return json({
       now, meta, watch,
+      push: { key: await vapidPublic(), devices: push.subs.length, endpoints: push.subs.map((x) => x.endpoint.slice(-24)), lastOk: push.lastOk ?? null, warn: push.warn ?? null },
       windows: [{ name: "London killzone", from: uk(120), to: uk(300) }, { name: "New York killzone", from: uk(420), to: uk(600) }, { name: "Close any open trade", from: uk(960), to: uk(960) }],
       signals: signals.slice(0, 120).map(({ order, ...rest }) => ({ ...rest, mine: journal[rest.id], expireMt5: mt5HM(rest.expireAt, s.clock), flatMt5: mt5HM(rest.flatAt, s.clock) })),
       settings: { hasKey: !!s.tdKey, hasBot: !!s.tgToken, hasChat: !!s.tgChat, balance: s.balance, alerts: s.alerts, clock: s.clock, mt5Now: mt5HM(now, s.clock) },
@@ -54,6 +57,24 @@ export default async (req: Request, context: Context) => {
     const sent = await telegram(s.tgToken, "sendMessage", { chat_id: s.tgChat, text: "FX Desk is connected. Trade alerts will arrive here.", reply_markup: { inline_keyboard: [[{ text: "Open FX Desk", url: site }]] } });
     return sent.ok ? json({ ok: true, bot: me.result.username }) : json({ error: sent.description ?? "Telegram refused the test message." }, 400);
   }
+  if (route === "push") {
+    // the phone hands over its notification address; a hello proves the whole chain there and then
+    const now = Math.floor(Date.now() / 1000);
+    const err = await addSub(body.subscription, now);
+    if (err) return json({ error: err }, 400);
+    if (!body.quiet) {
+      const r = await sendPush(site, { title: "FX Desk notifications are on", body: "Trade alerts and the morning check-in will arrive like this.", tag: "hello" }, now, 600);
+      if (!r.sent) return json({ error: (await pushState()).warn ?? "The notification service did not accept the test message." }, 502);
+    }
+    return json({ ok: true });
+  }
+  if (route === "pushtest") {
+    const now = Math.floor(Date.now() / 1000);
+    if (!(await pushState()).subs.length) return json({ error: "Notifications are not switched on for any device yet." }, 400);
+    const r = await sendPush(site, { title: "FX Desk test", body: "If you can read this, alerts can reach this phone.", tag: "test" }, now, 600);
+    return r.sent ? json({ ok: true, sent: r.sent }) : json({ error: (await pushState()).warn ?? "The notification service did not accept the message." }, 502);
+  }
+  if (route === "pushoff") { await removeSub(String(body.endpoint ?? "")); return json({ ok: true }); }
   if (route === "scan") return json(await runScan(site, 0, !!body.force));
   if (route === "mine") {
     const journal = await load<Record<string, SignalRec["mine"]>>("journal", {});

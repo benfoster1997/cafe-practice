@@ -7,6 +7,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="FX Desk">
 <meta name="theme-color" content="#0b0d10">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>FX Desk</title>
 <style>
 :root{--bg:#0b0d10;--card:#151920;--card2:#1d222b;--line:#2a313c;--text:#f2f4f7;--mute:#9aa4b1;--dim:#6b7582;--buy:#2fd39f;--sell:#ff7d5c;--warn:#ffcf4d;--acc:#4da3ff;--bad:#ff5d5d;
@@ -23,6 +25,7 @@ main{padding:14px 16px;display:grid;gap:14px;max-width:560px;margin:0 auto}
 .card{background:var(--card);border-radius:16px;padding:16px}
 .warnbar{background:rgba(255,207,77,.1);border:1px solid rgba(255,207,77,.35);border-radius:14px;padding:12px 14px;font-size:13.5px;color:#ffe08a}
 .warnbar b{color:var(--warn)}
+.alarm{background:rgba(255,93,93,.12);border:1px solid rgba(255,93,93,.45);border-radius:14px;padding:12px 14px;font-size:14px;color:#ffc9c9}.alarm b{color:var(--bad)}
 h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:0 0 10px;font-weight:700}
 h3{margin:0 0 6px;font-size:17px}
 p{margin:0 0 10px}p:last-child{margin-bottom:0}
@@ -93,6 +96,48 @@ async function copy(text, row) {
   if (row) { row.classList.add("done"); $(".cp", row).textContent = "Copied"; }
 }
 
+/* -------------------------------------------------------- notifications */
+const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const standalone = () => window.navigator.standalone === true || matchMedia("(display-mode: standalone)").matches;
+const pushSupported = () => "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+let swReg = null, pushHere = "checking"; // checking | on | off | blocked | home-screen | unsupported
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").then((r) => { swReg = r; }).catch(() => {});
+const keyBytes = (b64) => { const raw = atob((b64 + "=".repeat((4 - b64.length % 4) % 4)).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from(raw, (c) => c.charCodeAt(0)); };
+/* This phone's notification address at Apple, created if it does not exist yet. */
+async function ensureSub() {
+  const reg = swReg || (swReg = await navigator.serviceWorker.register("/sw.js"));
+  await navigator.serviceWorker.ready;
+  let sub = await reg.pushManager.getSubscription();
+  const make = () => reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyBytes(data.push.key) });
+  if (!sub) { try { sub = await make(); } catch (e) { const old = await reg.pushManager.getSubscription(); if (old) await old.unsubscribe(); sub = await make(); } }
+  return sub;
+}
+/* Hand the address to the server. With hello, the server proves the link by sending a visible notification, and fails loudly if it cannot. */
+const registerSub = (sub, hello) => api("push", { subscription: sub.toJSON(), quiet: !hello });
+/* Every time the app opens: work out whether THIS phone can receive alerts, and re-register it if the server has lost it. */
+async function syncPush() {
+  if (!data || syncPush.busy) return;
+  syncPush.busy = true;
+  let next, again = false;
+  if (isIOS && !standalone()) next = "home-screen"; // on an iPhone, only the Home Screen app can be notified, whatever a Safari tab claims
+  else if (!pushSupported()) next = "unsupported";
+  else if (Notification.permission === "denied") next = "blocked";
+  else if (Notification.permission !== "granted") next = "off";
+  else {
+    try {
+      const sub = await ensureSub();
+      const known = (data.push.endpoints || []).includes(sub.endpoint.slice(-24)) && !data.push.warn;
+      if (!known) { await registerSub(sub, true); again = true; }          // lost or dropped: re-register and prove it with a real notification
+      else if (syncPush.done !== sub.endpoint) await registerSub(sub, false); // once per opening, quietly
+      syncPush.done = sub.endpoint; next = "on"; LS.set("fx-push", "1");
+    } catch (e) { next = "off"; again = true; }
+  }
+  syncPush.busy = false;
+  const changed = next !== pushHere; pushHere = next;
+  if (again && !syncPush.looped) { syncPush.looped = true; await refresh(true); syncPush.looped = false; }
+  else if (changed && !document.activeElement?.matches("input,select")) render();
+}
+
 /* ------------------------------------------------------------ first run */
 async function boot() {
   $("#nav").hidden = true;
@@ -121,7 +166,7 @@ async function boot() {
 }
 function start() { $("#nav").hidden = false; refresh(); clearInterval(start.h); start.h = setInterval(() => { if (!document.hidden && !document.activeElement?.matches("input")) refresh(true); }, 60000); }
 async function refresh(quiet) {
-  try { data = await api("state"); render(); }
+  try { data = await api("state"); render(); syncPush(); }
   catch (e) { if (!quiet) toast(e.message); }
 }
 document.addEventListener("visibilitychange", () => { if (!document.hidden && pass && data) refresh(true); });
@@ -171,6 +216,10 @@ function viewNow() {
   const rest = data.signals.filter((s) => !live.includes(s) && s !== linked).slice(0, 12);
   const w = data.windows || [];
   let h = WARN;
+  const hadPush = LS.get("fx-push") === "1";
+  if (data.push.warn) h += `<div class="alarm"><b>Alerts are not reaching your phone.</b> ${esc(data.push.warn)} <a href="#" data-go="setup" style="color:var(--acc)">Open Setup</a></div>`;
+  else if (hadPush && (pushHere === "off" || pushHere === "blocked")) h += `<div class="alarm"><b>Notifications are off on this phone.</b> Turn them back on in Setup, or you will not hear about a trade. <a href="#" data-go="setup" style="color:var(--acc)">Open Setup</a></div>`;
+  else if (data.settings.hasKey && !data.push.devices && !data.settings.hasChat) h += `<div class="alarm"><b>No alerts are set up.</b> The app is scanning, but it has no way to tell you. <a href="#" data-go="setup" style="color:var(--acc)">Turn on notifications</a></div>`;
   if (!data.settings.hasKey) h += `<div class="card"><h3>Not set up yet</h3><p class="mute">Add your free price-feed key in Setup and the app will start scanning.</p><button data-go="setup">Open Setup</button></div>`;
   h += live.map((s) => ticket(s, true)).join("");
   if (linked) h += ticket(linked, true);
@@ -217,20 +266,30 @@ function viewRecord() {
     <p class="mute small" style="margin-top:10px">At about one trade a month it would take around three years to reach 40. That is the honest pace of this method.</p></div>`;
 }
 function viewSetup() {
-  const s = data.settings, m = data.meta || {};
+  const s = data.settings, m = data.meta || {}, p = data.push;
   const tick = (ok) => ok ? `<span class="chip g">Done</span>` : `<span class="chip y">To do</span>`;
+  const pushBody = {
+    "checking": `<p class="mute">Checking this phone…</p>`,
+    "home-screen": `<ol><li>In Safari tap the <b>Share</b> button (the square with an arrow).</li><li>Choose <b>Add to Home Screen</b>, then <b>Add</b>.</li><li>Close Safari and open <b>FX Desk</b> from its new icon. It will ask for your passcode once more.</li><li>Come back to this Setup screen. A <b>Turn on notifications</b> button will be here.</li></ol><p class="mute small">iPhone only allows notifications from a web app that is opened from the Home Screen.</p>`,
+    "unsupported": `<p class="mute">This browser cannot receive notifications from a web app. On an iPhone, open FX Desk from its Home Screen icon.</p>`,
+    "blocked": `<p class="err">Notifications are blocked for FX Desk.</p><ol><li>Open the iPhone's <b>Settings</b>.</li><li>Tap <b>Notifications</b>, then <b>FX Desk</b>.</li><li>Switch on <b>Allow Notifications</b>, then reopen FX Desk.</li></ol>`,
+    "off": `<p class="mute">Tap the button, then choose <b>Allow</b> when the iPhone asks.</p><button id="pushon">Turn on notifications</button>`,
+    "on": `<p class="okmsg">On for this phone.${p.lastOk ? ` Last delivered to Apple ${ukTime(p.lastOk, true)} UK.` : ""}</p><p class="mute small">You will get a trade alert when a ticket appears, a note when it fills or ends, and a short check-in each trading morning about 15 minutes before the London killzone. <b style="color:var(--text)">If a morning passes with no check-in, alerts are broken:</b> open the app and it will tell you why.</p><button class="ghost" id="pushtest">Send a test notification</button>`,
+  }[pushHere];
   return `<div class="card"><div class="thead"><h3 style="margin:0">1. Live prices</h3>${tick(s.hasKey)}</div>
     <ol><li>On twelvedata.com tap <b>Get your free API key</b> and sign up (free plan, no card).</li><li>Copy the key from your dashboard and paste it below.</li></ol>
     <input id="tdKey" placeholder="${s.hasKey ? "Key saved. Paste a new one to replace it" : "Paste your Twelve Data API key"}" autocomplete="off" autocapitalize="off"><button data-save="tdKey">Save key</button><div id="m-tdKey"></div></div>
-  <div class="card"><div class="thead"><h3 style="margin:0">2. Telegram alerts</h3>${tick(s.hasBot && s.hasChat)}</div>
-    <ol><li>In Telegram search for <b>@BotFather</b> (blue tick) and send <b>/newbot</b>.</li><li>Give it any name, then a username ending in <b>bot</b>.</li><li>BotFather replies with a long token. Copy it and paste it below, then Save.</li><li>Open your new bot in Telegram and press <b>Start</b>.</li><li>Come back here and tap <b>Connect</b>. A test message should arrive.</li></ol>
-    <input id="tgToken" placeholder="${s.hasBot ? "Token saved. Paste a new one to replace it" : "Paste the bot token"}" autocomplete="off" autocapitalize="off"><div class="btns" style="margin-top:0"><button data-save="tgToken">Save token</button><button class="ghost" id="connect">Connect</button></div><div id="m-tgToken"></div></div>
+  <div class="card"><div class="thead"><h3 style="margin:0">2. iPhone notifications</h3>${tick(pushHere === "on")}</div>
+    ${p.warn ? `<p class="err">${esc(p.warn)}</p>` : ""}${pushBody}<div id="m-push"></div></div>
   <div class="card"><h3>3. Account</h3><label>Balance the tickets are sized for (£). Use what you plan to trade live, not the demo's balance.</label><input id="balance" inputmode="numeric" value="${s.balance}"><button data-save="balance">Save balance</button><div id="m-balance"></div>
     <label style="display:block;margin-top:12px">MT5 clock (used for the order's Expiration time). Now showing <b style="color:var(--text)">${s.mt5Now}</b>. Open any MT5 chart: if its newest candle shows a different hour, change this.</label>
     <select id="clock"><option value="ny7" ${s.clock === "ny7" ? "selected" : ""}>Most brokers (2 to 3 hours ahead of UK)</option><option value="utc" ${s.clock === "utc" ? "selected" : ""}>UTC / GMT</option><option value="uk" ${s.clock === "uk" ? "selected" : ""}>Same as UK time</option></select>
     <div class="kv" style="margin-top:12px"><span>Risk per trade</span><span>1% (£${(s.balance / 100).toFixed(2)})</span></div><div class="kv"><span>Most trades a day</span><span>2</span></div><div class="kv"><span>Stop for the day at</span><span>-2%</span></div>
     <div class="btns"><button class="ghost ${s.alerts ? "on" : ""}" id="alerts">${s.alerts ? "Alerts on" : "Alerts off"}</button><button class="ghost" id="scan">Scan now</button></div><div id="m-scan"></div></div>
-  <div class="card"><h3>4. Put it on your Home Screen</h3><ol><li>In Safari tap the <b>Share</b> button.</li><li>Choose <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol></div>
+  <div class="card"><details style="border:0;margin:0;padding:0"><summary style="padding:0">Optional: Telegram as a backup ${s.hasBot && s.hasChat ? `<span class="chip g">Connected</span>` : ""}</summary>
+    <p class="mute small" style="margin-top:10px">Not needed. If you ever want a second route for alerts, with a written history, this adds one.</p>
+    <ol><li>In Telegram search for <b>@BotFather</b> (blue tick) and send <b>/newbot</b>.</li><li>Give it any name, then a username ending in <b>bot</b>.</li><li>Copy the long token BotFather replies with, paste it below, and Save.</li><li>Open your new bot in Telegram and press <b>Start</b>.</li><li>Tap <b>Connect</b> here. A test message should arrive.</li></ol>
+    <input id="tgToken" placeholder="${s.hasBot ? "Token saved. Paste a new one to replace it" : "Paste the bot token"}" autocomplete="off" autocapitalize="off"><div class="btns" style="margin-top:0"><button data-save="tgToken">Save token</button><button class="ghost" id="connect">Connect</button></div><div id="m-tgToken"></div></details></div>
   <div class="card small mute"><b style="color:var(--text)">Last scan:</b> ${m.time ? `${ukTime(m.time, true)} UK. ${esc(m.note || "")}` : "none yet."}<br>The scanner runs every 15 minutes from Sunday night to Friday night and uses about 384 of the free plan's 800 daily requests.
     <div style="margin-top:12px"><button class="ghost" id="logout">Lock this device</button></div></div>`;
 }
@@ -249,6 +308,17 @@ function bind() {
   const on = (id, fn) => { const el = $("#" + id); if (el) el.onclick = fn; };
   on("connect", async () => { try { const r = await api("telegram", {}); msg("tgToken", `Connected to @${r.bot}. Check Telegram for the test message.`, true); refresh(true); } catch (e) { msg("tgToken", e.message); } });
   const clk = $("#clock"); if (clk) clk.onchange = async () => { try { await api("settings", { clock: clk.value }); toast("Saved"); refresh(true); } catch (e) { toast(e.message); } };
+  on("pushon", async () => {
+    try {
+      if (!pushSupported()) throw new Error("This browser cannot receive notifications. On an iPhone, open FX Desk from its Home Screen icon.");
+      const perm = await Notification.requestPermission();
+      if (perm !== "granted") { pushHere = "blocked"; render(); return; }
+      msg("push", "Switching on…", true);
+      const sub = await ensureSub(); await registerSub(sub, true); syncPush.done = sub.endpoint;
+      LS.set("fx-push", "1"); pushHere = "on"; await refresh(true); msg("push", "On. A notification should arrive within a few seconds.", true);
+    } catch (e) { msg("push", e.message || "Could not switch notifications on."); }
+  });
+  on("pushtest", async () => { const el = $("#pushtest"); el.disabled = true; try { await api("pushtest", {}); msg("push", "Sent. It should arrive within a few seconds. If it does not, check the iPhone's Focus mode and Settings, Notifications, FX Desk.", true); } catch (e) { msg("push", e.message); } el.disabled = false; });
   on("alerts", async () => { await api("settings", { alerts: !data.settings.alerts }); refresh(); });
   on("scan", async () => { const el = $("#scan"); el.disabled = true; try { const r = await api("scan", { force: true }); msg("scan", r.ok ? "Scan finished." : r.note, r.ok); await refresh(true); } catch (e) { msg("scan", e.message); } el.disabled = false; });
   on("logout", () => { pass = ""; LS.del("fx-pass"); boot(); });
