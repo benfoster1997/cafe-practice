@@ -1,12 +1,20 @@
 # Project instructions for Claude
 
-## Three projects live in this repo
+## Four projects live in this repo
 
-- **App business (ACTIVE)** (branch
-  `claude/youtube-ai-monetization-study-4ipk3c`): building a B2B SaaS to
-  £2,000+/month MRR. Read `app/STATUS.md` FIRST (current state + resume
-  instructions), then `docs/APP_MISSION_BRIEF.md` (the contract).
-  Honest-expectations rule applies.
+- **FX Desk (ACTIVE - the owner's current work)** (branch
+  `claude/youtube-ai-monetization-study-4ipk3c`, folder `fxdesk/`): an
+  iPhone web app that gives ICT-method forex tickets to copy into MT5 on a
+  demo account. Live at https://fx-desk-ict.netlify.app. **Read
+  `fxdesk/STATUS.md` FIRST: its "RESUME HERE" section says exactly what to
+  do next.** Then `fxdesk/SPEC.md` (the pre-registered rulebook) and
+  `fxdesk/GUIDE.md` (the owner's click-by-click guide). The rules did NOT
+  pass their backtest; never describe them otherwise. Honest-expectations
+  rule applies.
+- **App business (paused 10 Nov 2026, when the owner switched to FX
+  Desk)** (same branch): building a B2B SaaS to £2,000+/month MRR. Read
+  `app/STATUS.md` FIRST, then `docs/APP_MISSION_BRIEF.md` (the contract).
+  Do not resume unless the owner asks.
 - **YouTube channel "Cooked Books" (PARKED 17 Aug 2026)** (same branch):
   read `channel/STATUS.md` before touching. Do not resume unless the owner
   asks.

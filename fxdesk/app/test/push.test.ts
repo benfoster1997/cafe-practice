@@ -17,7 +17,11 @@ const webpush = require("web-push");
 
 function memory(): KV & { data: Record<string, unknown> } {
   const data: Record<string, unknown> = {};
-  return { data, load: (async (k: string, fb: unknown) => (k in data ? structuredClone(data[k]) : fb)) as KV["load"], save: async (k, v) => { data[k] = JSON.parse(JSON.stringify(v)); } };
+  return {
+    data, load: (async (k: string, fb: unknown) => (k in data ? structuredClone(data[k]) : fb)) as KV["load"],
+    save: async (k, v) => { data[k] = JSON.parse(JSON.stringify(v)); },
+    saveIfNew: async (k, v) => { if (k in data) return false; data[k] = JSON.parse(JSON.stringify(v)); return true; },
+  };
 }
 function device(host = "web.push.apple.com") {
   const ecdh = crypto.createECDH("prime256v1"); ecdh.generateKeys();
@@ -140,4 +144,22 @@ test("with two phones, one dead and one alive, the alert still arrives and no wa
   assert.equal(st.subs.length, 1);
   assert.equal(st.subs[0].endpoint, b.sub.endpoint);
   assert.equal(st.warn, undefined);
+});
+
+test("several notes go out together, and a phone that registers during the send is not lost", async () => {
+  const kv = memory(), a = device(), late = device();
+  await addSub(a.sub, NOW, kv);
+  let calls = 0;
+  const r = await sendPush(SITE, [{ title: "one", body: "b" }, { title: "two", body: "b" }], NOW + 1, 600, kv, async () => { if (++calls === 1) await addSub(late.sub, NOW + 1, kv); return 201; });
+  assert.deepEqual(r, { sent: 2, failed: 0, removed: 0 });
+  const st = await pushState(kv);
+  assert.deepEqual(st.subs.map((s) => s.endpoint).sort(), [a.sub.endpoint, late.sub.endpoint].sort());
+  assert.equal(st.subs.find((s) => s.endpoint === a.sub.endpoint)!.lastOk, NOW + 1);
+});
+
+test("the signing key is never replaced, even if two requests try to create it at once", async () => {
+  const kv = memory();
+  const [x, y] = await Promise.all([vapidPublic(kv), vapidPublic(kv)]);
+  assert.equal(x, y);
+  assert.equal(await vapidPublic(kv), x);
 });

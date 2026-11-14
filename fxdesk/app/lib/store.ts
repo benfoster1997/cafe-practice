@@ -60,7 +60,7 @@ export async function runScan(siteUrl: string, settleMs = 0, force = false): Pro
     const prev = await load<Partial<Meta>>("meta", {});
     const m: Meta = { time: now, ok: false, note, lastBar: prev.lastBar ?? 0, session: sessionLabel(now), credits };
     await save("meta", m);
-    if (s.alerts && (await checkInDue(now))) await sendPush(siteUrl, { title: "FX Desk has a problem", body: `${note} No trade alerts until this is fixed.`, tag: "checkin" }, now, 6 * 3600);
+    try { if (s.alerts && (await checkInDue(now))) await sendPush(siteUrl, { title: "FX Desk has a problem", body: `${note} No trade alerts until this is fixed.`, tag: "checkin" }, now, 6 * 3600); } catch { /* reported in the app instead */ }
     return m;
   };
   if (!s.tdKey) return fail("No price-feed key yet. Add it in Setup.");
@@ -81,16 +81,20 @@ export async function runScan(siteUrl: string, settleMs = 0, force = false): Pro
   await save("signals", out.signals);
   await save("watch", out.watch);
   let note = "OK";
-  if (s.alerts) {
-    for (const m of out.messages) await sendPush(siteUrl, { title: m.title, body: m.body, url: m.id ? `${siteUrl}/#t=${encodeURIComponent(m.id)}` : siteUrl, tag: m.id }, now, 1800);
-    // the daily check-in: proof, every trading morning, that alerts can still reach the phone
-    if (await checkInDue(now)) {
-      const day = tradingDay(now), uk = (min: number) => ukHM(nyTimeOnDay(day, min));
-      const view = out.watch.map((w) => `${w.pair} ${w.bias > 0 ? "buy" : w.bias < 0 ? "sell" : "no trade"}`).join(", ");
-      await sendPush(siteUrl, { title: "FX Desk is running", body: `Today: ${view}. Killzones ${uk(120)}-${uk(300)} and ${uk(420)}-${uk(600)} UK.`, tag: "checkin" }, now, 6 * 3600);
+  let devices = 0;
+  try {
+    if (s.alerts) {
+      const notes = out.messages.map((m) => ({ title: m.title, body: m.body, url: m.id ? `${siteUrl}/#t=${encodeURIComponent(m.id)}` : siteUrl, tag: m.id }));
+      if (notes.length) await sendPush(siteUrl, notes, now, 1800);
+      // the daily check-in: proof, every trading morning, that alerts can still reach the phone
+      if (await checkInDue(now)) {
+        const day = tradingDay(now), uk = (min: number) => ukHM(nyTimeOnDay(day, min));
+        const view = out.watch.map((w) => `${w.pair} ${w.bias > 0 ? "buy" : w.bias < 0 ? "sell" : "no trade"}`).join(", ");
+        await sendPush(siteUrl, { title: "FX Desk is running", body: `Today: ${view}. Killzones ${uk(120)}-${uk(300)} and ${uk(420)}-${uk(600)} UK.`, tag: "checkin" }, now, 6 * 3600);
+      }
     }
-  }
-  const devices = (await pushState()).subs.length;
+    devices = (await pushState()).subs.length;
+  } catch (e) { console.log("notification step failed", (e as Error).message); } // never let notifications stop the scan being recorded
   if (out.messages.length && s.alerts && s.tgToken && s.tgChat) {
     for (const m of out.messages) {
       const r = await telegram(s.tgToken, "sendMessage", { chat_id: s.tgChat, text: m.text, parse_mode: "HTML", disable_web_page_preview: true, reply_markup: m.id ? { inline_keyboard: [[{ text: "Open ticket", url: `${siteUrl}/#t=${encodeURIComponent(m.id)}` }]] } : undefined });

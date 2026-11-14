@@ -50,10 +50,19 @@ export function validSub(s: any): s is { endpoint: string; keys: { p256dh: strin
 }
 
 interface Vapid { publicKey: string; privateKey: string }
+/**
+ * The signing keys. Created once and then NEVER replaced: a phone's
+ * subscription is tied to the public key it was given, so a second key
+ * would cut the phone off without any error. Hence write-only-if-absent,
+ * and whoever loses that race reads the winner's key.
+ */
 async function vapid(kv: KV): Promise<Vapid> {
-  let k = await kv.load<Vapid | null>("vapid", null);
-  if (!k?.privateKey) { k = webpush.generateVAPIDKeys(); await kv.save("vapid", k); }
-  return k;
+  const have = await kv.load<Vapid | null>("vapid", null);
+  if (have?.privateKey) return have;
+  await kv.saveIfNew("vapid", webpush.generateVAPIDKeys());
+  const now = await kv.load<Vapid | null>("vapid", null);
+  if (!now?.privateKey) throw new Error("could not store the notification signing key");
+  return now;
 }
 export const vapidPublic = async (kv: KV = blobs): Promise<string> => (await vapid(kv)).publicKey;
 export const pushState = (kv: KV = blobs): Promise<PushState> => kv.load<PushState>("push", { subs: [] });
@@ -97,29 +106,37 @@ const post: Sender = async (w) => {
 };
 
 /**
- * Send one note to every registered device. Never throws: a notification
- * problem must not stop the scanner. Returns how many devices accepted it.
+ * Send one or more notes to every registered device. Never throws: a
+ * notification problem must not stop the scanner. Everything goes out at
+ * once (so a slow push service costs eight seconds at most, however many
+ * messages there are), and the saved state is then updated in one write
+ * that is merged with whatever was saved meanwhile, so a phone that
+ * registered during the send is not lost.
  */
-export async function sendPush(siteUrl: string, note: Note, now: number, ttlSec = 1800, kv: KV = blobs, send: Sender = post): Promise<{ sent: number; failed: number; removed: number }> {
+export async function sendPush(siteUrl: string, notes: Note | Note[], now: number, ttlSec = 1800, kv: KV = blobs, send: Sender = post): Promise<{ sent: number; failed: number; removed: number }> {
   const out = { sent: 0, failed: 0, removed: 0 };
-  let st: PushState;
-  try { st = await pushState(kv); } catch { return out; }
-  if (!st.subs.length) return out;
-  const keys = await vapid(kv);
-  const keep: PushSub[] = [];
-  let problem = "";
-  for (const sub of st.subs) {
-    let status = 0, detail = "";
-    try { const r = await send(prepare(sub, note, siteUrl, keys, ttlSec)); if (typeof r === "number") status = r; else { status = r.status; detail = r.detail ?? ""; } }
-    catch (e) { problem = `could not reach the notification service (${(e as Error).message})`; }
-    if (status >= 200 && status < 300) { out.sent++; keep.push({ ...sub, lastOk: now }); }
-    else if (status === 404 || status === 410 || GONE.test(detail)) out.removed++; // the push service says this address no longer exists
-    else { out.failed++; keep.push(sub); if (status) problem = `the notification service refused the message (code ${status}${detail ? `: ${detail.replace(/[{}"]/g, "").trim()}` : ""})`; }
-  }
-  const next: PushState = { ...st, subs: keep };
-  if (out.sent) { next.lastOk = now; next.warn = undefined; next.warnAt = undefined; }
-  if (!out.sent && out.removed) { next.warn = "Apple has dropped this phone's notification link. Open Setup and turn notifications on again."; next.warnAt = now; }
-  else if (!out.sent && problem) { next.warn = `Last notification failed: ${problem}.`; next.warnAt = now; }
-  try { await kv.save("push", next); } catch { /* storage hiccup: try again next time */ }
+  const list = Array.isArray(notes) ? notes : [notes];
+  try {
+    const st = await pushState(kv);
+    if (!st.subs.length || !list.length) return out;
+    const keys = await vapid(kv);
+    const ok = new Set<string>(), gone = new Set<string>();
+    let problem = "";
+    await Promise.all(st.subs.flatMap((sub) => list.map(async (note) => {
+      let status = 0, detail = "";
+      try { const r = await send(prepare(sub, note, siteUrl, keys, ttlSec)); if (typeof r === "number") status = r; else { status = r.status; detail = r.detail ?? ""; } }
+      catch (e) { problem = `could not reach the notification service (${(e as Error).message})`; }
+      if (status >= 200 && status < 300) { out.sent++; ok.add(sub.endpoint); }
+      else if (status === 404 || status === 410 || GONE.test(detail)) gone.add(sub.endpoint); // the push service says this address no longer exists
+      else { out.failed++; if (status) problem = `the notification service refused the message (code ${status}${detail ? `: ${detail.replace(/[{}"]/g, "").trim()}` : ""})`; }
+    })));
+    out.removed = gone.size;
+    const latest = await pushState(kv);
+    const next: PushState = { ...latest, subs: latest.subs.filter((s) => !gone.has(s.endpoint)).map((s) => (ok.has(s.endpoint) ? { ...s, lastOk: now } : s)) };
+    if (out.sent) { next.lastOk = now; next.warn = undefined; next.warnAt = undefined; }
+    else if (gone.size) { next.warn = "Apple has dropped this phone's notification link. Open Setup and turn notifications on again."; next.warnAt = now; }
+    else if (problem) { next.warn = `Last notification failed: ${problem}.`; next.warnAt = now; }
+    await kv.save("push", next);
+  } catch { /* storage or key trouble: nothing sent is the honest count; the daily check-in will be missed and noticed */ }
   return out;
 }
