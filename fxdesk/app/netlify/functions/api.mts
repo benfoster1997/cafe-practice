@@ -1,15 +1,17 @@
 import type { Config, Context } from "@netlify/functions";
 import { nyTimeOnDay } from "../../../core/models/common.ts";
-import { tradingDay, ukHM } from "../../../core/time.ts";
-import { mt5HM } from "../../lib/engine.ts";
-import { vapidPublic, pushState, addSub, removeSub, sendPush } from "../../lib/push.ts";
-import { load, save, getSettings, isClaimed, claim, checkPass, telegram, runScan, type Meta, type SignalRec, type WatchRow } from "../../lib/store.ts";
+import { tradingDay, ukHM, nyClock } from "../../../core/time.ts";
+import { mt5HM, CHECKIN_FROM, CHECKIN_TO } from "../../lib/engine.ts";
+import { vapidPublic, pushState, addSub, removeSub, sendPush, SITE } from "../../lib/push.ts";
+import { load, save, getSettings, isClaimed, claim, checkPass, telegram, runScan, type Meta, type SignalRec, type WatchRow, type Outbox, type CheckIn } from "../../lib/store.ts";
 
+/** A request from the app must be answered well inside the platform's limit for ordinary functions (ten seconds on some plans). */
+const QUICK_MS = 6000;
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 
 export default async (req: Request, context: Context) => {
   const route = context.params.route ?? "";
-  const site = Netlify.env.get("URL") ?? new URL(req.url).origin;
+  const site = Netlify.env.get("URL") || new URL(req.url).origin || SITE;
   const body: any = req.method === "POST" ? await req.json().catch(() => ({})) : {};
 
   // pushKey is the PUBLIC half of the notification signing key; a phone needs it to subscribe.
@@ -18,15 +20,26 @@ export default async (req: Request, context: Context) => {
   if (!(await checkPass(req.headers.get("x-pass")))) return json({ error: "Wrong passcode." }, 401);
 
   if (route === "state") {
-    const [signals, watch, meta, s, journal, push] = await Promise.all([load<SignalRec[]>("signals", []), load<WatchRow[]>("watch", []), load<Partial<Meta>>("meta", {}), getSettings(), load<Record<string, SignalRec["mine"]>>("journal", {}), pushState()]);
+    const [signals, watch, meta, s, journal, push, box, ci] = await Promise.all([load<SignalRec[]>("signals", []), load<WatchRow[]>("watch", []), load<Partial<Meta>>("meta", {}), getSettings(), load<Record<string, SignalRec["mine"]>>("journal", {}), pushState(), load<Outbox>("outbox", { items: [] }), load<CheckIn>("checkin", {})]);
     const now = Math.floor(Date.now() / 1000), day = tradingDay(now);
     const uk = (m: number) => ukHM(nyTimeOnDay(day, m));
+    // Has this morning's check-in gone out? Asked only once its hour has passed, on a weekday, when one was owed.
+    const ny = nyClock(now), windowOpened = now - (ny.minuteOfDay - CHECKIN_FROM) * 60 - 60;
+    const checkinMissed = ny.dow >= 1 && ny.dow <= 5 && ny.minuteOfDay >= CHECKIN_TO && s.alerts && push.subs.length > 0 && !((ci.at ?? 0) >= windowOpened);
+    const tail = (x: { endpoint: string }) => x.endpoint.slice(-24);
     return json({
       now, meta, watch,
-      push: { key: await vapidPublic(), devices: push.subs.length, endpoints: push.subs.map((x) => x.endpoint.slice(-24)), lastOk: push.lastOk ?? null, warn: push.warn ?? null },
+      push: {
+        key: await vapidPublic(), devices: push.subs.length, endpoints: push.subs.map(tail), lastOk: push.lastOk ?? null, warn: push.warn ?? null,
+        failing: push.subs.filter((x) => (x.fails ?? 0) >= 2).map(tail),                                   // devices Apple keeps refusing
+        waiting: (box.items ?? []).map((q) => ({ title: q.note.title, at: q.at })),                         // notes not yet accepted, to be sent again at the next scan
+        lastFail: push.lastFail ?? null, lastFailAt: push.lastFailAt ?? null,                               // the most recent warning, kept after it clears
+        missed: box.missed && now - (box.missedAt ?? 0) < 2 * 86400 ? box.missed : null,                    // an alert that went out of date undelivered
+        checkin: ci.at ?? null, checkinMissed,
+      },
       windows: [{ name: "London killzone", from: uk(120), to: uk(300) }, { name: "New York killzone", from: uk(420), to: uk(600) }, { name: "Close any open trade", from: uk(960), to: uk(960) }],
       signals: signals.slice(0, 120).map(({ order, ...rest }) => ({ ...rest, mine: journal[rest.id], expireMt5: mt5HM(rest.expireAt, s.clock), flatMt5: mt5HM(rest.flatAt, s.clock) })),
-      settings: { hasKey: !!s.tdKey, hasBot: !!s.tgToken, hasChat: !!s.tgChat, balance: s.balance, alerts: s.alerts, clock: s.clock, mt5Now: mt5HM(now, s.clock) },
+      settings: { hasKey: !!s.tdKey, hasBot: !!s.tgToken, hasChat: !!s.tgChat, balance: s.balance, alerts: s.alerts, clock: s.clock, mt5Now: mt5HM(now, s.clock), testDue: s.testDue ?? null },
     });
   }
   if (req.method !== "POST") return json({ error: "Not found." }, 404);
@@ -63,19 +76,31 @@ export default async (req: Request, context: Context) => {
     const err = await addSub(body.subscription, now);
     if (err) return json({ error: err }, 400);
     if (!body.quiet) {
-      const r = await sendPush(site, { title: "FX Desk notifications are on", body: "Trade alerts and the morning check-in will arrive like this.", tag: "hello" }, now, 600);
-      if (!r.sent) return json({ error: (await pushState()).warn ?? "The notification service did not accept the test message." }, 502);
+      // to THIS phone only: another device accepting the hello would prove nothing about this one
+      const r = await sendPush(site, { title: "FX Desk notifications are on", body: "Trade alerts and the morning check-in will arrive like this." }, now, 600, undefined, undefined, { only: body.subscription.endpoint, budgetMs: QUICK_MS });
+      // `dead`: Apple says this address is finished, so the phone must ask the iPhone for a new one (the page does that by itself)
+      if (!r.sent) return json({ error: (await pushState()).warn ?? "The notification service did not accept the test message.", dead: r.removed > 0 }, 502);
     }
     return json({ ok: true });
   }
   if (route === "pushtest") {
     const now = Math.floor(Date.now() / 1000);
     if (!(await pushState()).subs.length) return json({ error: "Notifications are not switched on for any device yet." }, 400);
-    const r = await sendPush(site, { title: "FX Desk test", body: "If you can read this, alerts can reach this phone.", tag: "test" }, now, 600);
-    return r.sent ? json({ ok: true, sent: r.sent }) : json({ error: (await pushState()).warn ?? "The notification service did not accept the message." }, 502);
+    const r = await sendPush(site, { title: "FX Desk test", body: "If you can read this, alerts can reach this phone." }, now, 600, undefined, undefined, { budgetMs: QUICK_MS });
+    const devices = (await pushState()).subs.length + r.removed;
+    return r.sent ? json({ ok: true, sent: r.sent, devices }) : json({ error: (await pushState()).warn ?? "The notification service did not accept the message." }, 502);
+  }
+  if (route === "pushlater") {
+    // A test from the scheduled scanner itself, on its next run: the one route a trade alert takes that no button here can exercise.
+    const s = await getSettings();
+    if (!(await pushState()).subs.length) return json({ error: "Notifications are not switched on for any device yet." }, 400);
+    if (!s.alerts) return json({ error: "Alerts are switched off, so the scanner sends nothing. Switch them on first." }, 400);
+    s.testDue = Math.floor(Date.now() / 1000);
+    await save("settings", s);
+    return json({ ok: true, next: (Math.floor(Date.now() / 1000 / 900) + 1) * 900 });
   }
   if (route === "pushoff") { await removeSub(String(body.endpoint ?? "")); return json({ ok: true }); }
-  if (route === "scan") return json(await runScan(site, 0, !!body.force));
+  if (route === "scan") return json(await runScan(site, 0, !!body.force, { budgetMs: 8500 }));
   if (route === "mine") {
     const journal = await load<Record<string, SignalRec["mine"]>>("journal", {});
     if (!body.id) return json({ error: "Missing ticket." }, 400);

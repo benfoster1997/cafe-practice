@@ -30,7 +30,8 @@ export interface SignalRec {
   grade: "A" | "B"; reasons: string[]; order: Order;
   lots: number; riskMoney: number;
   status: Status; statusNote: string; fillTime?: number; exitTime?: number; exitPrice?: number; r?: number;
-  alerted: { fresh?: boolean; fill?: boolean; done?: boolean };
+  /** which notifications have gone out for this ticket: the ticket itself, "entry traded", the close-by reminder, the ending */
+  alerted: { fresh?: boolean; fill?: boolean; flat?: boolean; done?: boolean };
   /** found when the app first started, never alerted: history only */
   backfilled?: boolean;
   /** the owner's own record of what he did */
@@ -41,14 +42,22 @@ export interface WatchRow {
   levels: Array<{ name: string; price: number; pips: number; taken: boolean }>;
   note: string;
 }
-/** `text` is the Telegram version (HTML); `title` and `body` are the plain-text notification. */
-export interface ScanResult { signals: SignalRec[]; watch: WatchRow[]; messages: Array<{ text: string; id?: string; title: string; body: string }>; lastBar: number; session: string }
+/**
+ * One thing to tell the owner. `text` is the Telegram version (HTML); `title`
+ * and `body` are the plain-text notification. `kind` says which event of the
+ * ticket this is (each event is its own notification on the phone, none
+ * replaces another); `until` is the moment after which it is no longer worth
+ * delivering.
+ */
+export type MsgKind = "new" | "late" | "fill" | "close" | "done";
+export interface Msg { text: string; id?: string; title: string; body: string; kind: MsgKind; until: number }
+export interface ScanResult { signals: SignalRec[]; watch: WatchRow[]; messages: Msg[]; lastBar: number; session: string }
 
 /** Twelve Data time_series -> closed M15 bid candles, oldest first. */
-export async function fetchM15(pair: string, apiKey: string, now: number, outputsize = 3500): Promise<Bars> {
+export async function fetchM15(pair: string, apiKey: string, now: number, outputsize = 3500, timeoutMs = 7000): Promise<Bars> {
   const sym = `${pair.slice(0, 3)}/${pair.slice(3)}`;
   const url = `https://api.twelvedata.com/time_series?symbol=${encodeURIComponent(sym)}&interval=15min&outputsize=${outputsize}&timezone=UTC&apikey=${encodeURIComponent(apiKey)}`;
-  const res = await fetch(url);
+  const res = await fetch(url, { signal: AbortSignal.timeout(timeoutMs) }); // a feed that never answers must become a recorded fault, not a scan that is cut off
   const j: any = await res.json();
   if (j.status !== "ok" || !Array.isArray(j.values)) throw new Error(`${pair}: ${j.message ?? "no data from the price feed"}`);
   const off = MID_TO_BID_PIPS * pipSize(pair);
@@ -122,14 +131,17 @@ function watchRow(pd: PairData, now: number): WatchRow {
 }
 
 /**
- * The daily check-in goes out on the scan in the quarter hour before the
- * London killzone opens (01:45 to 02:00 New York), Monday to Friday.
- * That is 06:45 UK for most of the year and 05:45 UK in the few weeks when
- * US and UK clocks are out of step.
+ * The daily check-in goes out on the first scan from the quarter hour before
+ * the London killzone opens (01:45 New York), Monday to Friday. That is
+ * 06:45 UK for most of the year and 05:45 UK in the few weeks when US and UK
+ * clocks are out of step. The window stays open for an hour (four scans), so
+ * that one scan that fails to run does not cost the day's check-in; the
+ * once-a-day rule is kept in store.ts.
  */
+export const CHECKIN_FROM = 105, CHECKIN_TO = 165;
 export function isCheckInTime(now: number): boolean {
   const c = nyClock(now);
-  return c.dow >= 1 && c.dow <= 5 && c.minuteOfDay >= 105 && c.minuteOfDay < 120;
+  return c.dow >= 1 && c.dow <= 5 && c.minuteOfDay >= CHECKIN_FROM && c.minuteOfDay < CHECKIN_TO;
 }
 
 export function sessionLabel(now: number): string {
@@ -138,6 +150,74 @@ export function sessionLabel(now: number): string {
   if (mod >= 120 && mod < 300) return "London killzone";
   if (mod >= 420 && mod < 600) return "New York killzone";
   return "Outside the killzones";
+}
+
+/**
+ * What to tell the owner about these tickets now. Each ticket's `alerted`
+ * flags are set as its messages are produced, so nothing is said twice.
+ *
+ *  new    a ticket to place
+ *  late   a setup found only after its entry had traded (a scan was missed): one note saying skip it
+ *  fill   the entry has traded
+ *  close  fifteen minutes before the end-of-day cut-off, if the trade is still open
+ *  done   the ending: target, stop, cut-off, expiry, withdrawal, or blocked by the account rules
+ */
+export function messagesFor(recent: SignalRec[], now: number, clock: ServerClock = "ny7"): Msg[] {
+  const messages: Msg[] = [];
+  const LATER = 12 * 3600;
+  for (const s of recent) {
+    if (s.backfilled) continue;
+    const side = s.dir > 0 ? "buy" : "sell", head = `${s.dir > 0 ? "BUY" : "SELL"} LIMIT ${s.pair}`;
+    const say = (kind: MsgKind, until: number, title: string, body: string, text = `<b>${title}</b>\n${body}`) => messages.push({ id: s.id, kind, until, title, body, text });
+    const ended = ["won", "lost", "flat", "expired", "withdrawn"].includes(s.status);
+    if (!s.alerted.fresh) {
+      s.alerted.fresh = true;
+      if (s.status === "pending") {
+        say("new", s.expireAt, `${head} (demo)`,
+          s.lots ? `Entry ${fmt(s.pair, s.entry)}, stop ${fmt(s.pair, s.stop)}, target ${fmt(s.pair, s.tp)}, ${s.lots.toFixed(2)} lots. Issued ${ukHM(s.signalTime)} UK, expires ${ukHM(s.expireAt)} UK (${mt5HM(s.expireAt, clock)} on the MT5 clock).` : "Stop too wide to size at 1%. Skip this one.",
+          [
+            `<b>${head}</b>  (DEMO)`,
+            `Entry <code>${fmt(s.pair, s.entry)}</code>`, `Stop loss <code>${fmt(s.pair, s.stop)}</code>  (${s.riskPips} pips)`, `Take profit <code>${fmt(s.pair, s.tp)}</code>  (${s.rewardPips} pips)`,
+            s.lots ? `Volume <code>${s.lots.toFixed(2)}</code> lots  (risk about £${s.riskMoney.toFixed(2)})` : "Volume: stop too wide to size at 1%. Skip this one.",
+            `Set Expiration in MT5 to <b>${mt5HM(s.expireAt, clock)}</b> (MT5 clock; ${ukHM(s.expireAt)} UK). If MT5 will not take an expiry, delete the order yourself at that time.`,
+            `Close anything still open at ${ukHM(s.flatAt)} UK.`,
+            "If price has already traded through the entry, do not chase it.",
+            "<i>This rule set did not pass its historical test. Demo account only.</i>",
+          ].join("\n"));
+      } else if (s.status === "open") {
+        // First seen with the entry already traded. A ticket followed at once by "entry traded" would invite him to chase it.
+        s.alerted.fill = true; s.alerted.flat = true; s.alerted.done = true; // he is told to skip it, so nothing more is sent about it
+        say("late", s.flatAt, `${s.pair} ${side}: found too late, skip`, `A ${side} setup at ${fmt(s.pair, s.entry)} was spotted after price had already reached the entry. Do not chase it. The app still tracks the result.`);
+      } else if (s.status === "blocked") {
+        s.alerted.done = true;
+        say("done", now + LATER, `${s.pair}: setup skipped`, `Skipped by the account rules: ${s.statusNote}`);
+      } else if (ended) { s.alerted.fill = true; s.alerted.done = true; } // over before he could have heard of it: nothing to act on, so nothing is sent
+      continue;
+    }
+    if (s.status === "blocked" && !s.alerted.done) {
+      // The account rules are applied when the entry trades, so a ticket already sent can be ruled out later. His MT5 order knows nothing of that.
+      s.alerted.done = true;
+      say("done", now + LATER, `${s.pair}: delete this order`, `The account rules now rule this trade out: ${s.statusNote} If your ${s.pair} order is still waiting, delete it. If it has filled, close it.`);
+    }
+    if (s.status === "open" && !s.alerted.fill) {
+      s.alerted.fill = true;
+      say("fill", s.flatAt, `${s.pair}: entry traded`, `The entry at ${fmt(s.pair, s.entry)} has traded. If you placed the order it should be filled.`);
+    }
+    if (s.status === "open" && !s.alerted.flat && now >= s.flatAt - 900 && now <= s.flatAt + 600) {
+      // Nothing closes his real trade at the cut-off but him: remind him while there is still time.
+      s.alerted.flat = true;
+      const past = now >= s.flatAt;
+      say("close", s.flatAt + 3600, past ? `${s.pair}: close it now` : `${s.pair}: close at ${ukHM(s.flatAt)} UK`, `End-of-day cut-off${past ? ` was ${ukHM(s.flatAt)} UK` : ""}. If your ${s.pair} ${side} is still open${past ? "" : ` at ${ukHM(s.flatAt)} UK (${mt5HM(s.flatAt, clock)} on the MT5 clock)`}, close it by hand${past ? " now" : ""}.`);
+    }
+    if (ended && !s.alerted.done) {
+      s.alerted.done = true;
+      const r = s.r !== undefined ? ` Result by the rules: ${s.r > 0 ? "+" : ""}${s.r}R.` : "";
+      // the title says what HE has to do in MetaTrader, because the app cannot touch it
+      const title = s.status === "expired" || s.status === "withdrawn" ? `${s.pair}: delete the order` : s.status === "flat" ? `${s.pair}: cut-off reached, close it` : `${s.pair} ${side} finished`;
+      say("done", now + LATER, title, `${s.statusNote}${r}`);
+    }
+  }
+  return messages;
 }
 
 /** One scan. `saved` is what was stored last time; nothing in it is mutated. */
@@ -186,15 +266,15 @@ export function scan(u: Universe, saved: SignalRec[], now: number, balance: numb
     else {
       s.exitTime = last.time; s.exitPrice = last.price; s.r = Math.round(t.r * 100) / 100;
       s.status = last.reason === "tp" ? "won" : last.reason === "stop" ? "lost" : "flat";
-      s.statusNote = last.reason === "tp" ? `Target hit ${ukLabel(last.time)}.` : last.reason === "stop" ? `Stopped out ${ukLabel(last.time)}.` : `Closed at the end-of-day cut-off ${ukLabel(last.time)}.`;
+      s.statusNote = last.reason === "tp" ? `Target hit ${ukLabel(last.time)}.` : last.reason === "stop" ? `Stopped out ${ukLabel(last.time)}.` : `End-of-day cut-off ${ukLabel(last.time)}: the rules close the trade here. If yours is still open, close it now.`;
     }
   }
   for (const k of sim.skipped) {
     const s = byId.get(k.order.id); if (!s) continue;
     if (k.reason === "expired") {
       if (s.expireAt > lastBar) { s.status = "pending"; s.statusNote = `Waiting to fill. Expires ${ukLabel(s.expireAt)}.`; }
-      else { s.status = "expired"; s.statusNote = "Never filled. Cancel the order if you placed it."; }
-    } else if (k.reason === "cancelled_level") { s.status = "withdrawn"; s.statusNote = "Price reached the target without filling. Cancel the order if you placed it."; }
+      else { s.status = "expired"; s.statusNote = "Never filled. Delete the order in MT5 if you placed it."; }
+    } else if (k.reason === "cancelled_level") { s.status = "withdrawn"; s.statusNote = "Price reached the target without filling. Delete the order in MT5 if you placed it."; }
     else { s.status = "blocked"; s.statusNote = BLOCK[k.reason] ?? k.reason; }
   }
 
@@ -206,33 +286,7 @@ export function scan(u: Universe, saved: SignalRec[], now: number, balance: numb
   }
 
   // 4. messages
-  const messages: ScanResult["messages"] = [];
-  for (const s of recent) {
-    if (s.backfilled) continue;
-    const head = `${s.dir > 0 ? "BUY" : "SELL"} LIMIT ${s.pair}`;
-    if (!s.alerted.fresh && (s.status === "pending" || s.status === "open")) {
-      s.alerted.fresh = true;
-      messages.push({
-        id: s.id, title: `${head} (demo)`,
-        body: s.lots ? `Entry ${fmt(s.pair, s.entry)}, stop ${fmt(s.pair, s.stop)}, target ${fmt(s.pair, s.tp)}, ${s.lots.toFixed(2)} lots. Expiry ${mt5HM(s.expireAt, clock)} on the MT5 clock (${ukHM(s.expireAt)} UK). Tap for the ticket.` : "Stop too wide to size at 1%. Skip this one.",
-        text: [
-        `<b>${head}</b>  (DEMO)`,
-        `Entry <code>${fmt(s.pair, s.entry)}</code>`, `Stop loss <code>${fmt(s.pair, s.stop)}</code>  (${s.riskPips} pips)`, `Take profit <code>${fmt(s.pair, s.tp)}</code>  (${s.rewardPips} pips)`,
-        s.lots ? `Volume <code>${s.lots.toFixed(2)}</code> lots  (risk about £${s.riskMoney.toFixed(2)})` : "Volume: stop too wide to size at 1%. Skip this one.",
-        `Set Expiration in MT5 to <b>${mt5HM(s.expireAt, clock)}</b> (MT5 clock; ${ukHM(s.expireAt)} UK). If MT5 will not take an expiry, delete the order yourself at that time.`,
-        `Close anything still open at ${ukHM(s.flatAt)} UK.`,
-        "If price has already traded through the entry, do not chase it.",
-        "<i>This rule set did not pass its historical test. Demo account only.</i>",
-      ].join("\n"),
-      });
-    } else if (!s.alerted.fresh && s.status === "blocked") { s.alerted.fresh = true; s.alerted.done = true; messages.push({ id: s.id, title: `${s.pair}: setup skipped`, body: `Skipped by the account rules: ${s.statusNote}`, text: `Setup on ${s.pair} skipped by the account rules: ${s.statusNote}` }); }
-    if (s.status === "open" && !s.alerted.fill) { s.alerted.fill = true; messages.push({ id: s.id, title: `${s.pair}: entry traded`, body: `The entry at ${fmt(s.pair, s.entry)} has traded. If you placed the order it should be filled.`, text: `${s.pair}: the entry at ${fmt(s.pair, s.entry)} has traded. If you placed the order it should be filled.` }); }
-    if (["won", "lost", "flat", "expired", "withdrawn"].includes(s.status) && !s.alerted.done) {
-      s.alerted.done = true;
-      const r = s.r !== undefined ? ` Result by the rules: ${s.r > 0 ? "+" : ""}${s.r}R.` : "";
-      messages.push({ id: s.id, title: `${s.pair} ${s.dir > 0 ? "buy" : "sell"} finished`, body: `${s.statusNote}${r}`, text: `${s.pair} ${s.dir > 0 ? "buy" : "sell"}: ${s.statusNote}${r}` });
-    }
-  }
+  const messages = messagesFor(recent, now, clock);
 
   const all = [...byId.values()].sort((a, b) => b.signalTime - a.signalTime).slice(0, KEEP);
   const watch = PAIRS.filter((p) => u[p] && u[p].m15.n >= 1500).map((p) => watchRow(u[p], now));

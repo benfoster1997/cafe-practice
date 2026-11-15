@@ -20,7 +20,11 @@ full setup appears. You copy the ticket into MetaTrader 5 by hand, on your
   fudged.
 - You will **miss some**. The test assumed every alert is acted on within
   three minutes. Alerts for the London session arrive 07:00 to 10:00 UK
-  time and New York ones 12:00 to 15:00.
+  time and New York ones 12:00 to 15:00. For about three weeks a year (two
+  in March, one around the start of November) American and British clocks
+  are out of step and all of these, and the morning check-in, come one
+  hour earlier in UK time. The app's Now screen always shows the day's
+  real times.
 
 ## One-time setup (about 10 minutes, all on your iPhone)
 
@@ -29,37 +33,77 @@ full setup appears. You copy the ticket into MetaTrader 5 by hand, on your
    sign up on the free plan (no card). Copy the key from your dashboard.
    In FX Desk open **Setup**, paste it under "Live prices", tap **Save key**.
    It should say the first scan worked.
-3. **Put FX Desk on your Home Screen.** In Safari tap the **Share** button,
-   choose **Add to Home Screen**, then **Add**. Close Safari and open FX Desk
-   from its new icon. It asks for your passcode once more: the Home Screen
-   app keeps its own memory, separate from Safari.
+3. **Put FX Desk on your Home Screen.** In Safari tap the **Share** button
+   (if you cannot see it, it is behind the three dots), choose **Add to
+   Home Screen**, leave **Open as Web App** switched ON, then tap **Add**.
+   Close Safari and open FX Desk from its new icon. It asks for your
+   passcode once more: the Home Screen app keeps its own memory, separate
+   from Safari. If the icon opens Safari with an address bar, delete the
+   icon and add it again with Open as Web App switched on.
 4. **Turn on notifications.** In the Home Screen app open **Setup**, tap
    **Turn on notifications**, and choose **Allow**. A notification should
-   arrive within a few seconds. An iPhone only allows this from the Home
-   Screen app, never from a Safari tab.
-5. **Balance.** Leave it at 500 (pounds) or set what you really plan to
+   arrive within a few seconds. If you see no banner, swipe down from the
+   top of the screen: it may be waiting in Notification Centre. An iPhone
+   only allows this from the Home Screen app, never from a Safari tab.
+5. **Make sure you will hear an alert.** This matters as much as step 4.
+   - iPhone **Settings**, **Focus**: open each one you use (Sleep, Do Not
+     Disturb, Work, Driving), tap **Apps**, and add **FX Desk**. A web app
+     cannot break through a Focus by itself, and the London window opens at
+     07:00 UK, when a Sleep schedule may still be running.
+   - **Settings**, **Notifications**, **FX Desk**: Allow Notifications on;
+     Lock Screen, Notification Centre and Banners ticked; Banner Style
+     Persistent; Sounds on; not in Scheduled Summary.
+   - With the phone on silent an alert only vibrates.
+6. **Test the real route.** In Setup tap **Test from the scanner**, lock the
+   phone, and wait. Within 15 minutes a notification should arrive by
+   itself. That is the same route a trade alert takes, so if it arrives
+   with a sound while the phone is locked, you are set.
+7. **Balance.** Leave it at 500 (pounds) or set what you really plan to
    trade live. Tickets are sized at 1% of this, whatever your demo shows.
 
 ## How you know alerts still work
 
 iPhone notifications from a web app are less dependable than a chat app, and
-real alerts are rare, so a break could go unnoticed. Three safeguards:
+real alerts are rare, so a break could go unnoticed. The safeguards:
 
-- **A check-in every trading morning**, about 06:45 UK, saying which way
-  each pair is leaning. **No check-in by 7am on a weekday means alerts are
-  broken.** Open the app: it will say why in red.
-- **A red warning in the app** if Apple has dropped the link or a
-  notification was refused.
-- **Send a test notification** in Setup, any time.
+- **A check-in every trading morning**, about 06:45 UK ("FX Desk is
+  running"). It says which way each pair is leaning that day (up, down or
+  none). That is not an instruction: only a notification titled BUY LIMIT
+  or SELL LIMIT is a ticket.
+  - If it made a sound or lit the screen, all is well.
+  - If you only find it later in Notification Centre, a Focus or Sleep mode
+    muted it, and would mute a trade alert too. Fix step 5 above.
+  - **If it is not there by 8am on a weekday, something is wrong.** Open the
+    app: a red box on the Now screen says what. If nothing is red, go to
+    Setup and tap **Send a test now**.
+- **"FX Desk has a problem"** instead of the check-in, or during the day,
+  means the scanner or its price feed has been failing for at least two
+  scans. No trade alerts until you get **"FX Desk is running again"**.
+- **Nothing is sent only once.** If Apple's service does not accept a
+  notification, the scanner sends it again every 15 minutes until it does.
+  An alert that goes out of date before Apple accepts it is shown in red in
+  the app as "An alert never arrived".
+- **A red box in the app** if Apple has dropped this phone's link, keeps
+  refusing a notification, alerts are switched off, or the morning check-in
+  was not sent. When Apple drops the link, opening the app from its icon
+  reconnects it by itself and proves it with a notification.
+- **Two test buttons in Setup**: "Send a test now", and "Test from the
+  scanner" (arrives within 15 minutes, by the route a trade alert takes).
+  If Apple accepts a test but nothing reaches the phone, use **Reset this
+  phone's notifications** under "A test does not arrive?". If that does not
+  cure it, delete the FX Desk icon, add it to the Home Screen again and
+  turn notifications on again.
 
-Things that silence notifications without anything being broken: a Focus
-mode or Sleep schedule, and Settings, Notifications, FX Desk being switched
-off. If you delete the Home Screen icon, notifications stop for good until
-you add it again and turn them back on.
+Do a test after every iOS update, and after moving to a new iPhone or
+restoring a backup. If you delete the Home Screen icon, notifications stop
+until you add it again and turn them back on. Turn notifications on from
+the iPhone only, not also from a computer or iPad: a second device can hide
+a fault on the phone.
 
 ## When an alert arrives
 
-1. Tap the notification. It opens the ticket.
+1. Tap the notification. It opens the ticket. (If you land on another
+   screen, tap **Now** at the bottom.)
 2. In MetaTrader 5: Quotes, tap the pair, **Trade**, and change the order
    type to **Buy Limit** or **Sell Limit** as the ticket says.
 3. Tap each number on the ticket to copy it, and paste it into MT5:
@@ -73,9 +117,20 @@ you add it again and turn them back on.
 5. Tap **Place**. Then tap **I placed it** on the ticket (or **I skipped
    it**), so your own record builds up.
 6. If price has already gone through the entry, **do not chase**. Skip it.
-7. The app tells you when the entry trades, and when the trade ends. If it
-   says an order expired or was withdrawn, delete it in MT5. If a trade is
-   still open at the "close by" time (about 9pm UK), close it.
+7. More notifications follow, each telling you what to do in MT5. The app
+   cannot touch MetaTrader: only you can.
+   - **"entry traded"**: your order should now be filled.
+   - **"delete the order"**: it expired, or price reached the target
+     without filling. Delete the pending order in MT5.
+   - **"delete this order"**: the account rules (below) now rule this trade
+     out, usually because another trade filled first. Delete the order, or
+     close it if it has already filled.
+   - **"close at 21:00 UK"**: sent a quarter of an hour before the
+     end-of-day cut-off (about 9pm UK). If the trade is still open then,
+     close it by hand. "cut-off reached, close it" follows if it was.
+   - **"finished"**: the target or the stop was hit. Nothing to do.
+   - **"found too late, skip"**: a setup was spotted only after price had
+     already reached its entry. Do nothing.
 
 ## What the screens mean
 
