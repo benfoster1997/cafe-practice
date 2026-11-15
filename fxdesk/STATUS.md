@@ -12,19 +12,11 @@ Python engine is untouched.)
 **Where things stand (written 15 Nov 2026, early hours UTC).** The
 notification review is finished and written up at the end of
 `fxdesk/research/REVIEW.md`: 28 distinct issues, 4 high, all dealt with or
-documented. The fixes are committed and pushed. 85 tests pass
+documented; then a review of the fixes themselves found 26 smaller ones
+(none high), also dealt with. Everything is committed and pushed. 95 tests pass
 (`node --test 'fxdesk/app/test/*.test.ts' 'fxdesk/core/test/*.test.ts'`).
 
-**1. DEPLOY STATE - check this first.** The fixes went live on 15 Nov 2026 at
-about 00:05 UTC (commit a95efbc, Netlify deploy 6af8f750ab72df734d4ee543),
-after the owner said "deploy". Checked afterwards: `/api/status` returns
-the same `pushKey`, the page served is the committed one, `/manifest.json`
-and `/sw.js` answer correctly. A last pair of reviewers was still checking
-the fixes themselves at that moment (`research/workflows/06-push-fix-review.js`);
-see "Review of the fixes" at the very end of `research/REVIEW.md` for what
-they found and whether it has been applied and redeployed. If that heading
-is missing, the session ended first: run the script again (two agents,
-about 25 minutes) against the current code.
+**1. DEPLOY STATE - check this first.** DEPLOY_LINE
 
 **2. Find out how the owner's setup went.** Ask him, or look:
 `curl https://fx-desk-ict.netlify.app/api/status` shows `claimed` (true
@@ -72,10 +64,13 @@ that conversation: ask him, do not work around it. Afterwards check
 - Blob keys: `vapid` (signing key, never replaced), `push` (devices, each
   with `lastOk` and `fails`; `warn`; `lastFail`), `outbox` (notes Apple has
   not accepted yet, plus `missed`), `checkin` (`day`, `at`, `problem`),
-  `settings.testDue` (a scanner test the owner asked for).
+  `scantest` (a scanner test the owner asked for; only the scheduled
+  scanner answers it).
 - A note is written to `outbox` BEFORE the first attempt and removed only
   when Apple accepts it; every scan (weekends too) sends what is waiting. A
-  note past its `until` becomes `missed` and shows red for two days.
+  note past its `until` becomes `missed` and shows red for two days. Notes
+  are kept while a phone that has been reached before has no address (it
+  is reconnecting); nothing is kept for a phone never reached.
 - Each send: one attempt of up to 4 s, and one more a second later if the
   answer may pass (no answer, 429, 5xx). "Gone" answers (404, 410,
   BadWebPushToken, VapidPkHashMismatch) delete the address; the page then
@@ -83,6 +78,8 @@ that conversation: ask him, do not work around it. Afterwards check
 - The scan plans to finish in 27 s of the platform's 30 (`BUDGET_MS`).
 - Check-in: first scan in 01:45-02:45 New York, weekdays. A fault lasting
   two scans is pushed at any hour, once, then "FX Desk is running again".
+  A feed is "stale" when any pair's newest candle is over 90 minutes old
+  while the market is open.
 - The page never retries registration faster than once in five minutes by
   itself (`RETRY_MS`); buttons always act at once.
 
@@ -93,7 +90,7 @@ that conversation: ask him, do not work around it. Afterwards check
 Apple replaced through its `deps` argument), `messages.test.ts` (what he is
 told, on hand-made tickets). The simulated-iPhone run used a throwaway
 harness that is now KEPT in the repo: `fxdesk/research/phone-rig/`
-(`./run.sh` runs all 22 scenarios in about three minutes; `./run.sh happy
+(`./run.sh` runs all 28 scenarios in about four minutes; `./run.sh happy
 deadAddress` runs two). It is a Node server that imports
 `app/netlify/functions/api.mts` with `@netlify/blobs` swapped for a JSON
 file via a loader hook and `fetch` to `*.push.apple.com` answered locally

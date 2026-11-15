@@ -3,7 +3,7 @@ import { nyTimeOnDay } from "../../../core/models/common.ts";
 import { tradingDay, ukHM, nyClock } from "../../../core/time.ts";
 import { mt5HM, CHECKIN_FROM, CHECKIN_TO } from "../../lib/engine.ts";
 import { vapidPublic, pushState, addSub, removeSub, sendPush, SITE } from "../../lib/push.ts";
-import { load, save, getSettings, isClaimed, claim, checkPass, telegram, runScan, type Meta, type SignalRec, type WatchRow, type Outbox, type CheckIn } from "../../lib/store.ts";
+import { load, save, getSettings, isClaimed, claim, checkPass, telegram, runScan, type Meta, type SignalRec, type WatchRow, type Outbox, type CheckIn, type ScanTest } from "../../lib/store.ts";
 
 /** A request from the app must be answered well inside the platform's limit for ordinary functions (ten seconds on some plans). */
 const QUICK_MS = 6000;
@@ -20,7 +20,7 @@ export default async (req: Request, context: Context) => {
   if (!(await checkPass(req.headers.get("x-pass")))) return json({ error: "Wrong passcode." }, 401);
 
   if (route === "state") {
-    const [signals, watch, meta, s, journal, push, box, ci] = await Promise.all([load<SignalRec[]>("signals", []), load<WatchRow[]>("watch", []), load<Partial<Meta>>("meta", {}), getSettings(), load<Record<string, SignalRec["mine"]>>("journal", {}), pushState(), load<Outbox>("outbox", { items: [] }), load<CheckIn>("checkin", {})]);
+    const [signals, watch, meta, s, journal, push, box, ci, asked] = await Promise.all([load<SignalRec[]>("signals", []), load<WatchRow[]>("watch", []), load<Partial<Meta>>("meta", {}), getSettings(), load<Record<string, SignalRec["mine"]>>("journal", {}), pushState(), load<Outbox>("outbox", { items: [] }), load<CheckIn>("checkin", {}), load<ScanTest>("scantest", {})]);
     const now = Math.floor(Date.now() / 1000), day = tradingDay(now);
     const uk = (m: number) => ukHM(nyTimeOnDay(day, m));
     // Has this morning's check-in gone out? Asked only once its hour has passed, on a weekday, when one was owed.
@@ -39,7 +39,7 @@ export default async (req: Request, context: Context) => {
       },
       windows: [{ name: "London killzone", from: uk(120), to: uk(300) }, { name: "New York killzone", from: uk(420), to: uk(600) }, { name: "Close any open trade", from: uk(960), to: uk(960) }],
       signals: signals.slice(0, 120).map(({ order, ...rest }) => ({ ...rest, mine: journal[rest.id], expireMt5: mt5HM(rest.expireAt, s.clock), flatMt5: mt5HM(rest.flatAt, s.clock) })),
-      settings: { hasKey: !!s.tdKey, hasBot: !!s.tgToken, hasChat: !!s.tgChat, balance: s.balance, alerts: s.alerts, clock: s.clock, mt5Now: mt5HM(now, s.clock), testDue: s.testDue ?? null },
+      settings: { hasKey: !!s.tdKey, hasBot: !!s.tgToken, hasChat: !!s.tgChat, balance: s.balance, alerts: s.alerts, clock: s.clock, mt5Now: mt5HM(now, s.clock), testDue: asked.at ?? null },
     });
   }
   if (req.method !== "POST") return json({ error: "Not found." }, 404);
@@ -79,6 +79,7 @@ export default async (req: Request, context: Context) => {
       // to THIS phone only: another device accepting the hello would prove nothing about this one
       const r = await sendPush(site, { title: "FX Desk notifications are on", body: "Trade alerts and the morning check-in will arrive like this." }, now, 600, undefined, undefined, { only: body.subscription.endpoint, budgetMs: QUICK_MS });
       // `dead`: Apple says this address is finished, so the phone must ask the iPhone for a new one (the page does that by itself)
+      if (!r.sent && !r.failed && !r.removed) return json({ error: "This phone's address was not on the server's list when the test was sent. Try again." }, 502);
       if (!r.sent) return json({ error: (await pushState()).warn ?? "The notification service did not accept the test message.", dead: r.removed > 0 }, 502);
     }
     return json({ ok: true });
@@ -95,8 +96,7 @@ export default async (req: Request, context: Context) => {
     const s = await getSettings();
     if (!(await pushState()).subs.length) return json({ error: "Notifications are not switched on for any device yet." }, 400);
     if (!s.alerts) return json({ error: "Alerts are switched off, so the scanner sends nothing. Switch them on first." }, 400);
-    s.testDue = Math.floor(Date.now() / 1000);
-    await save("settings", s);
+    await save("scantest", { at: Math.floor(Date.now() / 1000) }); // its own record: the scanner clears it without ever rewriting the owner's settings
     return json({ ok: true, next: (Math.floor(Date.now() / 1000 / 900) + 1) * 900 });
   }
   if (route === "pushoff") { await removeSub(String(body.endpoint ?? "")); return json({ ok: true }); }

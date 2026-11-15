@@ -54,7 +54,9 @@ test("a setup first seen after its entry has traded gives one 'skip' note, never
   assert.match(msgs[0].body, /Do not chase it/);
   s.status = "won"; s.statusNote = "Target hit Mon 16 Nov 12:00."; s.r = 3;
   assert.deepEqual(at(s, SIGNAL + 9000), []);
-  assert.deepEqual(messagesFor([ticket({ status: "open" })], FLAT - 600), messagesFor([ticket({ status: "open" })], FLAT - 600).filter((m) => m.kind === "late"), "no close-by reminder for a trade he was told to skip");
+  const again = ticket({ status: "open" });
+  at(again, SIGNAL + 1210);
+  assert.deepEqual(at(again, FLAT - 890), [], "no close-by reminder for a trade he was told to skip");
 });
 
 test("a setup that was over before he could have heard of it sends nothing", () => {
@@ -74,6 +76,12 @@ test("a ticket the account rules rule out AFTER it was sent tells him to delete 
   assert.equal(m.title, "EURUSD: delete this order");
   assert.equal(m.body, "The account rules now rule this trade out: Another open trade already carried the same currency bet. If your EURUSD order is still waiting, delete it. If it has filled, close it.");
   assert.deepEqual(at(s, SIGNAL + 2710), []);
+});
+
+test("an old ticket found already ruled out (one issued before this rule existed) is marked as dealt with, not announced days late", () => {
+  const s = ticket({ status: "blocked", statusNote: "Another open trade already carried the same currency bet.", alerted: { fresh: true } });
+  assert.deepEqual(at(s, FLAT + 5 * 86400), []);
+  assert.equal(s.alerted.done, true);
 });
 
 test("a setup blocked from the start is reported as skipped, once", () => {

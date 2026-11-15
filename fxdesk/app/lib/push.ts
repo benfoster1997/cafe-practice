@@ -200,7 +200,7 @@ export async function sendPush(siteUrl: string, notes: Note | Note[], now: numbe
     if (gone.size && !replaced) { next.warn = `Apple has dropped ${next.subs.length ? "one device's" : "this phone's"} notification link (${goneWhy}). Open FX Desk from its Home Screen icon and it will reconnect by itself; if it does not, use the button in Setup.`; next.warnAt = now; }
     else if (problem && !out.sent) { next.warn = `Last notification failed: ${problem}.`; next.warnAt = now; }
     else if (problem && stuck) { next.warn = `One device keeps being refused: ${problem}.`; next.warnAt = now; }
-    else if (out.sent && !problem) { next.warn = undefined; next.warnAt = undefined; }
+    else if (out.sent && !problem && !next.subs.some((s) => (s.fails ?? 0) >= 2)) { next.warn = undefined; next.warnAt = undefined; } // cleared only when no device is left failing
     if (next.warn && next.warnAt === now) { next.lastFail = next.warn; next.lastFailAt = now; }
     await kv.save("push", next);
   } catch { /* storage or key trouble: nothing sent is the honest count; the scanner keeps the notes and the daily check-in will be missed and noticed */ }

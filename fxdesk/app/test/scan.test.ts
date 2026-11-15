@@ -43,27 +43,35 @@ function rig(startMs: number, o: { device?: boolean; alerts?: boolean; kvCostMs?
     feedLag: 0, feedError: "", feedMs: 0,
     /** pairs the rules cannot read (too little history came back) */
     unread: 0,
+    /** extra lag for single pairs, and whether the second fetch (for a late candle) fails */
+    pairLag: {} as Record<string, number>, refetchFails: false, feedCalls: 0, feedLimits: [] as number[],
+    telegrams: [] as string[],
     /** Apple's answer: a status, or "down", or "hang" (never answers) */
     apple: 201 as number | "down" | "hang", appleMs: 0,
     shown: [] as Shown[], attempts: 0, limits: [] as number[],
     now: () => Math.floor(t / 1000), ms: () => t, set: (ms: number) => { t = ms; }, advance: (ms: number) => { t += ms; },
     deps: {} as Partial<ScanDeps>,
-    async scan(settleMs = 9000): Promise<Meta> { return runScan(SITE, settleMs, false, w.deps); },
+    /** the scheduled scanner's run */
+    async scan(settleMs = 9000): Promise<Meta> { return runScan(SITE, settleMs, false, { ...w.deps, scheduled: true }); },
+    /** "Scan now" in the app */
+    async manual(): Promise<Meta> { return runScan(SITE, 0, true, { ...w.deps, scheduled: false, budgetMs: 8500 }); },
     outbox: (): Outbox => (data.outbox as Outbox) ?? { items: [] },
     meta: (): Meta => data.meta as Meta,
   };
   w.deps = {
     kv, clock: () => t, sleep: tick,
-    bars: async (_pair, _key, now) => {
+    bars: async (pair, _key, now, _size, ms) => {
+      const second = ++w.feedCalls > 4; w.feedLimits.push(ms ?? -1);
       await tick(w.feedMs);
       if (w.feedError) throw new Error(w.feedError);
-      const open = Math.floor(now / 900) * 900 - 900 - w.feedLag;
+      if (second && w.refetchFails) throw Object.assign(new Error("The operation was aborted due to timeout"), { name: "TimeoutError" });
+      const open = Math.floor(now / 900) * 900 - 900 - w.feedLag - (w.pairLag[pair] ?? 0);
       return makeBars(15, [open - 900, open], [1, 1], [1, 1], [1, 1], [1, 1]);
     },
     rules: ((u: Record<string, { m15: { n: number; end: Float64Array } }>, _saved: unknown, now: number): ScanResult => {
       const lastBar = Math.max(...Object.values(u).map((p) => p.m15.end[p.m15.n - 1]));
       const messages = w.messages.map((m) => ({ ...m, until: m.until || now + 3600 })); w.messages = [];
-      const watch = (["EURUSD", "GBPUSD", "AUDUSD", "USDJPY"] as const).map((pair, i) => ({ pair, price: 1, time: lastBar, bias: [1, -1, 0, 1][i], biasWhy: "", levels: [], note: "" })).slice(0, 4 - w.unread);
+      const watch = (["EURUSD", "GBPUSD", "AUDUSD", "USDJPY"] as const).map((pair, i) => ({ pair, price: 1, time: u[pair].m15.end[u[pair].m15.n - 1], bias: [1, -1, 0, 1][i], biasWhy: "", levels: [], note: "" })).slice(0, 4 - w.unread);
       return { signals: [], watch, messages, lastBar, session: "Outside the killzones" };
     }) as unknown as ScanDeps["rules"],
     send: async (wire: Wire, ms?: number) => {
@@ -77,7 +85,7 @@ function rig(startMs: number, o: { device?: boolean; alerts?: boolean; kvCostMs?
       }
       return w.apple;
     },
-    telegram: async () => ({ ok: true }),
+    telegram: (async (_token: string, _method: string, body: { text: string }) => { w.telegrams.push(body.text); return { ok: true }; }) as ScanDeps["telegram"],
   };
   return w;
 }
@@ -115,7 +123,7 @@ test("if the 06:45 scan does not run, the check-in still goes out on the next sc
 
 test("a trade alert opens its ticket, is its own notification, and Apple keeps trying for as long as the order is valid", async () => {
   const w = await withDevice(utc("2026-11-16T08:15:01"));
-  w.messages = [alert({ until: Math.floor(utc("2026-11-16T11:00:00") / 1000) }), alert({ kind: "fill", title: "EURUSD: entry traded" })];
+  w.messages = [alert({ until: Math.floor(utc("2026-11-16T11:00:00") / 1000) }), alert({ id: "GBPUSD-2", kind: "fill", title: "GBPUSD: entry traded" })];
   const meta = await w.scan();
   assert.equal(meta.note, "OK");
   assert.equal(w.shown.length, 2);
@@ -123,7 +131,7 @@ test("a trade alert opens its ticket, is its own notification, and Apple keeps t
   assert.equal(one.navigate, `${SITE}/#t=EURUSD-1`);
   assert.equal(one.tag, "EURUSD-1:new");
   assert.ok(one.ttl > 2.7 * 3600 && one.ttl <= 2.75 * 3600, `lifetime ${one.ttl}s runs to the order's expiry`);
-  assert.equal(w.shown.find((s) => s.title.includes("entry"))!.tag, "EURUSD-1:fill", "a different tag, so neither replaces the other");
+  assert.equal(w.shown.find((s) => s.title.includes("entry"))!.tag, "GBPUSD-2:fill", "every event has its own tag, so nothing replaces anything");
   assert.deepEqual(w.outbox().items, []);
 });
 
@@ -171,20 +179,42 @@ test("an alert that goes out of date undelivered is dropped and reported in red,
   assert.equal(w.outbox().missed, '"BUY LIMIT EURUSD (demo)" from Mon 16 Nov 08:15 UK never reached your phone: the notification service did not accept it in time.');
 });
 
-test("when the price feed fails at check-in time he is told there is a problem, and told again when it clears", async () => {
+test("one failed scan at check-in time is treated as a blip: the check-in is not used up, and goes out when the next scan works", async () => {
+  const w = await withDevice(MON_0645);
+  w.feedError = "EURUSD: no data from the price feed";
+  const meta = await w.scan();
+  assert.equal(meta.ok, false);
+  assert.equal(w.shown.length, 0, "nothing is sent for one failed scan while three more remain in the hour");
+  assert.equal(w.data.checkin, undefined);
+  w.set(MON_0645 + 15 * 60000); w.feedError = "";
+  await w.scan();
+  assert.deepEqual(w.shown.map((s) => s.title), ["FX Desk is running"]);
+});
+
+test("when the feed keeps failing at check-in time he is told there is a problem, and told again when it clears", async () => {
   const w = await withDevice(MON_0645);
   w.feedError = "EURUSD: You have run out of API credits for the current minute. 9 API credits were used, with the current limit being 8. Wait for the next minute or consider switching to a higher tier plan at https://twelvedata.com/pricing";
+  await w.scan();
+  w.set(MON_0645 + 15 * 60000);
   const meta = await w.scan();
   assert.equal(meta.ok, false);
   assert.equal(w.shown.length, 1);
   assert.equal(w.shown[0].title, "FX Desk has a problem");
   assert.ok(w.shown[0].body.startsWith("No trade alerts until this is fixed. Price feed problem: EURUSD: You have run out"), w.shown[0].body);
   assert.ok(w.shown[0].body.length <= 170);
-  w.set(MON_0645 + 15 * 60000); w.feedError = "";
+  w.set(MON_0645 + 30 * 60000); w.feedError = "";
   await w.scan();
   assert.deepEqual(w.shown.map((s) => s.title), ["FX Desk has a problem", "FX Desk is running again"]);
-  w.set(MON_0645 + 30 * 60000); await w.scan();
+  w.set(MON_0645 + 45 * 60000); await w.scan();
   assert.equal(w.shown.length, 2, "said once");
+  assert.notEqual(w.shown[0].tag, w.shown[1].tag);
+});
+
+test("on the last scan of the check-in hour a failing scan says so at once: there is no later scan to wait for", async () => {
+  const w = await withDevice(MON_0645 + 45 * 60000); // 07:30 UK, the earlier scans never ran
+  w.feedError = "EURUSD: no data from the price feed";
+  await w.scan();
+  assert.deepEqual(w.shown.map((s) => s.title), ["FX Desk has a problem"]);
 });
 
 test("a feed that answers with old prices is not reported as running", async () => {
@@ -193,7 +223,10 @@ test("a feed that answers with old prices is not reported as running", async () 
   const meta = await w.scan();
   assert.equal(meta.ok, false);
   assert.equal(meta.note, "Prices are about 5 hours behind (a price-feed fault or a market holiday). No trade can be spotted until they catch up.");
+  assert.equal(w.shown.length, 0, "first sight of it: may be a blip");
+  w.set(MON_0645 + 15 * 60000); w.feedLag = 5 * 3600 + 900; await w.scan();
   assert.equal(w.shown[0].title, "FX Desk has a problem");
+  assert.ok(!w.shown.some((s) => s.title === "FX Desk is running"));
   // a candle the vendor is merely a few minutes late with is normal
   const fine = await withDevice(MON_0645); fine.feedLag = 900;
   assert.equal((await fine.scan()).ok, true);
@@ -206,6 +239,26 @@ test("a feed that answers with old prices is not reported as running", async () 
   // the first scans after the weekend see Friday's last candle: that is not a fault
   const sunday = await withDevice(utc("2026-11-15T22:15:01")); sunday.feedLag = 48 * 3600;
   assert.equal((await sunday.scan()).ok, true);
+});
+
+test("one pair hours behind is a fault even while the others are fine, and the note names it", async () => {
+  const w = await withDevice(utc("2026-11-17T09:00:01"));
+  w.pairLag = { GBPUSD: 6 * 3600 };
+  const meta = await w.scan();
+  assert.equal(meta.ok, false);
+  assert.equal(meta.note, "Prices for GBPUSD are about 6 hours behind (a price-feed fault or a market holiday). No trade can be spotted there until they catch up.");
+});
+
+test("if the second fetch for a late candle fails, the scan carries on with the first answer", async () => {
+  const w = await withDevice(utc("2026-11-16T08:15:00"));
+  w.feedLag = 900; w.refetchFails = true; w.messages = [alert()];
+  const meta = await w.scan();
+  assert.equal(w.feedCalls, 8, "it did try again for the missing candle");
+  assert.deepEqual([...new Set(w.feedLimits.slice(0, 4))], [7000]);
+  assert.deepEqual([...new Set(w.feedLimits.slice(4))], [4000]);
+  assert.equal(meta.ok, true);
+  assert.equal(meta.note, "OK");
+  assert.deepEqual(w.shown.map((s) => s.title), ["BUY LIMIT EURUSD (demo)"], "the rules ran and the alert went out");
 });
 
 test("with alerts switched off nothing is sent, nothing is kept for later, and the day's check-in is not used up", async () => {
@@ -283,26 +336,98 @@ test("pairs the feed sent too little history for are reported, not silently drop
   const meta = await w.scan();
   assert.equal(meta.ok, false);
   assert.equal(meta.note, "The price feed sent too little history for 1 of the 4 pairs, so it is not being watched.");
+  w.set(MON_0645 + 15 * 60000); await w.scan();
   assert.equal(w.shown[0].title, "FX Desk has a problem");
 });
 
-test("a test asked for in Setup comes from the scanner itself, even at the weekend, once", async () => {
-  const w = await withDevice(utc("2026-11-14T23:45:01")); // Saturday night: market closed
-  (w.data.settings as Record<string, unknown>).testDue = w.now() - 300;
+test("a test asked for in Setup comes from the scheduled scanner only, even at the weekend, once", async () => {
+  const w = await withDevice(utc("2026-11-14T23:40:01")); // Saturday night: market closed
+  w.data.scantest = { at: w.now() - 60 };
+  await w.manual(); // he taps Scan now, or saves his price key, before the scheduled run
+  assert.equal(w.shown.length, 0, "a scan asked for from the app must not answer the test");
+  assert.deepEqual(w.data.scantest, { at: w.now() - 60 }, "and must leave it waiting");
+  w.set(utc("2026-11-14T23:45:01"));
   const meta = await w.scan();
   assert.equal(meta.note, "Market closed. Scanning resumes Sunday 22:00 UK.");
   assert.equal(w.shown.length, 1);
   assert.equal(w.shown[0].title, "FX Desk scanner test");
   assert.equal(w.shown[0].navigate, SITE);
-  assert.equal((w.data.settings as Record<string, unknown>).testDue, undefined);
-  assert.equal((w.data.settings as Record<string, unknown>).tdKey, "k", "the rest of the settings are untouched");
+  assert.deepEqual(w.data.scantest, {});
+  assert.deepEqual(w.data.settings, { tdKey: "k", alerts: true }, "the owner's settings are never rewritten by the scanner");
   w.set(utc("2026-11-15T00:00:01")); await w.scan();
   assert.equal(w.shown.length, 1);
   // and if Apple is down at that moment it is kept and sent by the next scan, like any other note
   const v = await withDevice(utc("2026-11-14T23:45:01"));
-  (v.data.settings as Record<string, unknown>).testDue = v.now(); v.apple = 503;
+  v.data.scantest = { at: v.now() }; v.apple = 503;
   await v.scan();
   assert.equal(v.outbox().items.length, 1);
   v.set(utc("2026-11-15T00:00:01")); v.apple = 201; await v.scan();
   assert.deepEqual(v.shown.map((s) => s.title), ["FX Desk scanner test"]);
+});
+
+test("when Apple drops the phone's address, the alert that found it out is kept and sent once the phone reconnects", async () => {
+  const w = await withDevice(utc("2026-11-16T08:15:01"));
+  await w.scan(); // an ordinary scan first: this phone has been reached before
+  w.set(utc("2026-11-16T08:30:01")); w.apple = 410; w.messages = [alert({ until: Math.floor(utc("2026-11-16T11:00:00") / 1000) })];
+  await w.scan();
+  assert.equal((await pushState(w.kv)).subs.length, 0, "the dead address is removed");
+  assert.equal(w.outbox().items.length, 1);
+  w.set(utc("2026-11-16T08:45:01")); w.apple = 201;
+  const meta = await w.scan();
+  assert.equal(w.outbox().items.length, 1, "still kept while no phone is registered");
+  assert.equal(w.shown.length, 0);
+  assert.equal(meta.note, "OK, but no phone is registered for notifications. A notification is kept and will be sent when the phone reconnects.");
+  await addSub(w.sub, w.now() + 300, w.kv); // he opens the app; it reconnects by itself
+  w.set(utc("2026-11-16T09:00:01")); await w.scan();
+  assert.deepEqual(w.shown.map((s) => s.title), ["BUY LIMIT EURUSD (demo)"]);
+  assert.deepEqual(w.outbox().items, []);
+  // and if he does not reconnect in time, it is reported, not silently dropped
+  const v = await withDevice(utc("2026-11-16T08:15:01"));
+  await v.scan();
+  v.set(utc("2026-11-16T08:30:01")); v.apple = 410; v.messages = [alert({ until: Math.floor(utc("2026-11-16T09:00:00") / 1000) })];
+  await v.scan();
+  v.set(utc("2026-11-16T09:15:01")); await v.scan();
+  assert.match(v.outbox().missed!, /"BUY LIMIT EURUSD \(demo\)" from Mon 16 Nov 08:30 UK never reached your phone/);
+});
+
+test("when several notes go out and Apple accepts only some, exactly the others are kept", async () => {
+  const w = await withDevice(utc("2026-11-16T08:15:01"));
+  let n = 0;
+  const real = w.deps.send!;
+  w.deps.send = async (wire, ms) => (++n % 2 ? real(wire, ms) : 413); // Apple takes every other note and refuses the rest
+  w.messages = [alert({ id: "A-1", title: "one" }), alert({ id: "B-2", title: "two" }), alert({ id: "C-3", title: "three" })];
+  await w.scan();
+  assert.equal(w.outbox().items.length + w.shown.length, 3);
+  assert.ok(w.outbox().items.length >= 1 && w.shown.length >= 1);
+  const kept = w.outbox().items.map((q) => q.note.title).sort(), got = w.shown.map((s) => s.title).sort();
+  assert.deepEqual([...kept, ...got].sort(), ["one", "three", "two"]);
+  assert.ok(!kept.some((t) => got.includes(t)), "nothing both delivered and kept");
+});
+
+test("a waiting ticket that later news has overtaken is not sent alongside that news", async () => {
+  const w = await withDevice(utc("2026-11-16T08:15:01"));
+  w.apple = "down"; w.messages = [alert({ until: Math.floor(utc("2026-11-16T11:00:00") / 1000) })];
+  await w.scan();
+  w.set(utc("2026-11-16T08:30:01")); w.apple = 201; w.messages = [alert({ kind: "fill", title: "EURUSD: entry traded" })];
+  await w.scan();
+  assert.deepEqual(w.shown.map((s) => s.title), ["EURUSD: entry traded"], "not a ticket to place at a price that has already traded");
+  assert.match(w.outbox().missed!, /"BUY LIMIT EURUSD \(demo\)" from Mon 16 Nov 08:15 UK never reached your phone/);
+  // a fault he was never told about needs no all-clear
+  const v = await withDevice(utc("2026-11-16T09:00:01"));
+  v.feedError = "EURUSD: no data from the price feed"; v.apple = "down";
+  await v.scan(); v.set(utc("2026-11-16T09:15:01")); await v.scan();
+  assert.equal(v.outbox().items.length, 1, "the problem note is waiting");
+  v.set(utc("2026-11-16T09:30:01")); v.feedError = ""; v.apple = 201; await v.scan();
+  assert.deepEqual(v.shown, []);
+  assert.deepEqual(v.outbox().items, []);
+});
+
+test("Telegram, when connected, is sent even when Apple does not answer and time is short", async () => {
+  const w = await withDevice(utc("2026-11-16T08:15:00"), { kvCostMs: 150 });
+  Object.assign(w.data.settings as object, { tgToken: "t", tgChat: "c" });
+  w.feedMs = 6000 / 4; w.apple = "down"; w.messages = [alert({ text: "TICKET" })];
+  const start = w.ms();
+  await w.scan();
+  assert.deepEqual(w.telegrams, ["TICKET"]);
+  assert.ok(w.ms() - start <= 29000, `took ${w.ms() - start} ms`);
 });

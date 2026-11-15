@@ -197,7 +197,8 @@ export function messagesFor(recent: SignalRec[], now: number, clock: ServerClock
     if (s.status === "blocked" && !s.alerted.done) {
       // The account rules are applied when the entry trades, so a ticket already sent can be ruled out later. His MT5 order knows nothing of that.
       s.alerted.done = true;
-      say("done", now + LATER, `${s.pair}: delete this order`, `The account rules now rule this trade out: ${s.statusNote} If your ${s.pair} order is still waiting, delete it. If it has filled, close it.`);
+      if (now <= s.flatAt + 3600) // only while it can still matter: an old ticket is marked as dealt with, not announced days late
+        say("done", now + LATER, `${s.pair}: delete this order`, `The account rules now rule this trade out: ${s.statusNote} If your ${s.pair} order is still waiting, delete it. If it has filled, close it.`);
     }
     if (s.status === "open" && !s.alerted.fill) {
       s.alerted.fill = true;

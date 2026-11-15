@@ -36,7 +36,7 @@ const stub = (o) => {
   window.Notification = class { static get permission() { return sessionStorage.getItem("perm"); } static async requestPermission() { window.__calls.requestPermission++; window.__calls.order.push("requestPermission"); const p = o.deny ? "denied" : "granted"; sessionStorage.setItem("perm", p); return p; } };
   window.PushManager = function () {};
   const keyOf = () => sessionStorage.getItem("subkey") || "";
-  const mk = () => ({ endpoint: "https://" + (o.host || "web.push.apple.com") + "/QTESTDEVICE" + (sessionStorage.getItem("gen") || "0"), options: { applicationServerKey: keyOf() ? Uint8Array.from(atob(keyOf()), (c) => c.charCodeAt(0)).buffer : null }, toJSON() { return { endpoint: this.endpoint, keys: o.keys }; }, unsubscribe: async () => { window.__calls.unsubscribe++; sessionStorage.removeItem("sub"); sessionStorage.setItem("gen", String(+(sessionStorage.getItem("gen") || 0) + 1)); return true; } });
+  const mk = () => ({ endpoint: "https://" + (o.host || "web.push.apple.com") + "/QTESTDEVICE" + (sessionStorage.getItem("gen") || "0"), options: { applicationServerKey: keyOf() ? Uint8Array.from(atob(keyOf()), (c) => c.charCodeAt(0)).buffer : null }, toJSON() { return { endpoint: this.endpoint, keys: o.keys }; }, unsubscribe: async () => { if (window.__failUnsub) throw new Error("unsubscribe failed"); window.__calls.unsubscribe++; sessionStorage.removeItem("sub"); sessionStorage.setItem("gen", String(+(sessionStorage.getItem("gen") || 0) + 1)); return true; } });
   const reg = { pushManager: {
     getSubscription: async () => { window.__calls.order.push("getSubscription"); return sessionStorage.getItem("sub") ? mk() : null; },
     subscribe: async (opt) => { window.__calls.subscribe++; window.__calls.order.push("subscribe"); if (o.subscribeFails) throw new Error("Registration failed - push service error"); sessionStorage.setItem("sub", "1"); sessionStorage.setItem("subkey", btoa(String.fromCharCode(...new Uint8Array(opt.applicationServerKey.buffer || opt.applicationServerKey)))); return mk(); } } };
@@ -233,13 +233,64 @@ const stub = (o) => {
       await fetch(BASE + "/__reset");
       await page.click("#pushlater"); await page.waitForTimeout(800);
       const msg = await page.evaluate(() => document.querySelector("#m-push")?.innerText);
-      const asked = { testDue: !!store().settings.testDue, appleSoFar: (await counts()).apple || 0 };
-      // the scheduled scanner's next run (the weekend: market closed)
-      const meta = await page.evaluate(async () => (await fetch("/api/scan", { method: "POST", headers: { "content-type": "application/json", "x-pass": "secret1" }, body: "{}" })).json());
-      const after = { apple: (await counts()).apple || 0, testDue: store().settings.testDue ?? null, outbox: (store().outbox || { items: [] }).items.length, tdKeyKept: !!store().settings.tdKey };
-      await page.evaluate(async () => (await fetch("/api/scan", { method: "POST", headers: { "content-type": "application/json", "x-pass": "secret1" }, body: "{}" })).json());
-      say("scannerTest: he asks for a test from the scanner; the next scheduled run sends it, once", { message: msg, asked, scanNote: meta.note, after, appleAfterSecondScan: (await counts()).apple });
+      // he taps Scan now before the scheduled run: that scan must NOT answer the test
+      await page.click("#scan"); await page.waitForTimeout(2500);
+      const afterScanNow = { apple: (await counts()).apple || 0, stillAsked: !!(store().scantest || {}).at };
+      await fetch(BASE + "/__scan"); // the scheduled scanner's next run
+      const afterScheduled = { apple: (await counts()).apple || 0, stillAsked: !!(store().scantest || {}).at, outbox: (store().outbox || { items: [] }).items.length, tdKeyKept: !!store().settings.tdKey };
+      await fetch(BASE + "/__scan");
+      say("scannerTest: he asks for a test from the scanner; only the scheduled run sends it, once", { message: msg, afterScanNow, afterScheduled, appleAfterSecondScheduledRun: (await counts()).apple });
       await page.context().close();
+    },
+    async quietLost() {
+      await reset("ok");
+      const page = await open({ perm: "default" }); await setup(page); await page.click("#pushon"); await page.waitForTimeout(1500);
+      fs.writeFileSync(__dirname + "/fail-next-push", "1"); // the quiet once-per-opening registration is lost on the way
+      await fetch(BASE + "/__reset");
+      await page.reload(); await page.waitForSelector(".card"); await page.waitForTimeout(2500);
+      const a = await alarm(page); await setup(page);
+      say("quietLost: a healthy phone whose quiet re-registration request is lost once", { requests: await counts(), alarm: a, card: (await card(page)).slice(0, 60) });
+      try { fs.unlinkSync(__dirname + "/fail-next-push"); } catch {}
+      await page.context().close();
+    },
+    async doubleTap() {
+      await reset("ok");
+      const page = await open({ perm: "default" }); await setup(page);
+      await page.evaluate(() => { const b = document.querySelector("#pushon"); b.click(); b.click(); b.click(); });
+      await page.waitForTimeout(2500);
+      say("doubleTap: three quick taps on Turn on notifications", { requests: await counts(), card: (await card(page)).slice(0, 60) });
+      await page.context().close();
+    },
+    async resetCannotLetGo() {
+      await reset("ok");
+      const page = await open({ perm: "default" }); await setup(page); await page.click("#pushon"); await page.waitForTimeout(1500);
+      await fetch(BASE + "/__reset");
+      await page.evaluate(() => { window.__failUnsub = true; for (const d of document.querySelectorAll("details")) d.open = true; });
+      await page.click("#pushreset"); await page.waitForTimeout(2000);
+      say("resetCannotLetGo: Reset is tapped but the iPhone will not give up its old address", { requests: await counts(), msg: await page.evaluate(() => document.querySelector("#m-push")?.innerText), serverStillHas: store().push.subs.map((x) => x.endpoint.slice(-7)), card: (await card(page)).slice(0, 60) });
+      await page.context().close();
+    },
+    async sectionsStayOpen() {
+      await reset("ok");
+      const page = await open({ perm: "default" }); await setup(page); await page.click("#pushon"); await page.waitForTimeout(1500);
+      await page.evaluate(() => { [...document.querySelectorAll("#app details")].find((d) => /HEAR/.test(d.innerText)).open = true; });
+      await page.evaluate(() => refresh(true)); await page.waitForTimeout(800);
+      say("sectionsStayOpen: a fold-out section he opened is still open after the screen redraws", { hearStepsOpen: await page.evaluate(() => [...document.querySelectorAll("#app details")].find((d) => /HEAR/.test(d.innerText)).open), otherClosed: await page.evaluate(() => ![...document.querySelectorAll("#app details")].find((d) => /does not arrive/.test(d.innerText)).open) });
+      await page.context().close();
+    },
+    async lockScreen() {
+      await reset("ok");
+      const ctx = await browser.newContext({ ...devices["iPhone 15 Pro Max"] }); const page = await ctx.newPage();
+      await page.clock.install();
+      await page.addInitScript(() => localStorage.setItem("fx-pass", "secret1"));
+      await page.goto(BASE + "/"); await page.waitForSelector(".card");
+      await page.click('nav button[data-tab="setup"]'); await page.click("#logout"); await page.waitForSelector("#p");
+      await page.evaluate(() => localStorage.removeItem("fx-pass"));
+      await page.fill("#p", "half-typed"); await page.evaluate(() => document.querySelector("#p").blur());
+      await fetch(BASE + "/__reset");
+      await page.clock.fastForward(125000); await page.waitForTimeout(500);
+      say("lockScreen: two minutes on the lock screen with a passcode half typed", { message: await page.evaluate(() => document.querySelector("#e")?.innerText), typedKept: await page.evaluate(() => document.querySelector("#p")?.value), requests: await counts() });
+      await ctx.close();
     },
     async resetTool() {
       await reset("ok");

@@ -233,6 +233,17 @@ test("a device that keeps being refused is reported even while another device is
   assert.equal(st.subs.find((s) => s.endpoint === b.sub.endpoint)!.fails, 0);
 });
 
+test("a hello accepted by one phone does not clear the warning about another device that is still being refused", async () => {
+  const kv = memory(), a = device(), b = device();
+  await addSub(a.sub, NOW, kv); await addSub(b.sub, NOW, kv);
+  const send = async (w: Wire) => (w.endpoint === a.sub.endpoint ? { status: 403, detail: '{"reason":"BadJwtToken"}' } : 201);
+  await sendPush(SITE, { title: "t", body: "b" }, NOW + 1, 600, kv, send);
+  await sendPush(SITE, { title: "t", body: "b" }, NOW + 2, 600, kv, send);
+  assert.match((await pushState(kv)).warn!, /One device keeps being refused/);
+  await sendPush(SITE, { title: "hello", body: "b" }, NOW + 3, 600, kv, send, { only: b.sub.endpoint });
+  assert.match((await pushState(kv)).warn!, /One device keeps being refused/, "the other device is still failing");
+});
+
 test("the hello that proves a phone goes to that phone only, so another device cannot pass for it", async () => {
   const kv = memory(), mine = device(), other = device();
   await addSub(mine.sub, NOW, kv); await addSub(other.sub, NOW, kv);

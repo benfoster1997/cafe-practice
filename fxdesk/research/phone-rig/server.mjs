@@ -6,7 +6,7 @@
 // Start it with run.sh, or: MOCK_STORE=$PWD/store.json PORT=8811 URL=https://fx-desk-ict.netlify.app node --import ./register.mjs server.mjs
 // Nothing here touches the live site, the real storage or Apple.
 import { createServer } from "node:http";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, unlinkSync } from "node:fs";
 const here = (f) => new URL("./" + f, import.meta.url);
 const ROOT = process.env.ROOT || new URL("../../", import.meta.url).pathname.replace(/\/$/, ""); // the fxdesk folder
 const mode = () => (existsSync(here("apple-mode")) ? readFileSync(here("apple-mode"), "utf8").trim() : "ok");
@@ -29,12 +29,17 @@ globalThis.fetch = async (url, init) => {
 };
 const api = (await import(ROOT + "/app/netlify/functions/api.mts")).default;
 const PUB = ROOT + "/app/public";
+const scheduled = (await import(ROOT + "/app/netlify/functions/scan.mts")).default;
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".png": "image/png", ".json": "application/manifest+json" };
 const PORT = +process.env.PORT || 8811;
 createServer(async (req, res) => {
   const url = new URL(req.url, "http://localhost:" + PORT);
   if (url.pathname === "/__counts") { res.writeHead(200, { "content-type": "application/json" }); res.end(JSON.stringify(counts)); return; }
   if (url.pathname === "/__reset") { counts = {}; res.writeHead(200); res.end("ok"); return; }
+  // GET /__scan runs the SCHEDULED scanner's own entry point (scan.mts), as the platform does every 15 minutes
+  if (url.pathname === "/__scan") { hit("scheduled-scan"); try { await scheduled(); res.writeHead(200); res.end("ok"); } catch (e) { res.writeHead(500); res.end(String(e && e.message)); } return; }
+  // "/api/push" can be made to fail once, to imitate a request lost on the way (the file "fail-next-push" beside this script)
+  if (url.pathname === "/api/push" && existsSync(here("fail-next-push"))) { unlinkSync(here("fail-next-push")); hit("push(lost)"); req.resume(); res.writeHead(503, { "content-type": "text/plain" }); res.end("lost"); return; }
   if (url.pathname.startsWith("/api/")) {
     hit(url.pathname.slice(5));
     const chunks = []; for await (const c of req) chunks.push(c);

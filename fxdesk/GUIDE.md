@@ -23,8 +23,8 @@ full setup appears. You copy the ticket into MetaTrader 5 by hand, on your
   time and New York ones 12:00 to 15:00. For about three weeks a year (two
   in March, one around the start of November) American and British clocks
   are out of step and all of these, and the morning check-in, come one
-  hour earlier in UK time. The app's Now screen always shows the day's
-  real times.
+  hour earlier in UK time. When no ticket is live, the app's Now screen
+  shows the day's real times.
 
 ## One-time setup (about 10 minutes, all on your iPhone)
 
@@ -56,7 +56,8 @@ full setup appears. You copy the ticket into MetaTrader 5 by hand, on your
    - With the phone on silent an alert only vibrates.
 6. **Test the real route.** In Setup tap **Test from the scanner**, lock the
    phone, and wait. Within 15 minutes a notification should arrive by
-   itself. That is the same route a trade alert takes, so if it arrives
+   itself. (Do not tap Scan now meanwhile; it has nothing to do with this
+   test.) That is the same route a trade alert takes, so if it arrives
    with a sound while the phone is locked, you are set.
 7. **Balance.** Leave it at 500 (pounds) or set what you really plan to
    trade live. Tickets are sized at 1% of this, whatever your demo shows.
@@ -78,11 +79,13 @@ real alerts are rare, so a break could go unnoticed. The safeguards:
     Setup and tap **Send a test now**.
 - **"FX Desk has a problem"** instead of the check-in, or during the day,
   means the scanner or its price feed has been failing for at least two
-  scans. No trade alerts until you get **"FX Desk is running again"**.
+  scans running (about a quarter of an hour). No trade alerts until you
+  get **"FX Desk is running again"**.
 - **Nothing is sent only once.** If Apple's service does not accept a
-  notification, the scanner sends it again every 15 minutes until it does.
-  An alert that goes out of date before Apple accepts it is shown in red in
-  the app as "An alert never arrived".
+  notification, the scanner sends it again every 15 minutes until it does,
+  and keeps it while the phone is reconnecting. An alert that goes out of
+  date before Apple accepts it is shown in red in the app as "An alert
+  never arrived".
 - **A red box in the app** if Apple has dropped this phone's link, keeps
   refusing a notification, alerts are switched off, or the morning check-in
   was not sent. When Apple drops the link, opening the app from its icon
