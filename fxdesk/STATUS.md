@@ -23,9 +23,9 @@ two (commit e311799, the 26 findings in "Review of the fixes" at the end of
 6af902938b07578b0126ec38). The owner said yes to each. Checked after each:
 `/api/status` returns the same `pushKey`, the page served is the committed
 one, `/manifest.json` and `/sw.js` answer correctly, the locked routes
-refuse without a passcode. The scheduled scanner ran cleanly on round one
-at 00:15 UTC (answer 204, about one second). Nothing is waiting to be
-deployed.
+refuse without a passcode. The scheduled scanner ran and recorded its
+scan on round one at 00:15 UTC and on round two at 01:00 UTC. Nothing is
+waiting to be deployed.
 
 **2. Find out how the owner's setup went.** Ask him, or look:
 `curl https://fx-desk-ict.netlify.app/api/status` shows `claimed` (true
