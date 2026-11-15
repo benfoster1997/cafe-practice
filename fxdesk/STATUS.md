@@ -1,6 +1,6 @@
 # FX Desk status - read this first in any new session
 
-Last updated: 15 Nov 2026, about 00:10 UTC. Branch
+Last updated: 15 Nov 2026, about 01:00 UTC. Branch
 `claude/youtube-ai-monetization-study-4ipk3c`. Everything is committed and
 pushed. (CLAUDE.md says trading work goes on
 `claude/mt5-xauusd-iphone-bot-ndfkda`; this session was restricted to the
@@ -16,23 +16,16 @@ documented; then a review of the fixes themselves found 26 smaller ones
 (none high), also dealt with. Everything is committed and pushed. 95 tests pass
 (`node --test 'fxdesk/app/test/*.test.ts' 'fxdesk/core/test/*.test.ts'`).
 
-**1. DEPLOY STATE - check this first.** Two rounds of fixes exist.
-- Round one (commit a95efbc, the 28 issues) went LIVE on 15 Nov 2026 at
-  about 00:05 UTC (Netlify deploy 6af8f750ab72df734d4ee543) after the owner
-  said "deploy". Checked: `/api/status` returns the same `pushKey`, the
-  page served is the committed one, `/manifest.json` and `/sw.js` answer
-  correctly, and the scheduled scanner ran cleanly on it at 00:15 UTC.
-- Round two (commit e311799, the 26 findings in "Review of the fixes" at
-  the end of `research/REVIEW.md`) is committed and pushed but was **NOT
-  DEPLOYED when this was written**: the session's safety check refused a
-  second deploy until the owner says so again, and he had been asked.
-  To see which round is live: `curl -s https://fx-desk-ict.netlify.app/ |
-  grep -c scroll-margin-top` prints 1 if round two is live, 0 if not.
-  If it is not live, ask the owner for the go-ahead, then deploy as under
-  "Deploying" below. Until then the live site still has these faults,
-  none high: "Scan now" uses up a requested scanner test; one lost request
-  can show a healthy phone in red for five minutes; an alert can be dropped
-  if Apple removes the phone's address at that moment.
+**1. DEPLOY STATE.** Both rounds of fixes are LIVE. Round one (commit
+a95efbc, the 28 issues) went live on 15 Nov 2026 at about 00:05 UTC; round
+two (commit e311799, the 26 findings in "Review of the fixes" at the end of
+`research/REVIEW.md`) at about 00:54 UTC (Netlify deploy
+6af902938b07578b0126ec38). The owner said yes to each. Checked after each:
+`/api/status` returns the same `pushKey`, the page served is the committed
+one, `/manifest.json` and `/sw.js` answer correctly, the locked routes
+refuse without a passcode. The scheduled scanner ran cleanly on round one
+at 00:15 UTC (answer 204, about one second). Nothing is waiting to be
+deployed.
 
 **2. Find out how the owner's setup went.** Ask him, or look:
 `curl https://fx-desk-ict.netlify.app/api/status` shows `claimed` (true
