@@ -1,5 +1,33 @@
 # FX Desk status - read this first in any new session
 
+## CLOSED on 19 Nov 2026, at the owner's request
+
+The owner asked how confident Claude was in the app's win rate, was told
+plainly (the rules did not pass their test: 37 to 40% winners, about zero
+per trade on 89 trades in six years), and chose to switch it off and keep
+the code. **Do not resume, redeploy or work on FX Desk unless he asks.**
+
+- The live site https://fx-desk-ict.netlify.app now serves one static page
+  ("FX Desk is closed", `closed/index.html`). `netlify.toml` publishes only
+  that folder and deploys no functions, so the scanner does not run and no
+  notification is sent. That page also tidies his phone when opened: it
+  forgets the saved passcode, gives up the notification address and removes
+  the background script.
+- Nothing was deleted. The app (`app/`), the shared rules (`core/`), the
+  backtest, the research and the simulated-iPhone rig are as they were at
+  commit 06044ed. His stored data (passcode hash, price-feed key, settings,
+  notification signing key) is still in the site's storage, but with no
+  functions deployed nothing can read it from outside. Deleting the site in
+  his own Netlify account would erase it for good; Claude cannot do that.
+- To bring it back: `git show 06044ed:fxdesk/netlify.toml >
+  fxdesk/netlify.toml`, then deploy as under "Deploying" below (the owner
+  must say yes to the deploy). The signing key is unchanged, but his phone
+  will have given up its notification address, so he would turn
+  notifications on again.
+
+Everything below this line is the record as it stood on 15 Nov 2026, when
+the app was live. It is history, not a to-do list.
+
 Last updated: 15 Nov 2026, about 01:00 UTC. Branch
 `claude/youtube-ai-monetization-study-4ipk3c`. Everything is committed and
 pushed. (CLAUDE.md says trading work goes on

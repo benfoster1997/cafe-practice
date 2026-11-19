@@ -1,8 +1,45 @@
 # App project status — read this first in any new session
 
-Last updated: 17 Aug 2026, ~14:45 UTC. Branch: `claude/youtube-ai-monetization-study-4ipk3c`.
+Last updated: 19 Nov 2026 (top section only; the rest is as written on 17 Aug 2026). Branch: `claude/youtube-ai-monetization-study-4ipk3c`.
 The contract is `docs/APP_MISSION_BRIEF.md`. Owner communication style:
 direct, honest, no sugar-coating (see CLAUDE.md).
+
+## 19 Nov 2026: the owner asked the income question again
+
+After closing FX Desk he asked for "the best way to make a passive income
+by using Claude ... what will easily make me money the quickest way ...
+choose for me, whether that be an app we build for customers or anything
+else". No new research was run: this file and `STRATEGIC_POSITION.md`
+already answer it, and a ninth search would repeat the failed experiment.
+
+What he was told, in plain words:
+- Easy, quick and passive do not exist together. Eight ideas were tested
+  and all failed; the bottleneck is finding customers, not finding ideas.
+- **The choice made for him:** the quote-writing service for small trade
+  contractors from `reports/strategy-P3-service-first.md` (about £395 a
+  month; Claude does about 90% of the writing, he finds the customers and
+  checks and sends each quote). Six customers is about £2,400 a month. Odds
+  about 1 in 8 of reaching the target within two years; three customers is
+  still about £1,200 a month. First paying customer plausible in two to
+  three months if he makes the calls. Not passive: about 10 hours a week of
+  contacting strangers at the start; tops out around £3,000 to £4,500 a
+  month; stops paying if he stops.
+- Why not an app, YouTube, trading, or templates and e-books (the last was
+  NOT researched here; he was told that was general knowledge only).
+- The deciding question, still unanswered: will he contact strangers,
+  repeatedly, for months? If not, Claude knows of nothing likely to work
+  and said so. Also still unknown: his job, his hours, and whether he can
+  free weekdays (ordinary paid day work in his own field would beat every
+  path here).
+- First step offered: the 14-day, roughly £35 conversation test from
+  `STRATEGIC_POSITION.md` section 3, aimed at contractors, one question
+  about how they handle quoting, no pitch. Gate: under 5 conversations
+  from about 200 approaches, stop; 5 to 15, sell the service.
+
+**Waiting on the owner: "go", and an honest answer to the deciding
+question.** On "go", Claude writes the one-page offer, the call script,
+the list-building steps (with the TPS/CTPS screening rule) and a simple
+log. No code until someone has paid.
 
 ## Where we are in the mission-brief stages
 

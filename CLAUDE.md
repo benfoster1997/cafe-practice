@@ -1,18 +1,29 @@
 # Project instructions for Claude
 
+## Where the owner is now (19 Nov 2026)
+
+No project is active. On 19 Nov the owner closed FX Desk and asked for the
+best way to earn money with Claude ("passive, easy, quick; choose for me").
+He was told plainly that those three do not exist together, and given one
+choice from the August research: a quote-writing service for small trade
+contractors, starting with a 14-day conversation test. He has not yet said
+go. **Read the top section of `app/STATUS.md` before answering anything
+about income. Do not launch another idea search:**
+`app/research/STRATEGIC_POSITION.md` explains why (eight ideas tested, eight
+killed; the bottleneck is selling, not ideas).
+
 ## Four projects live in this repo
 
-- **FX Desk (ACTIVE - the owner's current work)** (branch
-  `claude/youtube-ai-monetization-study-4ipk3c`, folder `fxdesk/`): an
-  iPhone web app that gives ICT-method forex tickets to copy into MT5 on a
-  demo account. Live at https://fx-desk-ict.netlify.app. **Read
-  `fxdesk/STATUS.md` FIRST: its "RESUME HERE" section says exactly what to
-  do next.** Then `fxdesk/SPEC.md` (the pre-registered rulebook) and
-  `fxdesk/GUIDE.md` (the owner's click-by-click guide). The rules did NOT
-  pass their backtest; never describe them otherwise. Honest-expectations
-  rule applies.
+- **FX Desk (CLOSED 19 Nov 2026 at the owner's request: switched off, code
+  kept)** (branch `claude/youtube-ai-monetization-study-4ipk3c`, folder
+  `fxdesk/`): an iPhone web app that gave ICT-method forex tickets to copy
+  into MT5 on a demo account. The live site https://fx-desk-ict.netlify.app
+  now serves a single "closed" page; no scanner runs and no notifications
+  are sent. The rules did NOT pass their backtest; never describe them
+  otherwise. Do not resume or redeploy unless the owner asks; the top of
+  `fxdesk/STATUS.md` says how to bring it back.
 - **App business (paused 10 Nov 2026, when the owner switched to FX
-  Desk)** (same branch): building a B2B SaaS to £2,000+/month MRR. Read
+  Desk; income question reopened 19 Nov, see above)** (same branch): building a B2B SaaS to £2,000+/month MRR. Read
   `app/STATUS.md` FIRST, then `docs/APP_MISSION_BRIEF.md` (the contract).
   Do not resume unless the owner asks.
 - **YouTube channel "Cooked Books" (PARKED 17 Aug 2026)** (same branch):
