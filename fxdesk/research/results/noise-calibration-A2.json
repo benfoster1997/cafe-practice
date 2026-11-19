@@ -1,0 +1,178 @@
+[
+ {
+  "config": "A2",
+  "cost": "raw",
+  "seed": 1,
+  "n": 84,
+  "expectancyR": 0.076,
+  "profitFactor": 1.13
+ },
+ {
+  "config": "A2",
+  "cost": "raw",
+  "seed": 2,
+  "n": 79,
+  "expectancyR": -0.002,
+  "profitFactor": 1
+ },
+ {
+  "config": "A2",
+  "cost": "raw",
+  "seed": 3,
+  "n": 85,
+  "expectancyR": -0.16,
+  "profitFactor": 0.77
+ },
+ {
+  "config": "A2",
+  "cost": "raw",
+  "seed": 4,
+  "n": 88,
+  "expectancyR": -0.252,
+  "profitFactor": 0.64
+ },
+ {
+  "config": "A2",
+  "cost": "raw",
+  "seed": 5,
+  "n": 93,
+  "expectancyR": -0.129,
+  "profitFactor": 0.8
+ },
+ {
+  "config": "A2",
+  "cost": "raw",
+  "seed": 6,
+  "n": 74,
+  "expectancyR": -0.183,
+  "profitFactor": 0.74
+ },
+ {
+  "config": "A2",
+  "cost": "raw",
+  "seed": 7,
+  "n": 74,
+  "expectancyR": 0.177,
+  "profitFactor": 1.32
+ },
+ {
+  "config": "A2",
+  "cost": "raw",
+  "seed": 8,
+  "n": 84,
+  "expectancyR": -0.079,
+  "profitFactor": 0.87
+ },
+ {
+  "config": "A2",
+  "cost": "raw",
+  "seed": 9,
+  "n": 86,
+  "expectancyR": 0.005,
+  "profitFactor": 1.01
+ },
+ {
+  "config": "A2",
+  "cost": "raw",
+  "seed": 10,
+  "n": 82,
+  "expectancyR": 0.187,
+  "profitFactor": 1.35
+ },
+ {
+  "config": "A2",
+  "cost": "raw",
+  "seed": 0,
+  "n": 89,
+  "expectancyR": -0.072,
+  "profitFactor": 0.89
+ },
+ {
+  "config": "A2",
+  "cost": "standard",
+  "seed": 1,
+  "n": 80,
+  "expectancyR": 0.075,
+  "profitFactor": 1.13
+ },
+ {
+  "config": "A2",
+  "cost": "standard",
+  "seed": 2,
+  "n": 78,
+  "expectancyR": 0.009,
+  "profitFactor": 1.01
+ },
+ {
+  "config": "A2",
+  "cost": "standard",
+  "seed": 3,
+  "n": 82,
+  "expectancyR": -0.138,
+  "profitFactor": 0.8
+ },
+ {
+  "config": "A2",
+  "cost": "standard",
+  "seed": 4,
+  "n": 86,
+  "expectancyR": -0.199,
+  "profitFactor": 0.7
+ },
+ {
+  "config": "A2",
+  "cost": "standard",
+  "seed": 5,
+  "n": 88,
+  "expectancyR": -0.165,
+  "profitFactor": 0.75
+ },
+ {
+  "config": "A2",
+  "cost": "standard",
+  "seed": 6,
+  "n": 76,
+  "expectancyR": -0.093,
+  "profitFactor": 0.86
+ },
+ {
+  "config": "A2",
+  "cost": "standard",
+  "seed": 7,
+  "n": 71,
+  "expectancyR": 0.215,
+  "profitFactor": 1.4
+ },
+ {
+  "config": "A2",
+  "cost": "standard",
+  "seed": 8,
+  "n": 84,
+  "expectancyR": -0.017,
+  "profitFactor": 0.97
+ },
+ {
+  "config": "A2",
+  "cost": "standard",
+  "seed": 9,
+  "n": 84,
+  "expectancyR": 0.032,
+  "profitFactor": 1.05
+ },
+ {
+  "config": "A2",
+  "cost": "standard",
+  "seed": 10,
+  "n": 81,
+  "expectancyR": 0.28,
+  "profitFactor": 1.57
+ },
+ {
+  "config": "A2",
+  "cost": "standard",
+  "seed": 0,
+  "n": 89,
+  "expectancyR": 0.036,
+  "profitFactor": 1.06
+ }
+]

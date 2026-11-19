@@ -1,0 +1,10 @@
+# FX Desk was CLOSED on 19 Nov 2026 at the owner's request.
+# The live site now serves one static page saying so (closed/index.html). No functions are deployed,
+# so nothing scans the market and no notification is ever sent. (The functions live in
+# app/netlify/functions, which is not a folder the host looks in unless this file points at it.)
+#
+# The app itself is untouched in app/, core/ and backtest/. To bring it back, restore this file as it
+# was (git show 06044ed:fxdesk/netlify.toml > fxdesk/netlify.toml) and deploy. See STATUS.md.
+[build]
+  publish = "closed"
+  command = "echo 'FX Desk is closed: one static page, no functions'"

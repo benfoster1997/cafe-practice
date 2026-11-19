@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10">
+<title>FX Desk is closed</title>
+<style>
+html,body{margin:0;background:#0b0d10;color:#f2f4f7;font:17px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+main{max-width:520px;margin:0 auto;padding:calc(48px + env(safe-area-inset-top)) 22px 48px}
+h1{font-size:26px;margin:0 0 14px}
+p{margin:0 0 14px;color:#c3cad4}
+.card{background:#151920;border-radius:16px;padding:18px;margin-top:22px}
+b{color:#f2f4f7}
+</style>
+</head>
+<body>
+<main>
+  <h1>FX Desk is closed</h1>
+  <p>This demo tool was switched off on <b>19 November 2026</b>. Nothing is scanning the market and no notifications will be sent.</p>
+  <p>The trading rules it used did not pass their historical test, so it was never more than a practice tool.</p>
+  <div class="card">
+    <p><b>You can remove it from your iPhone.</b> Press and hold the FX Desk icon on your Home Screen, then choose <b>Delete Bookmark</b> or <b>Remove App</b>.</p>
+    <p style="margin:0">Any order still open or waiting in MetaTrader is yours to close or delete: this app never touched MetaTrader.</p>
+  </div>
+</main>
+<script>
+// Tidy this phone: forget the saved passcode, give up the notification address and remove the background script.
+try { localStorage.removeItem("fx-pass"); localStorage.removeItem("fx-push"); } catch (e) {}
+try {
+  if ("serviceWorker" in navigator) navigator.serviceWorker.getRegistrations().then(function (regs) {
+    regs.forEach(function (reg) {
+      var done = function () { reg.unregister().catch(function () {}); };
+      if (reg.pushManager) reg.pushManager.getSubscription().then(function (sub) { return sub ? sub.unsubscribe() : null; }).then(done, done);
+      else done();
+    });
+  }).catch(function () {});
+} catch (e) {}
+</script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+[
+ {
+  "config": "A4",
+  "cost": "raw",
+  "seed": 1,
+  "n": 29,
+  "expectancyR": 0.306,
+  "profitFactor": 1.52
+ },
+ {
+  "config": "A4",
+  "cost": "raw",
+  "seed": 2,
+  "n": 29,
+  "expectancyR": 0.056,
+  "profitFactor": 1.08
+ },
+ {
+  "config": "A4",
+  "cost": "raw",
+  "seed": 3,
+  "n": 31,
+  "expectancyR": -0.022,
+  "profitFactor": 0.97
+ },
+ {
+  "config": "A4",
+  "cost": "raw",
+  "seed": 4,
+  "n": 35,
+  "expectancyR": -0.212,
+  "profitFactor": 0.72
+ },
+ {
+  "config": "A4",
+  "cost": "raw",
+  "seed": 5,
+  "n": 34,
+  "expectancyR": 0.001,
+  "profitFactor": 1
+ },
+ {
+  "config": "A4",
+  "cost": "raw",
+  "seed": 6,
+  "n": 30,
+  "expectancyR": 0.28,
+  "profitFactor": 1.43
+ },
+ {
+  "config": "A4",
+  "cost": "raw",
+  "seed": 7,
+  "n": 24,
+  "expectancyR": 0.113,
+  "profitFactor": 1.16
+ },
+ {
+  "config": "A4",
+  "cost": "raw",
+  "seed": 8,
+  "n": 32,
+  "expectancyR": 0.159,
+  "profitFactor": 1.25
+ },
+ {
+  "config": "A4",
+  "cost": "raw",
+  "seed": 9,
+  "n": 35,
+  "expectancyR": -0.156,
+  "profitFactor": 0.8
+ },
+ {
+  "config": "A4",
+  "cost": "raw",
+  "seed": 10,
+  "n": 32,
+  "expectancyR": 0.615,
+  "profitFactor": 2.21
+ },
+ {
+  "config": "A4",
+  "cost": "raw",
+  "seed": 0,
+  "n": 34,
+  "expectancyR": 0.264,
+  "profitFactor": 1.43
+ },
+ {
+  "config": "A4",
+  "cost": "standard",
+  "seed": 1,
+  "n": 27,
+  "expectancyR": 0.349,
+  "profitFactor": 1.61
+ },
+ {
+  "config": "A4",
+  "cost": "standard",
+  "seed": 2,
+  "n": 29,
+  "expectancyR": 0.095,
+  "profitFactor": 1.13
+ },
+ {
+  "config": "A4",
+  "cost": "standard",
+  "seed": 3,
+  "n": 28,
+  "expectancyR": -0.118,
+  "profitFactor": 0.85
+ },
+ {
+  "config": "A4",
+  "cost": "standard",
+  "seed": 4,
+  "n": 33,
+  "expectancyR": -0.208,
+  "profitFactor": 0.72
+ },
+ {
+  "config": "A4",
+  "cost": "standard",
+  "seed": 5,
+  "n": 31,
+  "expectancyR": 0.032,
+  "profitFactor": 1.05
+ },
+ {
+  "config": "A4",
+  "cost": "standard",
+  "seed": 6,
+  "n": 30,
+  "expectancyR": 0.32,
+  "profitFactor": 1.51
+ },
+ {
+  "config": "A4",
+  "cost": "standard",
+  "seed": 7,
+  "n": 23,
+  "expectancyR": 0.081,
+  "profitFactor": 1.11
+ },
+ {
+  "config": "A4",
+  "cost": "standard",
+  "seed": 8,
+  "n": 31,
+  "expectancyR": 0.149,
+  "profitFactor": 1.23
+ },
+ {
+  "config": "A4",
+  "cost": "standard",
+  "seed": 9,
+  "n": 34,
+  "expectancyR": -0.094,
+  "profitFactor": 0.88
+ },
+ {
+  "config": "A4",
+  "cost": "standard",
+  "seed": 10,
+  "n": 31,
+  "expectancyR": 0.645,
+  "profitFactor": 2.27
+ },
+ {
+  "config": "A4",
+  "cost": "standard",
+  "seed": 0,
+  "n": 34,
+  "expectancyR": 0.313,
+  "profitFactor": 1.53
+ }
+]
