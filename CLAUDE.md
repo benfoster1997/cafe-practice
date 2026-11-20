@@ -1,14 +1,17 @@
 # Project instructions for Claude
 
-## Where the owner is now (19 Nov 2026)
+## Where the owner is now (20 Nov 2026)
 
 No project is active. On 19 Nov the owner closed FX Desk and asked for the
 best way to earn money with Claude ("passive, easy, quick; choose for me").
 He was told plainly that those three do not exist together, and given one
 choice from the August research: a quote-writing service for small trade
-contractors, starting with a 14-day conversation test. He has not yet said
-go. **Read the top section of `app/STATUS.md` before answering anything
-about income. Do not launch another idea search:**
+contractors, starting with a 14-day conversation test. On 20 Nov he asked
+again; that answer was checked by nine agents and one part changed: the
+quote-writing service is no longer a settled choice (cheap apps now do it),
+while the conversation test stands with a corrected, lawful script. He has
+not yet said go. **Read the top section of `app/STATUS.md` before answering
+anything about income. Do not launch another idea search:**
 `app/research/STRATEGIC_POSITION.md` explains why (eight ideas tested, eight
 killed; the bottleneck is selling, not ideas).
 

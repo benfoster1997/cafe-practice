@@ -1,10 +1,110 @@
 # App project status — read this first in any new session
 
-Last updated: 19 Nov 2026 (top section only; the rest is as written on 17 Aug 2026). Branch: `claude/youtube-ai-monetization-study-4ipk3c`.
+Last updated: 20 Nov 2026 (top two sections; the rest is as written on 17 Aug 2026). Branch: `claude/youtube-ai-monetization-study-4ipk3c`.
 The contract is `docs/APP_MISSION_BRIEF.md`. Owner communication style:
 direct, honest, no sugar-coating (see CLAUDE.md).
 
+## 20 Nov 2026: he asked a third time; the answer was checked and one part changed
+
+He asked "what's the best way to make an income using Fable 5.2 using
+Ultracode effort". No ninth idea search was run. Nine agents checked the
+19 Nov answer itself: six narrow evidence reports and three adversarial
+fact-checks. All are in `app/research/reports/nov20-*.md`.
+
+**What changed: the quote-writing service is no longer "the choice".**
+- It was picked because no app sold the same result. That is now false.
+  Small UK apps turn a spoken job description into a priced quote for
+  about £10 to £15 a month (VoxTrade £14.99 on the UK App Store, TradePA
+  £10, squote). In the FMB survey of 416 small builders (Jan to Jun 2026)
+  about one in three already uses AI for quotes, estimates or tenders.
+- Three agents looked for anyone buying or selling quote writing for a
+  monthly fee. None found one.
+- This is not proof it cannot work. No evidence in any report comes from
+  a confirmed working tradesperson; the forum threads were mostly app
+  sellers. Demand at £395 is unproven, not disproven.
+- Reports: `nov20-pick-supply.md`, `nov20-pick-demand.md`,
+  `nov20-verify-pick.md`.
+
+**What stands: the conversation test is still the next step, corrected.**
+Only contractors can answer what desk research has now failed to answer
+twice. Corrections (`nov20-channel-law.md`, `nov20-verify-channel.md`;
+the law was read on legislation.gov.uk and ico.org.uk and compared word
+for word; research, not legal advice):
+1. Drop the script line "I'm not selling anything". Saying that and then
+   selling to the same people is what the ICO calls sugging, and it
+   counts as direct marketing. He says plainly that he is setting up a
+   paid service for trade firms and has one question.
+2. Phone first. Calling sole traders and companies needs no consent if
+   every number is screened against BOTH the TPS and the CTPS within 28
+   days, his number shows, and he gives his name. An ordinary mobile is
+   fine. Get the screening service to confirm in writing that it is
+   licensed and covers both lists.
+3. Email only firms confirmed on Companies House as a limited company or
+   LLP, and only at a business-domain address (not a Gmail or Hotmail
+   style one). No cold email, text, WhatsApp or social media message to a
+   sole trader, not even to ask permission.
+4. Widen the one question: which paperwork job costs the most evening
+   time, and how do they handle it now. Quoting is one named example.
+   Follow-ups for people who do talk: what they use now, whether they
+   have tried an app or ChatGPT, who helps and whether they pay them.
+5. The conversation count is information, not a pass mark. Nobody has
+   measured how UK trades respond to a cold call; the honest range from
+   200 calls is about 3 to 25. What he controls is whether the calls get
+   made, and how day 10 felt against day 1. Allow 21 days, about 30
+   hours, and about £35 to £95 (screening up to £8.40; ICO fee £47 to £52
+   if the ICO's fee checker says it is due).
+6. Sell nothing until at least three contractors name the same chore,
+   say no app, AI tool or family member already handles it, and say they
+   would pay. Whatever comes top must pass the check quote writing just
+   failed. The test can end with nothing to sell; he must hear that
+   before he starts.
+7. Build the list by hand from Companies House plus each firm's own
+   website. Do not scrape Which? Trusted Traders, TrustMark, Checkatrade
+   or Google Maps (their terms forbid it).
+This returns to the `STRATEGIC_POSITION.md` section 3 wording ("pick the
+most-repeated chore you heard"), which the 19 Nov note had narrowed.
+
+**What was confirmed, now with evidence instead of general knowledge.**
+- Products that need no selling do not pay a typical newcomer
+  (`nov20-no-selling-products.md`, checked in
+  `nov20-verify-no-outbound.md`). The middle subscription app earns about
+  £55 a month a year after launch, in a sample that leaves out apps that
+  never got going. The middle Gumroad seller made $70 in a whole year
+  (2020 data, the latest that exists). The middle Chrome extension has
+  about 10 users. About four in five authors with one to four books earn
+  under $100 a month. Stronger AI made it harder: new iPhone apps roughly
+  doubled in the first half of 2026 while downloads rose 2%.
+- "The buyer comes to you" is not shown to be better
+  (`nov20-inbound-work.md`). Upwork and Bark charge a newcomer to pitch.
+  Fiverr's buyers fell about a quarter in a year. AI-training gig
+  platforms forbid doing the work with outside AI. Nobody has measured a
+  review-less newcomer's earnings in 2025-26, so this is "not shown
+  better", not "proven worse".
+- New rule: never sell anything with logins, payments, stored personal
+  data, or code that runs on a client's systems. He cannot check it and a
+  sole trader is personally liable.
+- Ordinary paid work beats every route here on certainty: £12.71 an hour
+  is about £550 a month for 10 hours a week, about £990 for 18 hours. It
+  is not a Claude income.
+- The model is not the bottleneck. Fable 5.2 and ultracode find no
+  customers. For delivering a document service the cheapest paid plan
+  would likely do (`nov20-terms-costs.md`; this one report was NOT
+  fact-checked). Anthropic's consumer terms do not forbid selling work
+  drafted with Claude; keep end-customers' names and addresses out of
+  Claude on a consumer plan; tell clients in writing that AI drafts and
+  he checks; first-year running costs about £300 to £750.
+
+**Still waiting on the owner, unchanged:** will he phone strangers for
+three weeks, and what are his job and free hours? If yes: Claude writes
+the corrected script, the list-building steps, the screening steps and
+the log. If no: no Claude route found here pays a typical newcomer, and
+the honest answer is paid work in his own field or a part-time job.
+
 ## 19 Nov 2026: the owner asked the income question again
+
+(Superseded in part by the 20 Nov section above: the quote-writing
+service is no longer a settled choice, and the test script and gate were
+corrected.)
 
 After closing FX Desk he asked for "the best way to make a passive income
 by using Claude ... what will easily make me money the quickest way ...
@@ -139,5 +239,14 @@ digits to ~10% — honest expectations, owner has accepted this framing.
   prompts (~14 searches each).
 - Background workflows die if the session idles — hold the turn open with
   blocking `TaskOutput` calls (thrice-learned: 10 Aug, 17 Aug ×2).
+- 20 Nov: a container restart killed a workflow mid-run. Untracked report
+  files survived, but commit and push each report as it lands. Resuming a
+  `pipeline()` workflow re-ran agents that had already finished (cached
+  results return instantly, which changes the call order), so have agents
+  write to files and treat a resume as a partial re-run. Only two agents
+  ran at a time (4 CPUs).
+- 20 Nov: legislation.gov.uk, ico.org.uk, ons.gov.uk and gov.uk statistics
+  pages opened for agents today. Checkatrade, Upwork, Fiverr help and
+  Royal Mail did not.
 - Other projects: YouTube parked (`channel/STATUS.md`), trading bot on its
   own branch. Do not touch either without owner instruction.

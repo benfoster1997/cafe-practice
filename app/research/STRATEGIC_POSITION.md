@@ -117,6 +117,15 @@ mailbox, and phone the ones you can reach. No pitch, no product, one
 question: *"How do you currently handle [specific monthly chore]? I'm not
 selling anything and I'll send you what I learn."*
 
+> **Correction, 20 Nov 2026. Do not use the script above as written.**
+> Saying "I'm not selling anything" and later selling to the same people
+> is what the ICO calls sugging, and it counts as direct marketing. Say
+> plainly that you are setting up a paid service for trade firms and have
+> one question. Phone first, and screen every number against both the TPS
+> and the CTPS before dialling. Email only limited companies, at a
+> business-domain address. The corrected rules are in the top section of
+> `app/STATUS.md` and in `reports/nov20-verify-channel.md`.
+
 Log three numbers only: conversations held, hours spent, and one honest
 sentence about how it felt on day 10 versus day 1. That third one predicts
 month 14 better than the other two.
