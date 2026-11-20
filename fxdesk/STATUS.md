@@ -13,10 +13,18 @@ the code. **Do not resume, redeploy or work on FX Desk unless he asks.**
   notification is sent. That page also tidies his phone when opened: it
   forgets the saved passcode, gives up the notification address and removes
   the background script.
+- Checked after the switch-off deploy (19 Nov, 23:52 UTC, Netlify deploy
+  6aff8bdd4fd28f15564c7a73): the front page is the closed page; `/api/*`,
+  `/.netlify/functions/scan`, `/sw.js` and `/manifest.json` all answer 404;
+  the host's own log shows the scanner running at 23:00, 23:15, 23:30 and
+  23:45 and NOT at 00:00. The same log shows the owner never added a
+  price-feed key ("No price-feed key yet" on every run), so the app never
+  scanned real prices and never issued a ticket.
 - Nothing was deleted. The app (`app/`), the shared rules (`core/`), the
   backtest, the research and the simulated-iPhone rig are as they were at
-  commit 06044ed. His stored data (passcode hash, price-feed key, settings,
-  notification signing key) is still in the site's storage, but with no
+  commit 06044ed. His stored data (passcode hash, settings, the
+  notification signing key and any notification address his phone
+  registered) is still in the site's storage, but with no
   functions deployed nothing can read it from outside. Deleting the site in
   his own Netlify account would erase it for good; Claude cannot do that.
 - To bring it back: `git show 06044ed:fxdesk/netlify.toml >
